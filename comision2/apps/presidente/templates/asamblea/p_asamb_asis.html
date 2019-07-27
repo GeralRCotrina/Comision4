@@ -1,0 +1,207 @@
+{% extends "p_base.html" %}
+
+{% block txt_cabecera %}
+	ASAMBLEA
+{% endblock txt_cabecera %}
+
+ 
+
+{% block noticias %}
+	
+{% endblock noticias %}
+
+
+
+{% block noticias1 %}
+{% endblock noticias1 %}
+
+
+
+{% block tabla %}	
+
+
+<div class="row container h-100 m-2 p-1 border">
+
+	<div class="col-12 col-md-7 col-lg-6 btn-group">
+		<form action="#" method="post" class="form-inline w-100">
+			{% csrf_token %}
+			<div class="row w-100 m-2 border p-1">
+				<div class="col-12">
+					<h3 class="text-muted" id="txt_tit">Buscar usuario (Auth User) ... {{ msj }}  </h3>
+				</div>
+				<div class="col-12 btn-group">
+					<input type="text" placeholder="Buscar.." maxlength="8" class="w-100 form-control" id="valor1" onkeyup="alEscribeJS1()">			
+					<button class="btn btn-outline-secondary" disabled="true">
+						<i class="fas fa-search"></i>
+					</button>
+				</div><br>
+				<!--button class="btn btn-outline-success form-control" onclick="Mostar()">#-#-#</button-->
+			</div>	
+		</form>
+	</div>
+
+	<!--div class="col-5 border">
+		<input type="text" id="ast" value="3"/>
+		<input type="text" id="fal" value="2"/>
+		<input type="text" id="tar" value="1"/>
+		<button type="button" onclick="Pintar()">pintar</button>
+	</div-->
+
+	<!--div id="ccc" class="col-5 border mt-1"></div
+	<input id="ur" type="text" value="#">-->
+
+
+
+	<div class="col-12 col-md-5 col-lg-5 btn-group border">
+		<div class="w-100" style="height: 200px; ">
+			
+			<div id="container"  style="min-width: 100%; height: 100%; max-width: 100%;"></div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+/*
+function Pintar() {
+	var ast = document.getElementById("ast").value;
+	var fal = document.getElementById("fal").value;
+	var tar = document.getElementById("tar").value;
+	var ur = document.getElementById("ur");
+
+	var cc = document.getElementById("ccc");
+
+	console.log(" >>"+ast);
+	console.log(" >>"+fal);
+	console.log(" >>"+tar);
+
+	
+	cc.load("<p>La vida es </p>");
+
+	console.log("t");
+
+
+
+}
+*/
+
+	
+Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+    title: {
+        text: 'Reunión<br>General<br>03/02/2019',
+        align: 'center',
+        verticalAlign: 'middle',
+        y: 40
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            dataLabels: {
+                enabled: true,
+                distance: -50,
+                style: {
+                    fontWeight: 'bold',
+                    color: 'white'
+                }
+            },
+            startAngle: -90,
+            endAngle: 90,
+            center: ['50%', '105%'],
+            size: '210%'
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Runión 03/02/19',
+        innerSize: '60%',
+        data: [
+            ['Tardanzas',3],
+           ['Faltó',2],
+           ['Asistió',1],
+        ]
+    }]
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row border m-2 p-1"  style ="width: 100%; height:500px; overflow-x: scroll; ">
+	<div class="col-12">
+		<table class="table table-responsive-lg h-100" id="dataTable1" cellspacing="0">
+			<thead>
+				<tr style="background: #95FFAB;">
+					<td>Id</td>
+					<td>ASAMBLEA</td>
+					<td>USUARIO</td>
+					<td>DNI</td>
+					<td>ESTADO</td>
+					<td>HORA</td>
+					<td>BTN</td>
+				</tr>
+			</thead>
+			<tbody  id="cuerpo1">
+				{% if lstHAsis %}
+					{% for ob in lstHAsis %}
+					<tr>
+						<td>{{ob.pk}}</td>
+						<td>{{ ob.id_asamblea.tipo }}</td>
+						<td>{{ ob.id_auth_user.first_name }}</td>
+						<td>{{ ob.id_auth_user.dni}}</td>
+						<td>
+							{% if ob.estado == '0' %}
+								<span id="{{ob.pk}}" class="badge badge-pill badge-light">ESPERANDO</span>
+							{% elif ob.estado == '1' %}
+								<span id="{{ob.pk}}" class="badge badge-pill badge-success">ASISTIÓ</span>
+							{% elif ob.estado == '2' %}
+								<span id="{{ob.pk}}" class="badge badge-pill badge-info">TARDE</span>
+							{% elif ob.estado == '3' %}
+								<span id="{{ob.pk}}" class="badge badge-pill badge-secondary">FALTÓ</span>
+							{% else %}
+								<span id="{{ob.pk}}" class="badge badge-pill badge-info">ERR</span>
+							{% endif %} 
+						</td>
+						<td>{{ ob.hora.hour }}:{{ ob.hora.minute }}</td>
+						<td>
+							<div class="btn-group">
+								<button class="btn btn-outline-success" onclick="UrlJS2({{ob.pk}},'Asistio')"><i class="fas fa-check"></i></button>
+								<button class="btn btn-outline-info" onclick="UrlJS2({{ob.pk}},'Tarde')"><i class="far fa-clock"></i></button>
+								<button class="btn btn-outline-secondary" onclick="UrlJS2({{ob.pk}},'Falto')"><i class="far fa-times-circle"></i></button>
+							</div>
+						</td>
+					</tr>
+					{% endfor %}				
+				{% else %}
+					<h1>NO HAY ASISTENCIAS AÚN</h1>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<br>
+
+{% endblock tabla %}
+
+
+{% block graficos %}	
+{% endblock graficos %}

@@ -1,0 +1,119 @@
+{% extends "p_base.html" %}
+
+{% block txt_cabecera %}
+	ASAMBLEA
+{% endblock txt_cabecera %}
+
+
+
+{% block noticias %}
+	<div class="container border">
+		<form method="post">
+			{% csrf_token %}
+
+			<div class="row m-2">
+				<div class="col-12 col-sm-6 col-lg-4 text-center">
+					<p class="alert alert-primary alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>PRONTO</strong>
+					</p>
+				</div>
+				<div class="col-12 col-sm-6 col-lg-4 text-center">
+					<p class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>YA COMENZÓ</strong>
+					</p>
+				</div>
+				<div class="col-12 col-sm-12 col-lg-4 text-center">
+					<p class="alert alert-secondary alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>YA PASÓ</strong> 
+					</p>
+				</div>
+			</div>
+
+			<div class="row">
+
+			{% if asambleas %}
+			 	{% for a in asambleas %}
+				
+					<div class="col-6  col-md-4 col-xl-3 mb-2">
+						<div class="card text-white {% if a.estado == '1' %} bg-primary {% elif a.estado == '2' %} bg-danger {% else %} bg-secondary {% endif %} o-hidden h-100">
+			                <div class="card-body">
+			                  <div class="card-body-icon">
+			                  	<i class="fas fa-clipboard-list"></i>
+			                  </div>
+			                  <div class="mr-2"> [{{a.pk}}|{{a.estado}}]
+			                  	{{ a.tipo }}  <br>  
+			                  	<i class="fas fa-table"></i> 
+			                  	{{a.fecha_asamblea.day}}/{{a.fecha_asamblea.month}}
+			                  	<i class="far fa-clock"></i>  {{a.fecha_asamblea.hour}}:
+			                  	{% if a.fecha_asamblea.minute > 10 %}
+			                  		{{a.fecha_asamblea.minute}}
+			                  	{% else %}
+			                  		0{{a.fecha_asamblea.minute}}
+			                  	{% endif %}		                  	
+				              </div>
+			                </div>
+			                <dic class="row card-footer">
+			                	{% if a.estado == '1' %}
+				                	<div class="col-6">
+				                		<a href="{% url 'p_asamb_ini' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-user-check"></i></a>
+				                	</div>
+				                	<div class="col-6">
+				                		<a href="{% url 'p_asamb_edi' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-cog"></i></a>
+				                	</div>
+
+				                {% elif a.estado == '2' %}		                		
+				                	<div class="col-3">
+				                		<a href="#" class="float-left text-white"><i class="fas fa-chart-pie"></i></a>
+				                	</div>
+				                	<div class="col-3">
+				                		<a href="#" class="float-left text-white"><i class="fas fa-list-ol"></i></a>
+				                	</div>
+				                	<div class="col-3">
+				                		<a href="{% url 'p_asamb_ini' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-user-check"></i></a>
+				                	</div>
+				                	<div class="col-3">
+				                		<a href="{% url 'p_asamb_edi' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-cog"></i></a>
+				                	</div>
+
+				                {% elif a.estado == '3' %}
+				                	<div class="col-6">
+				                		<a href="#" class="float-left text-white"><i class="fas fa-chart-pie"></i></a>
+				                	</div>
+				                	<div class="col-6">
+				                		<a href="#" class="float-left text-white"><i class="fas fa-list-ol"></i></a>
+				                	</div>
+			                	{% endif %}
+
+			                </dic>
+			              </div>
+					</div>
+
+			 	{% endfor %}
+			{% endif %}
+				
+
+				
+				
+			</div>
+			</form>
+	</div>
+{% endblock noticias %}
+
+
+{% block noticias1 %}
+{% endblock noticias1 %}
+
+
+
+{% block tabla %}
+	
+{% endblock tabla %}
+
+
+
+{% block graficos %}
+	
+{% endblock graficos %}
