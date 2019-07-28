@@ -93,7 +93,7 @@
 
 
 
-
+        {% block inicio_menu %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -102,9 +102,11 @@
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 'usuario' %}"><i class="fas fa-user"></i></i> Usuario</a>
             <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
-            <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i></i> Presidente</a>
-          </div>
+            <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>
+            <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal1</a>
+          </div> 
         </li>
+        {% endblock inicio_menu %}
 
 
         <li class="nav-item dropdown">

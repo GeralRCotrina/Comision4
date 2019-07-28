@@ -1,0 +1,73 @@
+{% extends "v_base.html" %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+
+
+{% block noticias1 %}	
+
+{% endblock noticias1 %}
+
+
+
+
+
+<div class=" row border">
+	{% if Asambleas %}
+
+     {% block td1_tabla %}
+       <td>PK</td>
+        <TD>TIPO</TD>
+        <TD>DESCRIPCIÓN</TD>
+        <TD>FECHA REGISTRO</TD>
+        <TD>FECHA ASAMBLEA</TD>
+        <TD>ESTADO</TD>
+        <td></td>
+      {% endblock td1_tabla %}
+
+      {% block td2_tabla %}
+        <td>PK</td>
+        <TD>TIPO</TD>
+        <TD>DESCRIPCIÓN</TD>
+        <TD>FECHA REGISTRO</TD>
+        <TD>FECHA ASAMBLEA</TD>
+        <TD>ESTADO</TD>
+        <td></td>
+      {% endblock td2_tabla %}
+
+
+    {% block body_tabla %}
+      {% for r in Asambleas %}
+      <tr>
+        <td>{{r.id_asamblea}}</td>
+        <td>{{r.tipo}}</td>
+        <td>{{r.descripcion}}</td>
+        <td>{{r.fecha_registro.day}}/{{r.fecha_registro.month}}/{{r.fecha_registro.year}}</td>
+        <td>{{r.fecha_asamblea.day}}/{{r.fecha_asamblea.month}}/{{r.fecha_asamblea.year}}</td>
+        <td>{{r.estado}}</td>
+        <td>
+          <div class="btn-group">
+            <button class="btn btn-outline-info" onclick="GenHjaAsis({{r.id_asamblea}},'{{r.tipo}}')">
+              <i class="fas fa-user-tag"></i>   Iniciar
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}  
+    {% endblock body_tabla %}
+
+
+  {% else %}
+    <P class="alert"> no llegó</P>
+  {% endif %}
+	
+</div>
+
+
+
+{% block graficos %}	
+{% endblock graficos %}
+

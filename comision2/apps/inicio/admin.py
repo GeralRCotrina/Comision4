@@ -2,7 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 
-
 from apps.inicio.models import (AgendaAsamblea,Asamblea,ArchivosParcela,
 	Canal,Caudal,Comite,Comprobante,DatosPersonales,Destajo,DetLimpieza,
 	DetLista,Direccion,HojaAsistencia,Limpieza)
@@ -22,6 +21,7 @@ admin.site.register(DetLista)
 admin.site.register(Direccion)
 admin.site.register(HojaAsistencia)
 admin.site.register(Limpieza)
+
 """
 admin.site.register(DetLista)
 admin.site.register(Comprobante)

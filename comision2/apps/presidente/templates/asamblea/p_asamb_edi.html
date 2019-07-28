@@ -10,7 +10,7 @@
 	<div class="container border">
 		<br>
 
-		<form method="post">
+		<form  id="palerta" method="post">
 			{% csrf_token %}
 				{% if msj %}
 					<p class="alert alert-warning alert-dismissable">
@@ -47,9 +47,18 @@
 
 
 			<div id="div_agenda" class="border form p-1 pb-1 pt-1" style="background: #F1F4F2;">
-				<a href="#" class="alert-link" onclick="EliminarAsamb({{asamb.pk}})">Para modificar la agenda, se recomienda eliminar la Asamblea y crear una nueva. <i class="far fa-hand-point-up"></i></a>
+				<a href="#" class="alert-link" onclick="Validar(1)">Para modificar la agenda, se recomienda eliminar la Asamblea y crear una nueva. <i class="far fa-hand-point-up"></i></a>
 
 			</div>
+			<div id="divconfirmar" class="col-12 mt-3 pb-1 border" hidden="hidden">
+				<label  class="alert-link" >¿ESTÁ USTED SEGURO QUE DESEA ELIMINAR LA ASAMBLEA?</label>
+				<div class="btn-group btn-block">
+					<a href="#" onclick="EliminarAsamb({{asamb.pk}})" class="btn btn-outline-danger form-control">ELIMINAR</a>
+					<a href="#" onclick="Validar(2)" class="btn btn-outline-success form-control">CANCELAR</a>
+				</div>
+			</div>
+
+			
 			<br>
 
 				<button type="submit" class="btn btn-primary form-control mb-2">

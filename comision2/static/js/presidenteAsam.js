@@ -216,7 +216,6 @@ function CambiarEst(pkh,msj){
 
 
 
-
 function EliminarAsamb(pka){
 	var rpta = confirm("¿Está seguro que desea eliminar la asamblea?");
 	if(rpta == true){
@@ -226,14 +225,25 @@ function EliminarAsamb(pka){
 		xhr.open('GET',cad,true); // sincrono o asincrono
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4 && xhr.status == 200){
-				console.log("----------------------");
-				
-				alert(" >> "+xhr.response);
+				document.getElementById("palerta").innerHTML='<p class="alert alert-danger" ><STRONG>SE ELIMINÓ CON ÉXITO!!</STRONG>'+
+																'<br><br>ya puede volver a crear su asamblea.</p>';
 			}
 		}
 		xhr.send();
 
 	}else{
 		console.log("continue");
+	}
+}
+
+
+function Validar(e){
+	var divc = document.getElementById("divconfirmar");
+	if(e == "1"){
+		divc.removeAttribute("hidden");
+	}else if("2"){
+		divc.setAttribute("hidden","hidden");		
+	}else{
+		alert("Err.")
 	}
 }

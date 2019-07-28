@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from apps.inicio.models import DatosPersonales, Parcela, Canal, Noticia, AuthUser, Caudal, Reparto, OrdenRiego, Asamblea, HojaAsistencia, AgendaAsamblea
+from apps.inicio.models import *
+#DatosPersonales, Parcela, Canal, Noticia, AuthUser, Caudal, Reparto, OrdenRiego, Asamblea, HojaAsistencia, AgendaAsamblea
 from apps.inicio.forms import PersonaForm
 from apps.presidente.forms import ParcelaForm, CanalForm, NoticiaForm, CaudalForm, AuthForm
 from django.urls import reverse_lazy
@@ -177,9 +178,6 @@ class AsambReg(View):
 		hor =  self.request.POST.get('hora_asamb')
 		tipo =  self.request.POST.get('tipo_asamb')	
 		itm_cant =  self.request.POST.get('itm_cant')
-		itm_1 =  self.request.POST.get('agnd_itm_1')
-		itm_2 =  self.request.POST.get('agnd_itm_2')
-		itm_3 =  self.request.POST.get('agnd_itm_3')
 
 		HorArr = hor.split(':')		
 
@@ -198,32 +196,21 @@ class AsambReg(View):
 			itmc +=1
 			ag_as=AgendaAsamblea(id_asamblea=asamb,punto_numero=(int(itm_cant)-99),descripcion=self.request.POST.get(str(itmc)))
 			ag_as.save()
-			
-		# CREAMOS LAS ASISTENCIAS........................
-		hr = time.strftime("%I:%M:%S")
-		hr = "2000-01-01 00:00:01"
 
-		if tipo == "General":
-			parc = Parcela.objects.all()
-			for p in parc :
-				Hasis = HojaAsistencia(id_asamblea=asamb,id_auth_user=p.id_auth_user,estado="0" ,hora=hr)
-				Hasis.save()
-			print("se creó la asamblea y su hoja de asistencia.")
-		else:
-			rc=999
+		if tipo == "Simple":
+			rc=1000
 			diccc={}
-			for x in range(0,6):
+			for x in range(1,6):
 				rc+=1
 				if str(self.request.POST.get(str(rc))) == "on":
-					parc = Parcela.objects.filter(id_canal=(x+1))
-					for p in parc :
-						Hasis = HojaAsistencia(id_asamblea=asamb,id_auth_user=p.id_auth_user,estado="0" ,hora=hr)
-						Hasis.save()
-			print(">>se creó la asamblea simple y sus asistencias.")
+					cn=Canal.objects.get(id_canal=x)
+					dac=DetAsambCanal(id_asamblea=asamb,id_canal=cn)
+					dac.save()
+			print("  >> Se crearon los detalles de canal.")
+		else:
+			print("  >> NO se crearon los detalles.")
 
-		return render(request,'asamblea/p_asamb_reg.html',{'msj':'Se guardó correctamente.'})
-
-
+		return render(request,'asamblea/p_asamb_reg.html',{'msj':'Se guardó correctamente.+'})
 
 
 
@@ -315,35 +302,22 @@ class AsmbDel(View):
 	
 	def get(self, request, *args, **kwargs):
 		asmb = self.request.GET.get('pka')
-		msj = "{'color':'rojo','tamaño':'grande'}"
-		print("  >> "+str(asmb))
-		dicc ={}
-		dicc[msj]="s"
-
-
-
-
-		return HttpResponse(dicc)
-
-
-
-
-
-"""
-
+		
 		if AgendaAsamblea.objects.filter(id_asamblea=asmb).exists():
 			AgendaAsamblea.objects.filter(id_asamblea=asmb).delete()
 			print("  >> Eliminó agenda.")
 		if HojaAsistencia.objects.filter(id_asamblea=asmb).exists():
 			HojaAsistencia.objects.filter(id_asamblea=asmb).delete()
 			print("  >> Eliminó la hoja de asistencias.")
+		if DetAsambCanal.objects.filter(id_asamblea=asmb).exists():
+			DetAsambCanal.objects.filter(id_asamblea=asmb).delete()
+			print("  >> Eliminó el detalle de canales.")
 		if Asamblea.objects.get(id_asamblea=asmb):
 			Asamblea.objects.get(id_asamblea=asmb).delete()
-			print("  >> Eliminó la asamblea.")
-		else:
-			print("  >> No existe esa Asamblea.")
-			
-"""
+			print("  >> Eliminó la asamblea.")	
+
+		return HttpResponse("ok")
+
 
 
 

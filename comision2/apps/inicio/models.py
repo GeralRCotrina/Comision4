@@ -252,6 +252,16 @@ class Destajo(models.Model):
         db_table = 'destajo'
 
 
+class DetAsambCanal(models.Model):
+    id_dt_asmb_canal = models.AutoField(primary_key=True)
+    id_asamblea = models.ForeignKey(Asamblea, models.DO_NOTHING, db_column='id_asamblea', blank=True, null=True)
+    id_canal = models.ForeignKey(Canal, models.DO_NOTHING, db_column='id_canal', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'det_asamb_canal'
+
+        
 class DetLimpieza(models.Model):
     id_det_limpieza = models.AutoField(primary_key=True)
     id_destajo = models.ForeignKey(Destajo, models.DO_NOTHING, db_column='id_destajo', blank=True, null=True)
