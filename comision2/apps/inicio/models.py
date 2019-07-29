@@ -98,7 +98,7 @@ class AuthUser(models.Model):
     is_staff = models.IntegerField(default=0)
     is_active = models.IntegerField(default=1)
     date_joined = models.DateTimeField(default="2000-01-01 10:00:01")
-    dni = models.IntegerField()
+    dni = models.CharField(max_length=8)
 
 
     class Meta:

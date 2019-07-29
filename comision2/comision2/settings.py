@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'comision2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql_cymysql',
-        'NAME': 'comision04',
+        'NAME': 'comision05',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',

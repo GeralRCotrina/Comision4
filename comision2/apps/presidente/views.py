@@ -345,9 +345,9 @@ class RepCaudal(View):
 		cau=Caudal.objects.all().order_by("-pk")
 		cant_can=can.count()
 		cant_cau=(cau.count()/cant_can)
-		t=datetime.now()
+		t=datetime.datetime.now()
 		reporte_caudal = {}
-		reporte_caudal['fecha']=datetime.now()
+		reporte_caudal['fecha']=datetime.datetime.now()
 		reporte_caudal['canales']=can
 		reporte_caudal['caudal']=cau
 		reporte_caudal['cant_can']=cant_can

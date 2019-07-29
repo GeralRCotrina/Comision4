@@ -1,0 +1,85 @@
+{% extends "v_base.html" %}
+
+{% block txt_cabecera %}
+	ASAMBLEA
+{% endblock txt_cabecera %}
+
+
+
+{% block noticias %}
+	<div class="container border">
+		<br>
+
+		<form  id="palerta" method="post">
+			{% csrf_token %}
+				{% if msj %}
+					<p class="alert alert-warning alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<strong>EDITAR </strong> {{msj}} 
+					</p>				
+				{% endif %}
+
+
+			<div class="row">
+				<div class="col-12  col-lg-6 mb-2">
+					<label style="line-height:0.0em;">TIPO</label>
+					<select class="form-control" name="tipo_asamb" required="required">
+						<option value="General">REUNIÓN GENERAL</option>
+						<option value="Simple">REUNIÓN SIMPLE</option>
+					</select>
+					<input type="hidden" name="id_asamb" value="{{ asamb.pk }}">
+				</div>
+				<div class="col-12 col-sm-6 col-lg-3 mb-2">
+					<label style="line-height:0.0em;">FECHA</label>
+					<input type="text" name="fecha_asamb" class="form-control" required="required" value="{{ asamb.fecha_asamblea.day }}/{{ asamb.fecha_asamblea.month }}/{{ asamb.fecha_asamblea.year }}">
+				</div>
+				<div class="col-12 col-sm-6 col-lg-3 mb-2">
+					<label style="line-height:0.0em;">HORA</label>
+					<input type="text" class="form-control mb-2" name="hora_asamb" value="{{ asamb.fecha_asamblea.hour }}:{{ asamb.fecha_asamblea.minute }}"/>
+				</div>
+				<div class="col-12">
+					<label style="line-height:0.0em;">DESCRIPCIÓN</label>
+					<textarea name="descripcion_asamb" class="form-control mb-2" required="required">{{ asamb.descripcion }}</textarea>
+				</div>
+				
+			</div>
+			<br>
+
+
+			<div id="div_agenda" class="border form p-1 pb-1 pt-1" style="background: #F1F4F2;">
+				<a href="#" class="alert-link" onclick="Validar(1)">Para modificar la agenda, se recomienda eliminar la Asamblea y crear una nueva. <i class="far fa-hand-point-up"></i></a>
+
+			</div>
+			<div id="divconfirmar" class="col-12 mt-3 pb-1 border" hidden="hidden">
+				<label  class="alert-link" >¿ESTÁ USTED SEGURO QUE DESEA ELIMINAR LA ASAMBLEA?</label>
+				<div class="btn-group btn-block">
+					<a href="#" onclick="EliminarAsamb({{asamb.pk}})" class="btn btn-outline-danger form-control">ELIMINAR</a>
+					<a href="#" onclick="Validar(2)" class="btn btn-outline-success form-control">CANCELAR</a>
+				</div>
+			</div>
+
+			
+			<br>
+
+				<button type="submit" class="btn btn-primary form-control mb-2">
+					<i class="far fa-save"></i>   GUARDAR
+				</button>
+			</form>
+	</div>
+{% endblock noticias %}
+
+
+{% block noticias1 %}
+{% endblock noticias1 %}
+
+
+
+{% block tabla %}
+	
+{% endblock tabla %}
+
+
+
+{% block graficos %}
+	
+{% endblock graficos %}
