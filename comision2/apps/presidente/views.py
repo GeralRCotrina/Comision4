@@ -254,28 +254,8 @@ class AsambIni(View):
 	def get(self, request, *args, **kwargs):
 		pka = self.request.GET.get('id_asamb') 
 		asamb = Asamblea.objects.get(pk=pka)
-		parc = Parcela.objects.all()
-
-		if asamb.tipo == 'General':
-			
-			hr = time.strftime("%I:%M:%S")
-			hr = "2000-01-01 00:00:01"
-			for p in parc :
-				Hasis = HojaAsistencia(id_asamblea=asamb,id_auth_user=p.id_auth_user,estado="0" ,hora=hr)
-				#Hasis.save()
-			lstHAsis = HojaAsistencia.objects.filter(id_asamblea=asamb)
-			return  render(request,'asamblea/p_asamb_asis.html',{'msj':'CREADA 1','lstHAsis':lstHAsis})
-
-
-		elif asamb.tipo == 'Simple':
-			return  render(request,'asamblea/p_asamb_asis.html',{'msj':'CREADA 2'})
-		else :
-			print("      >> ERR")
-			return  render(request,'asamblea/p_asamb_asis.html',{'msj':'ERR'})
-
-		return render(request,'asamblea/p_asamb_asis.html',{'msj':'VAMOS A INICIAR','pka':pka})
-
-
+		lstHAsis = HojaAsistencia.objects.filter(id_asamblea=asamb)
+		return  render(request,'asamblea/p_asamb_asis.html',{'msj':'CREADA 1','lstHAsis':lstHAsis})
 
 
 class HjaAsisEst(TemplateView):

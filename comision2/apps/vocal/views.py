@@ -36,7 +36,6 @@ class AsmbList(View):
 
 from django.db.models import Q
 class HasisGen(View):
-	
 
 	def get(self, request, *args, **kwargs):
 		pk_asmb = self.request.GET.get("id_asmb")

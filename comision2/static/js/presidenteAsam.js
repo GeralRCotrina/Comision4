@@ -169,7 +169,7 @@ function CambiarEst(pkh,msj){
 	xhr.open('GET',cad,true); // sincrono o asincrono
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
-			console.log("retornó successfull");
+			console.log("retornó successfull-1");
 			var sp=document.getElementById(pkh);
 			sp.classList.remove("badge-success");
 			sp.classList.remove("badge-info");
@@ -191,7 +191,8 @@ function CambiarEst(pkh,msj){
 				for (var i = personaBK.length - 1; i >= 0; i--) {
 					if(personaBK[i].pk == pkh){
 						personaBK[i].estado ='<span id="'+pkh+'" class="badge badge-pill badge-success">ASISTIÓ</span>';
-					}
+						Encontro();
+					} 
 				}
 			}
 			else if( msj == 'Tarde')
@@ -213,27 +214,28 @@ function CambiarEst(pkh,msj){
 
  }
 
+function Encontro(){
+	var dn = document.getElementById('valor1');
+	dn.value="";
+	resultado=personaBK;
+	InsertarTabla1();
+}
 
 
 
 function EliminarAsamb(pka){
-	var rpta = confirm("¿Está seguro que desea eliminar la asamblea?");
-	if(rpta == true){
-		var xhr = new XMLHttpRequest();
-		var cad = "../p_asamb_del/?pka="+pka;
+	
+	var xhr = new XMLHttpRequest();
+	var cad = "../p_asamb_del/?pka="+pka;
 
-		xhr.open('GET',cad,true); // sincrono o asincrono
-		xhr.onreadystatechange = function(){
-			if(xhr.readyState == 4 && xhr.status == 200){
-				document.getElementById("palerta").innerHTML='<p class="alert alert-danger" ><STRONG>SE ELIMINÓ CON ÉXITO!!</STRONG>'+
-																'<br><br>ya puede volver a crear su asamblea.</p>';
-			}
+	xhr.open('GET',cad,true); // sincrono o asincrono
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			document.getElementById("palerta").innerHTML='<p class="alert alert-danger" ><STRONG>SE ELIMINÓ CON ÉXITO!!</STRONG>'+
+															'<br><br>ya puede volver a crear su asamblea.</p>';
 		}
-		xhr.send();
-
-	}else{
-		console.log("continue");
 	}
+	xhr.send();
 }
 
 
