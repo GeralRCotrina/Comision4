@@ -27,7 +27,8 @@
 			{% csrf_token %}
 			<div class="row w-100 m-2 border p-1">
 				<div class="col-12">
-					<h3 class="text-muted" id="txt_tit">Buscar usuario (Auth User) ... {{ msj }}  </h3>
+					<h3 class="text-muted" id="txt_tit">{{ Asmb.tipo }}</h3>
+					<h5>{{Asmb.fecha_asamblea}}</h5>
 				</div>
 				<div class="col-12 mb-2 btn-group">
 					<input type="text" placeholder="Buscar.." maxlength="8" class="w-100 btn w-100 border text-left" id="valor1" onkeyup="alEscribeJS1()">			
@@ -74,7 +75,7 @@ Highcharts.chart('container', {
         plotShadow: false
     },
     title: {
-        text: 'Reunión<br>General<br>03/02/2019',
+        text: 'Reunión<br>{{Asmb.tipo}}<br>{{Asmb.fecha_asamblea.day}}/{{Asmb.fecha_asamblea.month}}/{{Asmb.fecha_asamblea.year}}',
         align: 'center',
         verticalAlign: 'middle',
         y: 40
@@ -100,23 +101,18 @@ Highcharts.chart('container', {
     },
     series: [{
         type: 'pie',
-        name: 'Runión 03/02/19',
+        name: 'Runión {{Asmb.fecha_asamblea.day}}/{{Asmb.fecha_asamblea.month}}/{{Asmb.fecha_asamblea.year}}',
         innerSize: '60%',
         data: [
-            ['Tardanzas',3],
-           ['Faltó',2],
-           ['Asistió',1],
+            ['Tardanzas',{{b}}],
+           ['Faltó',{{c}}],
+           ['Asistió',{{a}}],
+           ['Aún no llega',{{d}}],
         ]
     }]
 });
 
 </script>
-
-
-
-
-
- 
 
 
 
@@ -129,7 +125,6 @@ Highcharts.chart('container', {
 			<thead>
 				<tr style="background: #95FFAB;">
 					<td>Id</td>
-					<td>ASAMBLEA</td>
 					<td>USUARIO</td>
 					<td>DNI</td>
 					<td>ESTADO</td>
@@ -142,7 +137,6 @@ Highcharts.chart('container', {
 					{% for ob in lstHAsis %}
 					<tr>
 						<td>{{ob.pk}}</td>
-						<td>{{ ob.id_asamblea.tipo }}</td>
 						<td>{{ ob.id_auth_user.first_name }}</td>
 						<td>{{ ob.id_auth_user.dni}}</td>
 						<td id="{{ob.pk}}">

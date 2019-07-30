@@ -300,3 +300,4 @@ function TipoMrc(){
 	}
 	document.getElementById('bar_dni').select();
 }
+

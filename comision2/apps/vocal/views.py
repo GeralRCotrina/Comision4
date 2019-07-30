@@ -204,42 +204,72 @@ class HasisGen(View):
 		pk_asmb = self.request.GET.get("id_asamb")
 		Asmb = Asamblea.objects.get(id_asamblea=pk_asmb)
 		cont = 0
-		asmbl=Asamblea.objects.get(pk=pk_asmb) 
+		asmbl=Asamblea.objects.get(pk=pk_asmb)
 
-		if Asmb.tipo == "General":
-			parc = Parcela.objects.all()
-			for p in parc :
-				if HojaAsistencia.objects.filter(Q(id_asamblea=pk_asmb) & Q(id_auth_user=p.id_auth_user)).exists():
-					cont +=1
-					#print("     ------ya está gg")
-					#ff = HojaAsistencia.objects.filter(Q(id_asamblea=pk_asmb) & Q(id_auth_user=p.id_auth_user))
-					#for x in ff:
-					#	print("        > "+str(x.id_auth_user))
-				else:
-					#print("  >> no está : "+str(p.id_auth_user)+" -->"+pk_asmb)
-					Hasis = HojaAsistencia(id_asamblea=asmbl,id_auth_user=p.id_auth_user,estado="0",hora="2000-12-12 12:00:00")
-					Hasis.save()
-			#print("se creó la asamblea y su hoja de asistencia.")
-		elif Asmb.tipo == "Simple":
-			detc = DetAsambCanal.objects.filter(id_asamblea=pk_asmb)
-			for x in detc:
-				parc=Parcela.objects.filter(id_canal=x.id_canal)
+		if HojaAsistencia.objects.filter(id_asamblea=pk_asmb).exists():
+			print("  >>ya tiene hoja de asistencia creada.")
+		else:
+			if Asmb.tipo == "General":
+				parc = Parcela.objects.all()
 				for p in parc :
 					if HojaAsistencia.objects.filter(Q(id_asamblea=pk_asmb) & Q(id_auth_user=p.id_auth_user)).exists():
-						#print("     ------ya está ss")
+						cont +=1
+						#print("     ------ya está gg")
 						#ff = HojaAsistencia.objects.filter(Q(id_asamblea=pk_asmb) & Q(id_auth_user=p.id_auth_user))
 						#for x in ff:
 						#	print("        > "+str(x.id_auth_user))
-						cont +=1
 					else:
 						#print("  >> no está : "+str(p.id_auth_user)+" -->"+pk_asmb)
 						Hasis = HojaAsistencia(id_asamblea=asmbl,id_auth_user=p.id_auth_user,estado="0",hora="2000-12-12 12:00:00")
 						Hasis.save()
+				#print("se creó la asamblea y su hoja de asistencia.")
+			elif Asmb.tipo == "Simple":
+				detc = DetAsambCanal.objects.filter(id_asamblea=pk_asmb)
+				for x in detc:
+					parc=Parcela.objects.filter(id_canal=x.id_canal)
+					for p in parc :
+						if HojaAsistencia.objects.filter(Q(id_asamblea=pk_asmb) & Q(id_auth_user=p.id_auth_user)).exists():
+							#print("     ------ya está ss")
+							#ff = HojaAsistencia.objects.filter(Q(id_asamblea=pk_asmb) & Q(id_auth_user=p.id_auth_user))
+							#for x in ff:
+							#	print("        > "+str(x.id_auth_user))
+							cont +=1
+						else:
+							#print("  >> no está : "+str(p.id_auth_user)+" -->"+pk_asmb)
+							Hasis = HojaAsistencia(id_asamblea=asmbl,id_auth_user=p.id_auth_user,estado="0",hora="2000-12-12 12:00:00")
+							Hasis.save()
+			print("  >>Se creó la hoja de asistencia [rep:"+str(cont)+"].")
 
-			print(">>Se creó la hoja de asistencia [rep:"+str(cont)+"].")
+		
 
 		lstHAsis = HojaAsistencia.objects.filter(id_asamblea=Asmb)
-		return  render(request,'asamblea/v_asamb_asis.html',{'msj':'CREADA 1','lstHAsis':lstHAsis})
+
+		
+		a=0
+		b=0
+		c=0
+		d=0
+
+		for x in lstHAsis:
+			if x.estado == "1":
+				a+=1
+			elif x.estado == "2":
+				b+=1
+			elif x.estado == "3":
+				c+=1
+			else:
+				d+=1
+
+		jsn = {
+			'a':a,
+			'b':b,
+			'c':c,
+			'd':d,
+			'Asmb':Asmb,
+			'lstHAsis':lstHAsis
+		}
+
+		return  render(request,'asamblea/v_asamb_asis.html',jsn)
 
 
 class AsambReg(View):
