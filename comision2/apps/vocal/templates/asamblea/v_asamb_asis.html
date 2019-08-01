@@ -1,19 +1,37 @@
 {% extends "v_base.html" %}
 
- 
+
+
+
+
+
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}  
+{% endblock noticia_menu %}
+
+{% block parcela_menu %}  
+{% endblock parcela_menu %}
+
+{% block canal_menu %}  
+{% endblock canal_menu %}
+
+
+{% block graficos_menu %}  
+{% endblock graficos_menu %}
+
+
+
+{% block pdfs_menu %}  
+{% endblock pdfs_menu %}
+
+
 
 {% block noticias %}
-	
-{% endblock noticias %}
-
-
-
-{% block noticias1 %}
-{% endblock noticias1 %}
-
- 
-
-{% block tabla %}	
 
 
 <div class="row container w-100 m-2 p-1 border">
@@ -110,9 +128,22 @@ Highcharts.chart('container', {
 
 </script>
 
+{% endblock noticias %}
 
 
 
+
+{% block noticias1 %}
+{% endblock noticias1 %}
+
+
+
+{% block noticias_menu %}  
+{% endblock noticias_menu %}
+
+
+
+{% block tabla %}	
 
 
 <div class="row border m-2 p-1"  style ="width: 100%; height: 690px; overflow-x: scroll; ">

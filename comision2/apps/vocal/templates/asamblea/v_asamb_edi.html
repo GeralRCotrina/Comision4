@@ -1,6 +1,29 @@
 {% extends "v_base.html" %}
 
 
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}  
+{% endblock noticia_menu %}
+
+{% block parcela_menu %}  
+{% endblock parcela_menu %}
+
+{% block canal_menu %}  
+{% endblock canal_menu %}
+
+
+{% block graficos_menu %}  
+{% endblock graficos_menu %}
+
+
+
+{% block pdfs_menu %}  
+{% endblock pdfs_menu %}
+
+
 
 {% block noticias %}
 	<div class="container border">
@@ -33,34 +56,44 @@
 					<label style="line-height:0.0em;">HORA</label>
 					<input type="text" class="form-control mb-2" name="hora_asamb" value="{{ asamb.fecha_asamblea.hour }}:{{ asamb.fecha_asamblea.minute }}"/>
 				</div>
-				<div class="col-12">
+				<div class="col-9">
 					<label style="line-height:0.0em;">DESCRIPCIÓN</label>
 					<textarea name="descripcion_asamb" class="form-control mb-2" required="required">{{ asamb.descripcion }}</textarea>
 				</div>
+				<div class="col-3 ">
+					<label for="">ESTADO</label>
+					<select name="estado_asamb" class="form-control">
+						<option value="2">INCIADA</option>
+						<option value="3">FINALIZADA</option>
+					</select>
+				</div>
 				
-			</div>
-			<br>
-
-
-			<div id="div_agenda" class="border form p-1 pb-1 pt-1" style="background: #F1F4F2;">
+			</div><br>
+			<div id="div_agenda" class="col-12 border form p-1 pb-1 pt-1" style="background: #F1F4F2;">
 				<a href="#" class="alert-link" onclick="Validar(1)">Para modificar la agenda, se recomienda eliminar la Asamblea y crear una nueva. <i class="far fa-hand-point-up"></i></a>
-
 			</div>
+
+
 			<div id="divconfirmar" class="col-12 mt-3 pb-1 border" hidden="hidden">
 				<label  class="alert-link" >¿ESTÁ USTED SEGURO QUE DESEA ELIMINAR LA ASAMBLEA?</label>
 				<div class="btn-group btn-block">
 					<a href="#" onclick="EliminarAsamb({{asamb.pk}})" class="btn btn-outline-danger form-control">ELIMINAR</a>
 					<a href="#" onclick="Validar(2)" class="btn btn-outline-success form-control">CANCELAR</a>
 				</div>
-			</div>
-
+			</div><br>
 			
-			<br>
 
-				<button type="submit" class="btn btn-primary form-control mb-2">
+			<button type="submit" class="btn btn-primary form-control mb-2">
 					<i class="far fa-save"></i>   GUARDAR
 				</button>
 			</form>
+
+
+		</div>
+			
+			
+
+				
 	</div>
 {% endblock noticias %}
 

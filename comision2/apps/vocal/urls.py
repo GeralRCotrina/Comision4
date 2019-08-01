@@ -15,5 +15,6 @@ urlpatterns = [
 	re_path(r'^v_asamb_ini/?/$',login_required(views.AsambIni.as_view()),name='v_asamb_ini'),
 	re_path(r'^v_hasis_est/?/$',login_required(views.HjaAsisEst.as_view()),name='v_hasis_est'),
 	re_path(r'^v_asamb_del/?/$',login_required(views.AsmbDel.as_view()),name='v_asamb_del'),
+	re_path(r'^v_asamb_g_rep/?/$',login_required(views.AsmbGrfRep.as_view()),name='v_asamb_g_rep'),
 ]
 

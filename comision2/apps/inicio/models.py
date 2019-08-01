@@ -43,12 +43,18 @@ class Asamblea(models.Model):
         ('General', 'REUNIÓN GENERAL'),
         ('Simple', 'REUNIÓN SIMPLE'),
     )
+    ESTADO = (
+        ('1', 'CREADA'),
+        ('2', 'INICIADA'),
+        ('3', 'TERMINADA'),
+        ('4', 'CANCELADA'),
+    )
     id_asamblea = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=15, blank=True, null=True, choices=TIPO)
     descripcion = models.CharField(max_length=300, blank=True, null=True)
     fecha_registro = models.DateTimeField(blank=True, null=True)
     fecha_asamblea = models.DateTimeField(blank=True, null=True)
-    estado = models.CharField(max_length=15, blank=True, null=True)
+    estado = models.CharField(max_length=15, blank=True, null=True,choices=ESTADO)
 
     class Meta:
         managed = False

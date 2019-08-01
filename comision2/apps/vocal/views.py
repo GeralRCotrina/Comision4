@@ -15,6 +15,42 @@ from django.utils.dateparse import parse_date
 def vocal(request):
 	return render(request, 'vocal.html')
 
+
+
+class AsmbGrfRep(View):
+
+
+	def get(self, request, *args, **kwargs):
+		pka = self.request.GET.get('id_asamb')
+		Asmb=Asamblea.objects.get(pk=pka)
+		lstHAsis = HojaAsistencia.objects.filter(id_asamblea=Asmb)
+	
+		a=0
+		b=0
+		c=0
+		d=0
+
+		for x in lstHAsis:
+			if x.estado == "1":
+				a+=1
+			elif x.estado == "2":
+				b+=1
+			elif x.estado == "3":
+				c+=1
+			else:
+				d+=1
+
+		jsn = {
+			'a':a,
+			'b':b,
+			'c':c,
+			'd':d,
+			'Asmb':Asmb,
+			'lstHAsis':lstHAsis
+		}
+		return render(request,'asamblea/graficos/v_asamb_g1.html',jsn)
+		
+
 class AsambLis(View):
 	def get(self, request, *args, **kwargs):
 		ListAsamb = Asamblea.objects.all()
@@ -32,6 +68,7 @@ class AsambEdi(View):
 		fec =  self.request.POST.get('fecha_asamb')
 		hor =  self.request.POST.get('hora_asamb')
 		tipo =  self.request.POST.get('tipo_asamb')
+		est =  self.request.POST.get('estado_asamb')
 		HorArr = hor.split(':')
 		FecArr = fec.split('/')
 
@@ -39,7 +76,7 @@ class AsambEdi(View):
 		dt=datetime.datetime(year=int(FecArr[2]),month=int(FecArr[1]),day=int(FecArr[0]))
 		dt=dt+datetime.timedelta(hours=float(HorArr[0]))
 		dt=dt+datetime.timedelta(minutes=float(HorArr[1]))
-		Asamblea.objects.filter(pk=int(float(pka))).update(tipo=tipo,descripcion=desc,fecha_asamblea=dt,estado=1)
+		Asamblea.objects.filter(pk=int(float(pka))).update(tipo=tipo,descripcion=desc,fecha_asamblea=dt,estado=int(float(est)))
 		ListAsamb = Asamblea.objects.all()
 		return render(request,'asamblea/v_asamb_lis.html',{'msj':'Se editó correctamente.','asambleas':ListAsamb})
 
@@ -64,7 +101,7 @@ class AsmbList(View):
 			dicc['msj']= 'nusr'
 		return render(request,'v_act_usu.html',dicc)
 
-
+"""
 class AsambReg(View):
 	def get(self, request, *args, **kwargs):
 		return render(request,'asamblea/v_asamb_reg.html')
@@ -146,12 +183,15 @@ class AsambEdi(View):
 		ListAsamb = Asamblea.objects.all()
 		return render(request,'asamblea/v_asamb_lis.html',{'msj':'Se editó correctamente.','asambleas':ListAsamb})
 
-
+"""
 class AsambIni(View):
 	def get(self, request, *args, **kwargs):
 		pka = self.request.GET.get('id_asamb') 
 		asamb = Asamblea.objects.get(pk=pka)
+		#asamb(estado=2)
+		asamb.save()
 		lstHAsis = HojaAsistencia.objects.filter(id_asamblea=asamb)
+
 		return  render(request,'asamblea/v_asamb_asis.html',{'msj':'CREADA 1','lstHAsis':lstHAsis})
 
 
@@ -205,6 +245,10 @@ class HasisGen(View):
 		Asmb = Asamblea.objects.get(id_asamblea=pk_asmb)
 		cont = 0
 		asmbl=Asamblea.objects.get(pk=pk_asmb)
+
+		if asmbl.estado == "1" :
+			Asamblea.objects.filter(pk=int(float(pk_asmb))).update(estado="2")
+			print("  >se inició la asamblea.")
 
 		if HojaAsistencia.objects.filter(id_asamblea=pk_asmb).exists():
 			print("  >>ya tiene hoja de asistencia creada.")

@@ -1,0 +1,137 @@
+{% extends "v_base.html" %}
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}  
+{% endblock noticia_menu %}
+
+{% block parcela_menu %}  
+{% endblock parcela_menu %}
+
+{% block canal_menu %}  
+{% endblock canal_menu %}
+
+
+{% block graficos_menu %}  
+{% endblock graficos_menu %}
+
+
+
+{% block pdfs_menu %}  
+{% endblock pdfs_menu %}
+
+
+
+
+{% block noticias %}
+
+{% if msj %}
+{{msj}} -- {{pk}}
+{% endif %}
+
+
+
+<div class="row container w-100 m-2 p-1 ">
+
+	<div class="col-12">
+		<form action="#" method="post" class="form-inline w-100">
+			{% csrf_token %}
+			<div class="row w-100 m-2 border p-1">
+				<div class="col-12">
+					<h3 class="text-muted" id="txt_tit">{{ Asmb.tipo }} 
+                        {% if Asmb.estado == "2" %} <span class="badge badge-pill badge-success">INICIADA</span>
+                        {% elif Asmb.estado == "3" %}<span class="badge badge-pill badge-danger">FINALIZADA</span>
+                        {% else %}<span class="badge badge-pill badge-danger">{{Asmb.estado}}</span> {%endif%}
+                    </h3>
+					<h5>{{Asmb.fecha_asamblea}}</h5>
+					<h6>{{Asmb.descripcion}}</h6>
+				</div>
+			</div>	
+		</form>
+	</div>
+
+
+	<div class="col-12 w-100">
+		<div class="w-100" style="height: 300px; ">
+			
+			<div id="container"  style="min-width: 100%; height: 100%; max-width: 100%;"></div>
+
+			<p><strong>AÚN NO LLEGAN     :		 {{d}}</strong></p>
+			<p><strong>LLEGARON A TIEMPO :		 {{a}}</strong></p>
+			<p><strong>LLEGARON TARDE    :		 {{b}}</strong></p>
+			<p><strong>AÚN NO LLEGAN     :		 {{c}}</strong></p>
+		</div><br><br><br><br><br><br>
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+	
+Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+    title: {
+        text: 'Reunión<br>{{Asmb.tipo}}<br>{{Asmb.fecha_asamblea.day}}/{{Asmb.fecha_asamblea.month}}/{{Asmb.fecha_asamblea.year}}',
+        align: 'center',
+        verticalAlign: 'middle',
+        y: 40
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            dataLabels: {
+                enabled: true,
+                distance: -50,
+                style: {
+                    fontWeight: 'bold',
+                    color: 'white'
+                }
+            },
+            startAngle: -90,
+            endAngle: 90,
+            center: ['50%', '105%'],
+            size: '210%'
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Runión {{Asmb.fecha_asamblea.day}}/{{Asmb.fecha_asamblea.month}}/{{Asmb.fecha_asamblea.year}}',
+        innerSize: '60%',
+        data: [
+            ['Tardanzas',{{b}}],
+           ['Faltó',{{c}}],
+           ['Asistió',{{a}}],
+           ['Aún no llega',{{d}}],
+        ]
+    }]
+});
+
+</script>
+
+{% endblock noticias %}
+
+
+{% block noticias1 %}
+{% endblock noticias1 %}
+
+
+
+{% block tabla %}	
+{% endblock tabla %}
+
+
+
+{% block graficos %}	
+{% endblock graficos %}
