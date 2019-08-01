@@ -510,7 +510,8 @@ class Reparto(models.Model):
     descripcion = models.CharField(max_length=45, blank=True, null=True)
     tipo = models.CharField(max_length=15, blank=True, null=True, choices=TIPO)
     fecha_registro = models.DateField(blank=True, null=True, editable=False)
-    fecha_reparto = models.DateField(blank=True, null=True)
+    fecha_reparto = models.DateField(blank=False, null=True)
+    hora_reparto = models.TimeField(blank=False, null=True)
 
     class Meta:
         managed = False

@@ -33,7 +33,7 @@
  </div>
 
 {% elif canales %}
-	
+
 
 	<div class="card card-login mx-auto mt-5">
       <div class="card-header">
@@ -52,8 +52,9 @@
               </div> 
             </div>
 
-            <div class="form-group btn-block">
-              <input type="date" name="fecha" class="form-control">
+            <div class="btn-group btn-block mb-2">
+              <input id="FechaReparto" type="date" name="fecha" class=" form-control date" required="required">
+              <a href="#" onclick="Ahora()" class="btn btn-info"><i class="far fa-clock"></i></a>
             </div>
 
             {% for ca in canales %}
@@ -77,6 +78,19 @@
       </div>
 
       </div>
+
+
+  <script>
+    window.onload = function() {
+      document.getElementById('FechaReparto').valueAsDate = new Date();
+    }
+
+    function Ahora(){
+      //alert("aaa");
+      document.getElementById('FechaReparto').valueAsDate = new Date();
+    }
+  </script>
+
  {% endif %}
 
 
