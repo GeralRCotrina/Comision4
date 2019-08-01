@@ -13,8 +13,7 @@ var primero = true;
 var resultado = []
 var pk_usuario = 0;
 
-
-
+ 
 function GenHjaAsis(e,tipo_asmb){
 
 	var xhr = new XMLHttpRequest();
@@ -99,8 +98,8 @@ function LlenarDiccJS1(){
 		{
 			cont +=1;
 			cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
-			personas.push({pk:cellsOfRow[0].innerHTML,asamblea:cellsOfRow[1].innerHTML,usuario:cellsOfRow[2].innerHTML,
-							dni:cellsOfRow[3].innerHTML,estado:cellsOfRow[4].innerHTML,hora:cellsOfRow[5].innerHTML});
+			personas.push({pk:cellsOfRow[0].innerHTML,usuario:cellsOfRow[1].innerHTML,
+							dni:cellsOfRow[2].innerHTML,estado:cellsOfRow[3].innerHTML,hora:cellsOfRow[4].innerHTML});
 		}
 		personaBK=personas;
 		primero = false;
@@ -139,7 +138,6 @@ function InsertarTabla1() {
 	{
 		fila +='<tr><td>'
 		+resultado[i].pk+"</td><td>"
-		+resultado[i].asamblea+"</td><td>"
 		+resultado[i].usuario+"</td><td>"
 		+resultado[i].dni+'</td><td id="'+resultado[i].pk+'">'
 		+resultado[i].estado+"</td><td>"
@@ -192,7 +190,7 @@ function LlenarDNIs(){
 		{
 			cont +=1;
 			cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
-			dnis.push({pk:cellsOfRow[0].innerHTML,dni:cellsOfRow[3].innerHTML,estado:cellsOfRow[4].innerHTML});
+			dnis.push({pk:cellsOfRow[0].innerHTML,dni:cellsOfRow[2].innerHTML,estado:cellsOfRow[3].innerHTML});
 		}
 		dnisBK=dnis;
 		lleno = false;
@@ -205,6 +203,8 @@ function LlenarDNIs(){
 function Barcode(){
 	var dn = document.getElementById('bar_dni').value;
 	if (dn.length == 8) {
+
+		//alert(" >tiene 8, ahora comparará :- "+dnis.length+" ->"+dnis[2].estado)
 		for (var i = dnis.length - 1; i >= 0; i--) {
 			if(dnis[i].dni.indexOf(dn) > -1)
 			{
