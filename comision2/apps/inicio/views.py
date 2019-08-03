@@ -34,29 +34,8 @@ def login(request):
     return render(request, 'todo/login.html', {'form': form})
 
 """
-def mylogin(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            #aqui va la lógica de usuario
-            if user.has_perm('inicio.es_canalero'):
-                return redirect('canalero')
-            elif user.has_perm('inicio.es_presidente'):
-                return redirect('presidente')
-            elif user.has_perm('inicio.es_vocal'):
-                return redirect('vocal')
-            elif user.has_perm('inicio.es_tesorero'):
-                return redirect('tesorero')       
-            else:
-                return redirect('usuario')
-        else:
-            messages.error(request,'Datos incorrectos!!')
-            return render(request, 'loginn.html')
-    else:
-        return render(request, 'loginn.html')
+
+
 
 
 
@@ -70,7 +49,8 @@ class RegistrarUsuario(CreateView):
   
 def index(request):
 	return render(request,'index.html')
-"""
+
+
 def mylogin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -94,5 +74,3 @@ def mylogin(request):
     else:
         return render(request, 'loginn.html')
 
-
-"""

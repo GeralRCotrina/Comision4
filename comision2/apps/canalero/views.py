@@ -13,9 +13,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from django.contrib.auth.models import User
 from apps.presidente.forms import RegistroForm
-import time
 
- 
+import time
 import datetime
 
 import pdfkit
@@ -45,19 +44,21 @@ class ImprimirReparto(View):
 		for row in detalles:
 			dic = dict(zip([col[0] for col in cursor.description], row))
 			result.append(dic)
+			print(dic)
 		cursor.close()
 
 		print(' ..')
 		print(' ')
 		ticket = 'N° -- á -- ñ -- é'
 
-		diccionario={}
-		diccionario['ticket']= ticket.encode('utf-8')		
-		diccionario['ticket1']= ticket
-		diccionario['ordenes']=result
-		diccionario['fecha']= ' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' '
+		jsn={
+			'ticket':ticket.encode('utf-8'),
+			'ticket1':ticket,
+			'ordenes':result,
+			'fecha':' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' '
+		}
 
-		html = template.render(diccionario)
+		html = template.render(jsn)
 		f=open('pdf/ordenes.html','w')
 		f.write(html)
 		f.close()

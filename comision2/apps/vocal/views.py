@@ -5,7 +5,10 @@ from apps.inicio.models import *
 from django.http import HttpResponse
 
 
+import pdfkit
+from jinja2 import Environment, FileSystemLoader
 
+import time
 import datetime
 
 from django.utils.dateparse import parse_date
@@ -14,6 +17,69 @@ from django.utils.dateparse import parse_date
 @permission_required('inicio.es_vocal')
 def vocal(request):
 	return render(request, 'vocal.html')
+
+
+ 
+
+
+class AsmbLstPdf(View):
+
+	def get(self, request, *args, **kwargs):
+		pka = self.request.GET.get('id_asamb')
+		Asmb=Asamblea.objects.get(pk=pka)
+
+		env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
+		template = env.get_template("vocal/lstAsistencia.html")
+
+		path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+		config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+		
+		from django.db import connection, transaction
+		cursor = connection.cursor()
+		cursor.execute("CALL sp_hoja_asistencia (%s)",[pka])
+
+		print(' ')
+		cont = 0
+
+		result = []
+		detalles = cursor.fetchall()
+		for row in detalles:
+			dic = dict(zip([col[0] for col in cursor.description], row))
+			cont += 1
+			dic['Item']=cont
+			result.append(dic)
+		cursor.close()
+
+		print(' ..')
+
+		jsn={
+			'Asmb':Asmb,
+			'asistencias':result,
+			'fecha':' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' ',
+			'a':5,
+			'b':4,
+			'c':2
+		}
+
+		html = template.render(jsn)
+		f=open('pdf/ordenes.html','w')
+		f.write(html)
+		f.close()
+
+		options = {'page-size': 'legal','margin-top':'0.0in','margin-right':'0.1in','margin-bottom':'0.9in','margin-left':'0.1in',}
+
+		pdfkit.from_file('pdf/ordenes.html', 'static/pdfs/reparto_01.pdf',options=options, configuration=config)
+
+		dicc = {}
+		dicc['pdf']='Listados de las órdenes por reparto'
+		dicc['url_pdf']='pdfs/reparto_01.pdf'
+		return render(request,'asamblea/pdfs/v_asamb_p1.html',dicc)
+
+
+		#return render(request,'c_pdf_01.html',dicc)
+
+
+		
 
 
 
@@ -101,89 +167,6 @@ class AsmbList(View):
 			dicc['msj']= 'nusr'
 		return render(request,'v_act_usu.html',dicc)
 
-"""
-class AsambReg(View):
-	def get(self, request, *args, **kwargs):
-		return render(request,'asamblea/v_asamb_reg.html')
-
-	def post(self,request,*args,**kwargs):
-		desc =  self.request.POST.get('descripcion_asamb')
-		fec =  self.request.POST.get('fecha_asamb')
-		hor =  self.request.POST.get('hora_asamb')
-		tipo =  self.request.POST.get('tipo_asamb')	
-		itm_cant =  self.request.POST.get('itm_cant')
-
-		HorArr = hor.split(':')		
-
-		fech = parse_date(fec)
-		dt=datetime.datetime(year=fech.year,month=fech.month,day=fech.day)
-		dt=dt+datetime.timedelta(hours=float(HorArr[0]))
-		dt=dt+datetime.timedelta(minutes=float(HorArr[1]))
-		print("3")
-		dtr =  datetime.datetime.now()
-
-		asamb=Asamblea(tipo=tipo,descripcion=desc,fecha_registro=dtr,fecha_asamblea=dt,estado=1)
-		asamb.save()
-
-		itmc=99
-		for x in range(0,int(itm_cant)-99):
-			itmc +=1
-			ag_as=AgendaAsamblea(id_asamblea=asamb,punto_numero=(int(itm_cant)-99),descripcion=self.request.POST.get(str(itmc)))
-			ag_as.save()
-
-		if tipo == "Simple":
-			rc=1000
-			diccc={}
-			for x in range(1,6):
-				rc+=1
-				if str(self.request.POST.get(str(rc))) == "on":
-					cn=Canal.objects.get(id_canal=x)
-					dac=DetAsambCanal(id_asamblea=asamb,id_canal=cn)
-					dac.save()
-			print("  >> Se crearon los detalles de canal.")
-		else:
-			print("  >> NO se crearon los detalles.")
-
-		return render(request,'asamblea/v_asamb_reg.html',{'msj':'Se guardó correctamente.+'})
-
-
-
-class TraerAgenda(View):
-	def get(self, request, *args, **kwargs):
-		pka = self.request.GET.get('id_asamb')
-		asamb = Asamblea.objects.get(pk=pka)
-		return render(request,'asamblea/v_asamb_edi.html',{'msj':'editando asamblea.','asamb':asamb})
-		
-
-class AsambLis(View):
-	def get(self, request, *args, **kwargs):
-		ListAsamb = Asamblea.objects.all()
-		return render(request,'asamblea/v_asamb_lis.html',{'asambleas':ListAsamb})
-
-class AsambEdi(View):
-	def get(self, request, *args, **kwargs):
-		pka = self.request.GET.get('id_asamb')
-		asamb = Asamblea.objects.get(pk=pka)
-		return render(request,'asamblea/v_asamb_edi.html',{'msj':'editando asamblea.','asamb':asamb})
-
-	def post(self,request,*args,**kwargs):
-		pka =  self.request.POST.get('id_asamb')
-		desc =  self.request.POST.get('descripcion_asamb')
-		fec =  self.request.POST.get('fecha_asamb')
-		hor =  self.request.POST.get('hora_asamb')
-		tipo =  self.request.POST.get('tipo_asamb')
-		HorArr = hor.split(':')
-		FecArr = fec.split('/')
-
-		fech = parse_date(fec)
-		dt=datetime.datetime(year=int(FecArr[2]),month=int(FecArr[1]),day=int(FecArr[0]))
-		dt=dt+datetime.timedelta(hours=float(HorArr[0]))
-		dt=dt+datetime.timedelta(minutes=float(HorArr[1]))
-		Asamblea.objects.filter(pk=int(float(pka))).update(tipo=tipo,descripcion=desc,fecha_asamblea=dt,estado=1)
-		ListAsamb = Asamblea.objects.all()
-		return render(request,'asamblea/v_asamb_lis.html',{'msj':'Se editó correctamente.','asambleas':ListAsamb})
-
-"""
 class AsambIni(View):
 	def get(self, request, *args, **kwargs):
 		pka = self.request.GET.get('id_asamb') 

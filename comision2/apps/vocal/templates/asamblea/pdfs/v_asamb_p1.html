@@ -10,7 +10,7 @@
 
 {% block parcela_menu %}  
 {% endblock parcela_menu %}
-
+{% load static from staticfiles %}
 {% block canal_menu %}  
 {% endblock canal_menu %}
 
@@ -26,88 +26,20 @@
 
 
 
-{% block noticias %}
-	<div class="container border">
-		<form method="post">
-			{% csrf_token %}
+{% block cuerpo %}
 
-			<div class="row m-2 btn-grou">
-				<p class="alert alert-primary alert-dismissable"><strong>PRONTO</strong></p>
-				<p class="alert alert-danger alert-dismissable"><strong>YA COMENZÓ</strong></p>
-				<p class="alert alert-secondary alert-dismissable"><strong>YA PASÓ</strong></p>
-			</div>
+	{% if pdf %}
+	 	<h1 class="text-success">{{ pdf }}</h1>
+	 {% else %}
+	 	<h1 class="text-muted">No llegó el PDF</h1>
+	 {% endif %} 
 
-			<div class="row">
- 
-			{% if asambleas %}
-			 	{% for a in asambleas %}
-				
-					<div class="col-6  col-md-4 col-xl-3 mb-2">
-						<div class="card text-white {% if a.estado == '1' %} bg-primary {% elif a.estado == '2' %} bg-danger {% else %} bg-secondary {% endif %} o-hidden h-100">
-			                <div class="card-body">
-			                  <div class="card-body-icon">
-			                  	<i class="fas fa-clipboard-list"></i>
-			                  </div>
-			                  <div class="mr-2">{{ a.tipo }}<br> 
-			                  	<i class="fas fa-table"></i> 
-			                  	{{a.fecha_asamblea.day}}/{{a.fecha_asamblea.month}}
-			                  	<i class="far fa-clock"></i>  {{a.fecha_asamblea.hour}}:
-			                  	{% if a.fecha_asamblea.minute > 10 %}
-			                  		{{a.fecha_asamblea.minute}}
-			                  	{% else %}
-			                  		0{{a.fecha_asamblea.minute}}
-			                  	{% endif %}		                  	
-				              </div>
-			                </div>
-			                <dic class="row card-footer">			                	
-				                	<div class="col-3">
-				                		{% if a.estado == "3" %}.{% else %}
-				                		<a href="{% url 'v_hasis_gen' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-user-check"></i></a>{% endif %}
-				                	</div>
-
-				                	<div class="col-2">{% if a.estado == "3" %}
-				                		<a href="#" class="float-left text-white"><i class="fas fa-list-ol"></i></a>{% else %}.{% endif %}
-				                	</div>
-				                	<div class="col-2">
-				                		{% if a.estado == "3" %}.{% else %}
-				                		<a href="{% url 'v_asamb_edi' %}?id_asamb={{ a.pk }}" class="float-left text-white">
-				                			<i class="fas fa-cog"></i></a>{% endif %}
-				                	</div>
-				                	<div class="col-2">
-				                		{% if a.estado == "1" %}.{% else %}
-				                		<a href="{% url 'v_asamb_g_rep'%}?id_asamb={{ a.pk }}" class="float-left text-white">
-				                			<i class="fas fa-chart-pie"></i></a>{% endif %}			                		
-				                	</div>
-				                	<div class="col-2">
-				                		{% if a.estado == "1" %}.{% else %}
-				                		<a href="#" class="float-left text-white">
-				                			<i class="far fa-file-pdf"></i></a>{% endif %}
-				                	</div>
-			                </dic>
-			              </div>
-					</div>
-
-			 	{% endfor %}
-			{% endif %}
-				
-
-				
-				
-			</div>
-			</form>
+<div class="row container h-100">
+	<div class="col h-100">
+		<embed src="{% static url_pdf %}" width="100%" height="100%"></embed>
 	</div>
-{% endblock noticias %}
+</div>
+<br>
+<br>
 
-
-{% block noticias1 %}
-{% endblock noticias1 %}
-
-
-
-{% block tabla %}	
-{% endblock tabla %}
-
-
-
-{% block graficos %}	
-{% endblock graficos %}
+{% endblock cuerpo %}

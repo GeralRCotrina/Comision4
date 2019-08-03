@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'apps.presidente',
     'apps.tesorero',
     'apps.vocal',
-    'apps.inicio',
+    'apps.inicio', 
 ]
 
 MIDDLEWARE = [
@@ -125,14 +125,11 @@ USE_TZ = True
 
 
  
+ 
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 
@@ -143,9 +140,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
-LOGIN_REDIRECT_URL = reverse_lazy('mylogin')
-LOGOUT_REDIRECT_URL = reverse_lazy('mylogin')
+#LOGIN_REDIRECT_URL = reverse_lazy('mylogin')
+#LOGOUT_REDIRECT_URL = reverse_lazy('mylogin')
 
+#agregado 01082019
+"""
+LOGIN_REDIRECT_URL = reverse_lazy('account:index')
+LOGIN_URL = reverse_lazy('account:mylogin')
+LOGOUT_URL = reverse_lazy('account:index')
+"""
+
+#LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_URL = reverse_lazy('index')
+LOGIN_URL = reverse_lazy('mylogin')
 
 
 

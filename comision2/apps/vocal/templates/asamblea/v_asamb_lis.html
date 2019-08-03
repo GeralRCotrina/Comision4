@@ -80,7 +80,7 @@
 				                	</div>
 				                	<div class="col-2">
 				                		{% if a.estado == "1" %}.{% else %}
-				                		<a href="#" class="float-left text-white">
+				                		<a href="{% url 'v_asamb_p_lst'%}?id_asamb={{ a.pk }}" class="float-left text-white">
 				                			<i class="far fa-file-pdf"></i></a>{% endif %}
 				                	</div>
 			                </dic>
