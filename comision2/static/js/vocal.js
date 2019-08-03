@@ -218,7 +218,7 @@ function Barcode(){
 
 function MrcAsist(pkh,msj){
 	var xhr = new XMLHttpRequest();
-	var cad = "/presidente/p_hasis_est/?id_hje="+pkh+"&&std="+msj;
+	var cad = "/vocal/v_hasis_est/?id_hje="+pkh+"&&std="+msj;
 	var td_rpta ="Vacío";
 
 	xhr.open('GET',cad,true); // sincrono o asincrono

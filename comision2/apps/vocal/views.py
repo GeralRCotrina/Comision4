@@ -8,11 +8,14 @@ from django.http import HttpResponse
 import pdfkit
 from jinja2 import Environment, FileSystemLoader
 
+
+
 import time
 import datetime
-
 from django.utils.dateparse import parse_date
-# Create your views here.
+import locale
+locale.setlocale(locale.LC_ALL, "")# Establecemos el locale de nuestro sistema
+
 
 @permission_required('inicio.es_vocal')
 def vocal(request):
@@ -40,6 +43,10 @@ class AsmbLstPdf(View):
 
 		print(' ')
 		cont = 0
+		a=0
+		b=0
+		c=0
+		d=0
 
 		result = []
 		detalles = cursor.fetchall()
@@ -47,6 +54,14 @@ class AsmbLstPdf(View):
 			dic = dict(zip([col[0] for col in cursor.description], row))
 			cont += 1
 			dic['Item']=cont
+			if dic['estado'] == "1":
+				a+=1
+			elif dic['estado'] == "2":
+				b+=1
+			elif dic['estado'] == "3":
+				c+=1
+			else:
+				d+=1
 			result.append(dic)
 		cursor.close()
 
@@ -56,9 +71,10 @@ class AsmbLstPdf(View):
 			'Asmb':Asmb,
 			'asistencias':result,
 			'fecha':' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' ',
-			'a':5,
-			'b':4,
-			'c':2
+			'a':a,
+			'b':b,
+			'c':c,
+			'd':d,
 		}
 
 		html = template.render(jsn)
@@ -192,7 +208,9 @@ class HjaAsisEst(TemplateView):
 			hja.estado='3'
 		else:
 			print("    >> ERR: "+str(est))
-		hja.save()
+		print(" -----------------desde vocal")
+		hja.hora=datetime.datetime.now()
+		hja.save() 
 		dicc={}
 		dicc['msj1']="OK"
 		return HttpResponse(dicc)

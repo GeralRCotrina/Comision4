@@ -11,13 +11,13 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 # -*- coding: utf-8 -*-
 
-import datetime
 
-from django.utils.dateparse import parse_date
 
 
 
 import time
+import datetime
+from django.utils.dateparse import parse_date
 import locale
 locale.setlocale(locale.LC_ALL, "")# Establecemos el locale de nuestro sistema
 
@@ -272,7 +272,9 @@ class HjaAsisEst(TemplateView):
 			hja.estado='3'
 		else:
 			print("    >> ERR: "+str(est))
-		hja.save()
+
+		hja.hora=datetime.datetime.now()
+		hja.save() 
 		dicc={}
 		dicc['msj1']="OK"
 		return HttpResponse(dicc)

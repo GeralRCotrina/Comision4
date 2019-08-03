@@ -18,5 +18,6 @@ urlpatterns = [
 	re_path(r'^v_asamb_g_rep/?/$',login_required(views.AsmbGrfRep.as_view()),name='v_asamb_g_rep'),
 
 	re_path(r'^v_asamb_p_lst/?/$',login_required(views.AsmbLstPdf.as_view()),name='v_asamb_p_lst'),
+	re_path(r'^v_hasis_est/?/$',login_required(views.HjaAsisEst.as_view()),name='v_hasis_est'),
 ]
 
