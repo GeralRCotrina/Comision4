@@ -1,8 +1,22 @@
 {% extends "c_base.html" %}
 
 {% block txt_cabecera %}
-	ELIMINAR DESTAJO
+	BORRAR CANAL
 {% endblock txt_cabecera %}
+
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+{% block pdfs_menu %}	
+{% endblock pdfs_menu %} 
+
 
 
 
@@ -11,8 +25,8 @@
 		<br>
 		<form method="post">
 			{% csrf_token %}
-			<h2>¿Seguro que desea eliminar el destajo: "{{ object.id_destajo }} de la parcela {{ object.id_parcela }}" ?</h2>
-			<a href="{% url 'c_destajo_lis' %}" class="btn btn-success">Cancelar</a>
+			<h2>¿Seguro que desea borrar la multa [{{ object.idusuario }} ]?</h2>
+			<a href="{% url 'c_multa_lis' %}" class="btn btn-success">Cancelar</a>
 			<button class="btn  btn-danger" type="submit">Sí, eliminar</button>		
 		</form><br>
 	</div>

@@ -48,7 +48,7 @@
 		<div class="col-4">
 			<i>Asistieron		: {{ a }}</i><br>
 			<i>Llegaron tarde   : {{ b }}</i><br>
-			<i>Faltaron			: {{ c }}</i>
+			<i>Faltaron			: {{ c }}</i><br>
 		</div>
 	</div>
 
@@ -72,8 +72,10 @@
 						<td>Faltó</td>
 					{% elif x.estado  == '2' %}
 						<td>Tarde</td>
-					{% else %}
+					{% elif x.estado  == '1' %}
 						<td>Asistió</td>
+					{% else %}
+						<td>Aún no llega</td>
 					{% endif %}
 					<td>{{x.hora }}</td>
 			{% endfor %}

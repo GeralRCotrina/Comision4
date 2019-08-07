@@ -31,7 +31,7 @@ function GenHjaAsis(e,tipo_asmb){
 
 }
 
-
+ 
 function SelctTipoAsamblea(){
 	var divv =document.getElementById("LstCanales");
 	var t_as =document.getElementById("tip_asamb").value;
@@ -45,7 +45,6 @@ function SelctTipoAsamblea(){
 		divv.classList.add("rotateOutDownRight");
 	}
 }
-
 
 var cont_agnd = 99;
 function AgregarAgnd(){
@@ -137,7 +136,7 @@ function InsertarTabla1() {
 	for (var i = resultado.length - 1; i >= 0; i--) 
 	{
 		fila +='<tr><td>'
-		+resultado[i].pk+"</td><td>"
+		//+resultado[i].pk+"</td><td>"
 		+resultado[i].usuario+"</td><td>"
 		+resultado[i].dni+'</td><td id="'+resultado[i].pk+'">'
 		+resultado[i].estado+"</td><td>"

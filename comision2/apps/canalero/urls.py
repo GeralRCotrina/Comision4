@@ -27,10 +27,16 @@ urlpatterns = [
 	re_path(r'^c_reparto_eli/(?P<pk>\d+)/$',login_required(views.RepartoDelete.as_view()),name='c_reparto_eli'),
 	re_path(r'^c_reparto_lis_ord/?/$',login_required(views.SolicitudesPorReparto.as_view()),name='c_reparto_lis_ord'),
 
+	re_path(r'^c_rep_apr/?/$',login_required(views.AperRep.as_view()),name='c_rep_apr'),
+
 
 	re_path(r'^c_orden_apr/?/$',login_required(views.AprobarOrden.as_view()),name='c_orden_apr'),
 	re_path(r'^c_orden_apr_lis/?/$',login_required(views.AprobarListaOrdenes.as_view()),name='c_orden_apr_lis'),
 	re_path(r'^c_orden_hora/?/$',login_required(views.EstablecerHora.as_view()),name='c_orden_hora'),
+
+	re_path(r'^c_ordlis/?/$',login_required(views.ImpLstOrd.as_view()),name='c_ordlis'),
+
+	#re_path(r'^c_ordlis/',login_required(views.ImpLstOrd.as_view()),name='c_ordlis'),
 
 
 	re_path(r'^c_multa_reg/$',login_required(views.MultaCreate.as_view()),name='c_multa_reg'),
@@ -65,8 +71,3 @@ urlpatterns = [
 
 	]
 
-
-
-#re_path(r'^c_pdf_1/$',login_required(views.PDFPrueba.as_view()),name='c_pdf_1'), 
-#re_path(r'^c_pdf_2/$',login_required(views.PDFPrueba2.as_view()),name='c_pdf_2'),
-#re_path(r'^c_rep_rep/$',views.PDF_reparto.as_view(),name='c_rep_rep'),

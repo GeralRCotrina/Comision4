@@ -143,10 +143,10 @@ Highcharts.chart('container', {
 
 <div class="row border m-2 p-1"  style ="width: 100%; height: 690px; overflow-x: scroll; ">
 	<div class="col-12">
-		<table class="table table-responsive-lg h-100" id="dataTable1" cellspacing="0">
+		<table class="table table-responsive-sm table-sm h-100" id="dataTable1" cellspacing="0">
 			<thead>
 				<tr style="background: #95FFAB;">
-					<td>Id</td>
+					<!--td>ÍTEM</td-->
 					<td>USUARIO</td>
 					<td>DNI</td>
 					<td>ESTADO</td>
@@ -158,7 +158,7 @@ Highcharts.chart('container', {
 				{% if lstHAsis %}
 					{% for ob in lstHAsis %}
 					<tr>
-						<td>{{ob.pk}}</td>
+						<td hidden="hidden">{{ob.pk}}</td>
 						<td>{{ ob.id_auth_user.first_name }}</td>
 						<td>{{ ob.id_auth_user.dni}}</td>
 						<td id="{{ob.pk}}">
@@ -174,12 +174,17 @@ Highcharts.chart('container', {
 								<span class="badge badge-pill badge-info">ERR</span>
 							{% endif %} 
 						</td>
-						<td>{{ ob.hora.hour }}:{{ ob.hora.minute }}</td>
+						<td>{% if ob.hora.hour < 10  %} 0{{ ob.hora.hour }} 
+							{% else %} {{ ob.hora.hour }} {% endif %}
+							:
+							{% if ob.hora.minute < 10  %} 0{{ ob.hora.minute }} 
+							{% else %} {{ ob.hora.minute }} {% endif %}
+						</td>
 						<td>
 							<div class="btn-group">
-								<button class="btn btn-outline-success" onclick="MrcAsist({{ob.pk}},'Asistio')"><i class="fas fa-check"></i></button>
-								<button class="btn btn-outline-info" onclick="MrcAsist({{ob.pk}},'Tarde')"><i class="far fa-clock"></i></button>
-								<button class="btn btn-outline-secondary" onclick="MrcAsist({{ob.pk}},'Falto')"><i class="far fa-times-circle"></i></button>
+								<button class="btn btn-sm btn-outline-success" onclick="MrcAsist({{ob.pk}},'Asistio')"><i class="fas fa-check"></i></button>
+								<button class="btn btn-sm btn-outline-info" onclick="MrcAsist({{ob.pk}},'Tarde')"><i class="far fa-clock"></i></button>
+								<button class="btn btn-sm btn-outline-secondary" onclick="MrcAsist({{ob.pk}},'Falto')"><i class="far fa-times-circle"></i></button>
 							</div>
 						</td>
 					</tr>

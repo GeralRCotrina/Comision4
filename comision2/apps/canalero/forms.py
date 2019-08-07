@@ -7,20 +7,22 @@ class RepartoForm(forms.ModelForm):
 	class Meta:
 		model = Reparto
 		
-		fields = ['id_reparto','descripcion','tipo','fecha_reparto','hora_reparto']	
+		fields = ['id_reparto','descripcion','tipo','fecha_reparto','hora_reparto','estado']	
 
 		labels = {
 			'descripcion':'Breve descripción',
 			'tipo':'Tipo de reparto',
 			'fecha_reparto':'Fecha de entrega de órdenes',
 			'hora_reparto':'Hora de reparto',
+			'estado':'Estado',
 		}
 
 		widgets={	
 				'descripcion':forms.Textarea(attrs={'class':'form-control','rows':'5'}),
 			    'tipo':forms.Select(attrs={'class':'form-control'}),
-			    'fecha_reparto':forms.DateTimeInput(attrs={'class':'form-control','placeholder':'dd/mm/aaaa','type':'date'}),
-			    'hora_reparto':forms.TimeInput(attrs={'class':'form-control','type':'time'})
+			    'fecha_reparto':forms.DateTimeInput(attrs={'class':'form-control col-7','placeholder':'dd/mm/aaaa','type':'date'}),
+			    'hora_reparto':forms.TimeInput(attrs={'class':'form-control col-4','type':'time'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-4'}),
 		    }
 
 

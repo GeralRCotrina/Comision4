@@ -65,7 +65,7 @@ class AsmbLstPdf(View):
 			result.append(dic)
 		cursor.close()
 
-		print(' ..')
+		print(' ..') 
 
 		jsn={
 			'Asmb':Asmb,
@@ -82,7 +82,7 @@ class AsmbLstPdf(View):
 		f.write(html)
 		f.close()
 
-		options = {'page-size': 'legal','margin-top':'0.0in','margin-right':'0.1in','margin-bottom':'0.9in','margin-left':'0.1in',}
+		options = {'page-size': 'legal','margin-top':'0.1in','margin-right':'0.3in','margin-bottom':'0.9in','margin-left':'0.3in',}
 
 		pdfkit.from_file('pdf/ordenes.html', 'static/pdfs/reparto_01.pdf',options=options, configuration=config)
 
@@ -135,7 +135,7 @@ class AsmbGrfRep(View):
 
 class AsambLis(View):
 	def get(self, request, *args, **kwargs):
-		ListAsamb = Asamblea.objects.all()
+		ListAsamb = Asamblea.objects.all().order_by('-id_asamblea')
 		return render(request,'asamblea/v_asamb_lis.html',{'asambleas':ListAsamb})
 
 class AsambEdi(View):
@@ -208,7 +208,6 @@ class HjaAsisEst(TemplateView):
 			hja.estado='3'
 		else:
 			print("    >> ERR: "+str(est))
-		print(" -----------------desde vocal")
 		hja.hora=datetime.datetime.now()
 		hja.save() 
 		dicc={}
@@ -294,7 +293,6 @@ class HasisGen(View):
 		b=0
 		c=0
 		d=0
-
 		for x in lstHAsis:
 			if x.estado == "1":
 				a+=1
@@ -311,7 +309,7 @@ class HasisGen(View):
 			'c':c,
 			'd':d,
 			'Asmb':Asmb,
-			'lstHAsis':lstHAsis
+			'lstHAsis':lstHAsis,
 		}
 
 		return  render(request,'asamblea/v_asamb_asis.html',jsn)

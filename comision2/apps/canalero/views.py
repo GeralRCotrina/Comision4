@@ -22,38 +22,82 @@ from jinja2 import Environment, FileSystemLoader
 from django.utils.dateparse import parse_date
 from django.db.models import Q
 
-class ImprimirReparto(View):
+import json
+
+class AperRep(View):
 
 	def get(self,request,*args,**kwargs):
 		idre = self.request.GET.get('id_repa')
+		est = self.request.GET.get('std')
+		Reparto.objects.filter(pk=int(float(idre))).update(estado=est)
+
+		return redirect('../c_reparto_lis_ord/?id_repa='+idre)
+
+
+
+
+
+
+
+class ImpLstOrd(View):
+
+	def get(self,request,*args,**kwargs):
+		cad = self.request.GET.get('lst1')
+		tam = self.request.GET.get('tam')
+		print(" -->>>  "+cad)
+		jsn=json.loads(cad)
+		t = int(tam)
+
 		env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
 		template = env.get_template("imprimir.html")
 
 		path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 		config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-		
+
+
 		from django.db import connection, transaction
-		cursor = connection.cursor()
-		cursor.execute("CALL sp_imprimir_ordenes (%s)",[idre])
-
-		print(' ')
-		print(' .')
-
+		
 		result = []
-		detalles = cursor.fetchall()
-		for row in detalles:
-			dic = dict(zip([col[0] for col in cursor.description], row))
-			result.append(dic)
-			print(dic)
-		cursor.close()
+		print(" ---------------------ciclo FOR---- (actualizado)--------------")
+		for i in range(t):
+			print("  > i="+str(i)+"  | jsn[i]="+str(jsn[str(i)]))
+			if i%2 ==0:
+				cursor = connection.cursor()
+				cursor.execute("CALL sp_imp_orden ("+str(jsn[str(i)])+")")
+				detalles = cursor.fetchall()
+				print("                   ->"+str(detalles))
+				for row in detalles:
+					dic = dict(zip([col[0] for col in cursor.description], row))
+					result.append(dic)
+				cursor.close()
+			else:
+				cursor = connection.cursor()
+				cursor.execute("CALL sp_imp_orden (8)")
+				detalles = cursor.fetchall()
+				cursor.close()
 
+				cursor = connection.cursor()
+				cursor.execute("CALL sp_imp_orden ("+str(jsn[str(i)])+")")
+				detalles = cursor.fetchall()
+				print("                   :->"+str(detalles))
+				for row in detalles:
+					dic = dict(zip([col[0] for col in cursor.description], row))
+					result.append(dic)
+				cursor.close()
+
+				cursor = connection.cursor()
+				cursor.execute("CALL sp_imp_orden (8)")
+				detalles = cursor.fetchall()
+				cursor.close()
+
+		print(" ---------------------END ciclo FOR------------------")
+		
+
+		
 		print(' ..')
 		print(' ')
-		ticket = 'N° -- á -- ñ -- é'
 
 		jsn={
-			'ticket':ticket.encode('utf-8'),
-			'ticket1':ticket,
 			'ordenes':result,
 			'fecha':' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' '
 		}
@@ -71,7 +115,74 @@ class ImprimirReparto(View):
 		dicc['pdf']='Listados de las órdenes por reparto'
 		dicc['url_pdf']='pdfs/reparto_01.pdf'
 
-		return render(request,'c_pdf_01.html',dicc)
+		return render(request,'reportes/c_pdf_01.html',dicc)
+
+"""
+"+str(jsn[str(i)])+"
+"""
+
+
+class ImpLstOrd1(View):
+
+	def getget(self,request,*args,**kwargs):
+		jsn_lst_ord = self.request.GET.get('lst1')
+		print("  > llegó")
+		print("   >> "+jsn_lst_ord)
+		dic='{"msj":"ok"}'
+
+		return render(request,'reportes/c_pdf_01.html',dic)
+
+
+
+
+
+class ImprimirReparto(View):
+
+	def get(self,request,*args,**kwargs):
+		idre = self.request.GET.get('id_repa')
+		env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
+		template = env.get_template("imprimir.html")
+
+		path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+		config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+		
+		from django.db import connection, transaction
+		cursor = connection.cursor()
+		cursor.execute("CALL sp_imprimir_ordenes (%s)",[idre])
+
+		#print('   ------>>>>esteeee')
+		print(' .> '+idre)
+
+		result = []
+		detalles = cursor.fetchall()
+		for row in detalles:
+			dic = dict(zip([col[0] for col in cursor.description], row))
+			result.append(dic)
+			print(dic)
+		cursor.close()
+
+		#print(' ..')
+		print(' ')
+
+		jsn={
+			'ordenes':result,
+			'fecha':' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' '
+		}
+
+		html = template.render(jsn)
+		f=open('pdf/ordenes.html','w')
+		f.write(html)
+		f.close()
+
+		options = {'page-size': 'legal','margin-top':'0.0in','margin-right':'0.1in','margin-bottom':'0.9in','margin-left':'0.1in',}
+
+		pdfkit.from_file('pdf/ordenes.html', 'static/pdfs/reparto_01.pdf',options=options, configuration=config)
+
+		dicc = {}
+		dicc['pdf']='Listados de las órdenes por reparto'
+		dicc['url_pdf']='pdfs/reparto_01.pdf'
+
+		return render(request,'reportes/c_pdf_01.html',dicc)
 
 
 
@@ -120,7 +231,7 @@ class ImprimirReparto1(View):
 		dicc['pdf']='Listados de las órdenes por reparto'
 		dicc['url_pdf']='pdfs/reparto_01.pdf'
 
-		return render(request,'c_pdf_01.html',dicc)
+		return render(request,'reportes/c_pdf_01.html',dicc)
 
 
 
@@ -168,7 +279,7 @@ class PDF_002(View):
 		dicc['pdf']='Listados de las ordenes por reparto'
 		dicc['url_pdf']='pdfs/reparto_01.pdf'
 
-		return render(request,'c_pdf_01.html',dicc)
+		return render(request,'reportes/c_pdf_01.html',dicc)
 
  
 class PDF_001(View):
@@ -188,7 +299,7 @@ class PDF_001(View):
 		detalles = cursor.fetchall()
 		for row in detalles:
 		        dic = dict(zip([col[0] for col in cursor.description], row))				
-		        result.append(dic)
+		        result.append(dic) 
 		cursor.close()
 		diccionario={}
 		diccionario['repartos']=result
@@ -209,7 +320,7 @@ class PDF_001(View):
 		dicc['pdf']='Listados de las ordenes por reparto'
 		dicc['url_pdf']='pdfs/reparto_01.pdf'
 
-		return render(request,'c_pdf_01.html',dicc)
+		return render(request,'reportes/c_pdf_01.html',dicc)
 
 
 
@@ -311,28 +422,6 @@ class RepCaudal(View):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @permission_required('inicio.es_canalero')
 def canalero(request):
 	return render(request, 'canalero.html')
@@ -349,9 +438,9 @@ class SolicitudesPorReparto(TemplateView):
 		idrepa = self.request.GET.get('id_repa')
 		dicc={}
 		dicc['reparto']=Reparto.objects.get(id_reparto=idrepa)
-		dicc['repartos']=Reparto.objects.all()
-		dicc['ordenes']=OrdenRiego.objects.filter(id_reparto=idrepa)
-		return render(request,'c_reparto_lis_ord.html',dicc)
+		dicc['repartos']=Reparto.objects.all().order_by('-id_reparto')
+		dicc['ordenes']=OrdenRiego.objects.filter(id_reparto=idrepa).order_by('-id_reparto')
+		return render(request,'reparto/c_reparto_lis_ord.html',dicc)
  
 
 
@@ -378,7 +467,7 @@ class EstablecerHora(TemplateView):
 		idord = self.request.GET.get('id_ord')
 		diccionario ={}
 		diccionario['orden']=OrdenRiego.objects.get(pk=idord)
-		return render(request,'c_orden_hora.html',diccionario)
+		return render(request,'reparto/c_orden_hora.html',diccionario)
 
 	def post(self,request,*args,**kwargs):
 		fec = self.request.POST.get('fecha')
@@ -399,9 +488,7 @@ class EstablecerHora(TemplateView):
 
 		if actu != 'on':
 			CalcularHora(int(float(idord)))
-
 		urll='../c_reparto_lis_ord/?id_repa='+str(idrepa)
-		
 		return redirect(urll)
 
 
@@ -451,9 +538,9 @@ class AprobarListaOrdenes(TemplateView):
 			l.save()
 		dicc={}
 		dicc['reparto']=Reparto.objects.get(id_reparto=idrep)
-		dicc['repartos']=Reparto.objects.all()
+		dicc['repartos']=Reparto.objects.all().order_by('-id_reparto')
 		dicc['ordenes']=OrdenRiego.objects.filter(id_reparto=idrep)
-		return render(request,'c_reparto_lis_ord.html',dicc)
+		return render(request,'reparto/c_reparto_lis_ord.html',dicc)
 
 
 
@@ -463,24 +550,24 @@ class AprobarListaOrdenes(TemplateView):
 class DestajoCreate(CreateView):
 	model=Destajo
 	form_class=DestajoForm
-	template_name='c_destajo_reg.html'
+	template_name='destajo/c_destajo_reg.html'
 	success_url=reverse_lazy('c_destajo_lis')
 
 class DestajoList(ListView):
 	model=Destajo
-	template_name='c_destajo_lis.html'
+	template_name='destajo/c_destajo_lis.html'
 	paginate_by=10
 
 class DestajoUpdate(UpdateView):
 	model=Destajo
 	form_class=DestajoForm
-	template_name='c_destajo_reg.html'
+	template_name='destajo/c_destajo_reg.html'
 	success_url=reverse_lazy('c_destajo_lis') 
 
 class DestajoDelete(DeleteView):
 	model=Destajo
 	form_class=DestajoForm
-	template_name='c_destajo_eli.html'
+	template_name='destajo/c_destajo_eli.html'
 	success_url=reverse_lazy('c_destajo_lis')
 
 
@@ -489,24 +576,24 @@ class DestajoDelete(DeleteView):
 class MultaCreate(CreateView):
 	model=Multa
 	form_class=MultaForm
-	template_name='c_multa_reg.html'
+	template_name='multa/c_multa_reg.html'
 	success_url=reverse_lazy('c_multa_lis')
 
 class MultaList(ListView):
 	model=Multa
-	template_name='c_multa_lis.html'
+	template_name='multa/c_multa_lis.html'
 	paginate_by=10
 
 class MultaUpdate(UpdateView):
 	model=Multa
 	form_class=MultaForm
-	template_name='c_multa_reg.html'
+	template_name='multa/c_multa_reg.html'
 	success_url=reverse_lazy('c_multa_lis') 
 
 class MultaDelete(DeleteView):
 	model=Multa
 	form_class=MultaForm
-	template_name='c_multa_eli.html'
+	template_name='multa/c_multa_eli.html'
 	success_url=reverse_lazy('c_multa_lis')
 
 
@@ -516,24 +603,24 @@ class MultaDelete(DeleteView):
 class CanalCreate(CreateView):
 	model=Canal
 	form_class=CanalForm
-	template_name='c_canal_reg.html'
+	template_name='canal/c_canal_reg.html'
 	success_url=reverse_lazy('c_canal_lis')
 
 class CanalList(ListView):
 	model=Canal
-	template_name='c_canal_lis.html'
+	template_name='canal/c_canal_lis.html'
 	paginate_by=9
 
 class CanalUpdate(UpdateView):
 	model=Canal
 	form_class=CanalForm
-	template_name='c_canal_reg.html'
+	template_name='canal/c_canal_reg.html'
 	success_url=reverse_lazy('c_canal_lis') 
 
 class CanalDelete(DeleteView):
 	model=Canal
 	form_class=CanalForm
-	template_name='c_canal_eli.html'
+	template_name='canal/c_canal_eli.html'
 	success_url=reverse_lazy('c_canal_lis')
 
 
@@ -542,24 +629,24 @@ class CanalDelete(DeleteView):
 class ParcelaCreate(CreateView):
 	model=Parcela
 	form_class=ParcelaForm
-	template_name='c_parcela_reg.html'
+	template_name='parcela/c_parcela_reg.html'
 	success_url=reverse_lazy('c_parcela_lis')
 
 class ParcelaList(ListView):
 	model=Parcela
-	template_name='c_parcela_lis.html'
+	template_name='parcela/c_parcela_lis.html'
 	paginate_by=9
 
 class ParcelaUpdate(UpdateView):
 	model=Parcela
 	form_class=ParcelaForm
-	template_name='c_parcela_reg.html'
+	template_name='parcela/c_parcela_reg.html'
 	success_url=reverse_lazy('c_parcela_lis') 
 
 class ParcelaDelete(DeleteView):
 	model=Parcela
 	form_class=ParcelaForm
-	template_name='c_parcela_eli.html'
+	template_name='parcela/c_parcela_eli.html'
 	success_url=reverse_lazy('c_parcela_lis')
 
 
@@ -568,24 +655,24 @@ class ParcelaDelete(DeleteView):
 class NoticiaCreate(CreateView):
 	model=Noticia
 	form_class=NoticiaForm
-	template_name='c_noticia_reg.html'
+	template_name='noticia/c_noticia_reg.html'
 	success_url=reverse_lazy('c_noticia_lis')
 
 class NoticiaList(ListView):
 	model=Noticia
-	template_name='c_noticia_lis.html'
+	template_name='noticia/c_noticia_lis.html'
 	paginate_by=9
 
 class NoticiaUpdate(UpdateView):
 	model=Noticia
 	form_class=NoticiaForm
-	template_name='c_noticia_reg.html'
+	template_name='noticia/c_noticia_reg.html'
 	success_url=reverse_lazy('c_noticia_lis') 
 
 class NoticiaDelete(DeleteView):
 	model=Noticia
 	form_class=NoticiaForm
-	template_name='c_noticia_eli.html'
+	template_name='noticia/c_noticia_eli.html'
 	success_url=reverse_lazy('c_noticia_lis')
 
  
@@ -595,24 +682,28 @@ class NoticiaDelete(DeleteView):
 class RepartoCreate(CreateView):
 	model=Reparto
 	form_class=RepartoForm
-	template_name='c_reparto_reg.html'
+	template_name='reparto/c_reparto_reg.html'
 	success_url=reverse_lazy('c_reparto_lis')
 
 class RepartoList(ListView):
 	model=Reparto
-	template_name='c_reparto_lis.html'
-	paginate_by=10
+	template_name='reparto/c_reparto_lis.html'
+	paginate_by=4
+
+	def get_queryset(self):
+		queryset = Reparto.objects.all().order_by('-pk')
+		return queryset
 
 class RepartoUpdate(UpdateView):
 	model=Reparto
 	form_class=RepartoForm
-	template_name='c_reparto_reg.html'
+	template_name='reparto/c_reparto_reg.html'
 	success_url=reverse_lazy('c_reparto_lis') 
 
 class RepartoDelete(DeleteView):
 	model=Reparto
 	form_class=RepartoForm
-	template_name='c_reparto_eli.html'
+	template_name='reparto/c_reparto_eli.html'
 	success_url=reverse_lazy('c_reparto_lis')
 
 
@@ -621,24 +712,24 @@ class RepartoDelete(DeleteView):
 class UsuarioDelete(DeleteView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='c_usuario_eli.html'
+	template_name='usuario/c_usuario_eli.html'
 	success_url=reverse_lazy('c_usuario_lis')
 
 class UsuarioUpdate(UpdateView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='c_usuario_reg.html'
+	template_name='usuario/c_usuario_reg.html'
 	success_url=reverse_lazy('c_usuario_lis') 
 
 class UsuarioCreate(CreateView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='c_usuario_reg.html'
+	template_name='usuario/c_usuario_reg.html'
 	success_url=reverse_lazy('c_usuario_lis')
 
 class UsuarioList(ListView):
 	model=DatosPersonales
-	template_name='c_usuario_lis.html'
+	template_name='usuario/c_usuario_lis.html'
 	paginate_by=9
 
 
@@ -646,8 +737,7 @@ class UsuarioList(ListView):
 
 class RegistrarUsuario(CreateView):
 	model = User 
-	template_name="c_crear_user.html"
+	template_name="usuario/c_crear_user.html"
 	form_class = RegistroForm
 	success_url=reverse_lazy('RegistrarUsuario')
 
-#mylogin

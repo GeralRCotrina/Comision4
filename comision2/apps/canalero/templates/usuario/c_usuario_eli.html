@@ -1,9 +1,23 @@
 {% extends "c_base.html" %}
 
 {% block txt_cabecera %}
-	ELIMINAR PARCELA
+	BORRAR USUARIO
 {% endblock txt_cabecera %}
 
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+{% block pdfs_menu %}	
+{% endblock pdfs_menu %} 
+
+	
 
 
 {% block noticias %}
@@ -11,12 +25,12 @@
 		<br>
 		<form method="post">
 			{% csrf_token %}
-			<h2>¿Seguro que desea borrar la parcela {{ object.nombre }} ?</h2>
-			<a href="{% url 'c_parcela_lis' %}" class="btn btn-success">Cancelar</a>
+			<h2>¿Seguro que desea borrar a {{ object.alias }} ?</h2>
+			<a href="{% url 'c_usuario_lis' %}" class="btn btn-success">Cancelar</a>
 			<button class="btn  btn-danger" type="submit">Sí, eliminar</button>		
 		</form><br>
 	</div>
-{% endblock noticias %}
+{% endblock noticias %} 
 
 
 

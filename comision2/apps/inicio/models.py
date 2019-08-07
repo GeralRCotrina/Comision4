@@ -512,12 +512,18 @@ class Reparto(models.Model):
         ('General', 'General'),
         ('Especial', 'Especial'),
     )
+    ESTADO = (
+        ('1', 'CREADO'),
+        ('2', 'APERTURADO'),
+        ('3', 'CERRADO'),
+    )
     id_reparto = models.AutoField(primary_key=True)
-    descripcion = models.CharField(max_length=45, blank=True, null=True)
+    descripcion = models.CharField(max_length=500, blank=True, null=True)
     tipo = models.CharField(max_length=15, blank=True, null=True, choices=TIPO)
     fecha_registro = models.DateField(blank=True, null=True, editable=False)
     fecha_reparto = models.DateField(blank=False, null=True)
     hora_reparto = models.TimeField(blank=False, null=True)
+    estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
 
     class Meta:
         managed = False
@@ -526,7 +532,6 @@ class Reparto(models.Model):
     def __str__(self):
         cadena = "[{0}] {1} - {2}"
         return cadena.format(self.id_reparto,self.tipo, self.fecha_reparto)
-
 
 class Talonario(models.Model):
     id_talonario = models.AutoField(primary_key=True)

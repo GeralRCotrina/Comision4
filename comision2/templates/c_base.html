@@ -30,7 +30,7 @@
       <script src="{% static 'code/modules/export-data.js' %}"></script> 
     {% endblock jquery %}
     
-
+  
   </head> 
 
   <body id="page-top">
@@ -108,11 +108,12 @@
             <a class="dropdown-item" href="{% url 'usuario' %}"><i class="fas fa-user"></i></i> Usuario</a>
             <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
             <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>
+            <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>
           </div>
         </li>
 
 
-
+{% block usuario_menu %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-edit"></i>
@@ -124,7 +125,9 @@
             <a class="dropdown-item" href="{% url 'c_usuario_lis' %}">Listar</a>
           </div>
         </li>
+{% endblock usuario_menu %}
 
+{% block noticia_menu %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-newspaper"></i>
@@ -135,30 +138,24 @@
             <a class="dropdown-item" href="{% url 'c_noticia_lis' %}">Listar</a>
           </div>
         </li>
+{% endblock noticia_menu %}
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-map-marked-alt"></i>
-            <span>PARCELA</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_parcela_reg' %}">Registrar</a>
-            <a class="dropdown-item" href="{% url 'c_parcela_lis' %}">Listar</a>
-          </div>
-        </li>
-      
+
+{% block reparto_menu %}      
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-list-ol"></i>
             <span>REPARTO</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_reparto_reg' %}">Crear</a>
-            <a class="dropdown-item" href="{% url 'c_reparto_lis' %}">Ver</a>
+            <a class="dropdown-item" href="{% url 'c_reparto_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'c_reparto_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
+{% endblock reparto_menu %} 
 
 
+{% block canal_menu %} 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-code-branch"></i>
@@ -169,7 +166,10 @@
             <a class="dropdown-item" href="{% url 'c_canal_lis' %}">Listar</a>
           </div>
         </li>
+{% endblock canal_menu %} 
 
+
+{% block destajo_menu %} 
        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-draw-polygon"></i>
@@ -183,8 +183,10 @@
             <a class="dropdown-item" href="#">Ramal 2</a>
           </div>
         </li>
+{% endblock destajo_menu %} 
 
 
+{% block multas_menu %} 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-money-check-alt"></i>
@@ -195,7 +197,10 @@
             <a class="dropdown-item" href="{% url 'c_multa_lis' %}">Listar</a>
           </div>
         </li>
+{% endblock multas_menu %} 
 
+
+{% block graficos_menu %} 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-chart-area"></i>
@@ -208,7 +213,10 @@
             <a class="dropdown-item" href="{% url 'c_rep_reparto' %}"><i class="text-success"> % </i> Órdenes  <i class="far fa-hand-point-right text-success"></i> Canal</a>
           </div>
         </li>
+{% endblock graficos_menu %} 
 
+
+{% block pdfs_menu %} 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-file-pdf"></i>
@@ -221,6 +229,7 @@
             <a class="dropdown-item" href="#">Pdf 4</a>
           </div>
         </li>
+{% endblock pdfs_menu %} 
 
       </ul>
    
@@ -409,6 +418,7 @@
             <div class="card mb-3">
               <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}</div>
 
+                {% block paginacion1 %}
                <div class="row p-1">
 
                   <div class="col-5"></div>
@@ -441,10 +451,11 @@
                       {% endif %}
                     </div>
                 </div>
+                {% endblock paginacion1 %}
 
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                    <tr style="background: #B3EBAC">
 
@@ -467,7 +478,7 @@
                     {% endblock td2_tabla %}
                   </tr>
                 </tfoot>
-              <tbody>
+              <tbody id="tableGen">
                 {% block body_tabla %}
 
                  <tr>

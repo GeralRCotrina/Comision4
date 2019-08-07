@@ -1,8 +1,21 @@
 {% extends "c_base.html" %}
 
 {% block txt_cabecera %}
-	ELIMINAR REPARTO
+	ELIMINAR DESTAJO
 {% endblock txt_cabecera %}
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+
+{% block pdfs_menu %}	
+{% endblock pdfs_menu %} 
 
 
 
@@ -11,19 +24,17 @@
 		<br>
 		<form method="post">
 			{% csrf_token %}
-			<h2>¿Seguro que desea borrar el reparto [{{ object.tipo }}- {{object.fecha_registro}} ]?</h2>
-			<a href="{% url 'c_reparto_lis' %}" class="btn btn-success">Cancelar</a>
+			<h2>¿Seguro que desea eliminar el destajo: "{{ object.id_destajo }} de la parcela {{ object.id_parcela }}" ?</h2>
+			<a href="{% url 'c_destajo_lis' %}" class="btn btn-success">Cancelar</a>
 			<button class="btn  btn-danger" type="submit">Sí, eliminar</button>		
 		</form><br>
 	</div>
 {% endblock noticias %}
 
 
-
 {% block noticias1 %}
 
 {% endblock noticias1 %}
-
 
 
 {% block tabla %}

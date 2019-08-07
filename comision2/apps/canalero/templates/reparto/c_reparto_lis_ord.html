@@ -1,0 +1,239 @@
+{% extends "c_base.html" %}
+
+
+{% block txt_cabecera %}
+	LISTA DE REPARTOS
+{% endblock txt_cabecera %}
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+{% block pdfs_menu %}	
+{% endblock pdfs_menu %} 
+
+
+{% block noticias %}
+{% endblock noticias %} 
+
+
+
+{% block noticias1 %}
+
+<div class="row m-1" style="height:190px; overflow-y: scroll; white-space: nowrap;">
+
+		{% csrf_token %}
+
+		{% if repartos %}
+			{% for ob in repartos %}
+
+
+			            <div class="col-xl-3 col-sm-6 mb-3">
+			              <div id="aper1{{ob.pk}}" class="card {% if ob.estado == '1' %}
+			              						text-white bg-primary 
+			              					{% elif ob.estado == '2' %}
+			              						text-white bg-success
+			              					{% elif ob.estado == '3' %}
+			              						text-white bg-secondary
+			              					{% else %}
+			              						text-primary bg-ligth
+			              					{% endif %}
+			              					o-hidden h-100">
+			                <div class="card-body">
+			                  <div class="card-body-icon">
+			                    <i class="fas fa-fw fa-list"></i> 
+			                  </div>
+			                  <div class="mr-5"><span class="badge badge-light" style="font-size: 0.5em;">{{ob.pk}}</span> {{ob.tipo}} <br>
+			                  {{ob.fecha_reparto.day}}/{{ob.fecha_reparto.month}}/{{ob.fecha_reparto.year}} ; {{ob.hora_reparto}}</div>
+			                </div>
+			                <div class="card-footer row">
+			                	
+					            <div class="col-3">
+				                		{% if ob.estado == "1" %}
+				                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=2" class="float-left text-white">
+				                			<i class="fas fa-check"></i></a> 
+			                			{% elif ob.estado == "2" %}
+				                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=3" class="float-left text-white">
+				                			<i class="fas fa-lock-open"></i></a> 
+			                			{% else %}
+				                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=1" class="float-left text-white">
+				                			<i class="fas fa-lock"></i></a> 
+			                			{% endif %}
+				                	</div>
+
+				                	<div class="col-3">{% if ob.estado == "1" %}.{% else %}
+				                		<a href="{% url 'c_reparto_lis_ord' %}?id_repa={{ob.id_reparto}}" class="float-left text-white">
+				                			 <i class="far fa-eye"></i></a>{% endif %}
+				                	</div>
+				                	<div class="col-3">
+				                		{% if ob.estado == "3" %}.{% else %}
+				                		<a href="{% url 'c_reparto_edi' ob.id_reparto %}" class="float-left text-white">
+				                			<i class="fas fa-cog"></i></a>{% endif %}
+				                	</div>
+				                	<div class="col-3">
+				                		{% if ob.estado == "1" %}.{% else %}
+				                		<a href="{% url 'c_rep_print'%}?id_repa={{ ob.id_reparto }}" class="float-left text-white">
+				                			<i class="fas fa-print"></i> </a>{% endif %}
+				                	</div>
+				            </div>
+			              </div>
+			            </div>
+
+         {% endfor %}				
+		{% else %}
+			<h1>NO HAY REPARTOS</h1>
+		{% endif %}
+
+
+
+    </div>
+
+{% endblock noticias1 %}
+
+
+
+
+
+{% block titulo_tabla %}
+LISTADO DE ÓRDENES DEL REPAERTO
+<h4 class="text-primary">
+	<strong>
+		{{ reparto.tipo }}:  {{ reparto.fecha_reparto.day }}/{{ reparto.fecha_reparto.month }}/
+		{{ reparto.fecha_reparto.year }}
+	</strong>
+</h4>
+{% endblock titulo_tabla %}
+
+{% block paginacion1 %}
+	<div class="col-12 mt-1 btn-group">			
+		<button id="btn_cnt_impr" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">
+			<i class="fas fa-print"></i>=0
+		</button>
+		<input type="text" placeholder="solo nombre.." class="w-100 btn w-100 border text-left" id="txt_buscar" onkeyup="BuscarOrden()">			
+		<button class="btn btn-outline-secondary" disabled="true">
+			<i class="fas fa-search"></i>
+		</button>
+<br><br>
+		<a href="{% url 'c_ordlis' %}?lst1={'a':1,'b':2}">probando</a>
+	</div>
+
+
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		  	<input id="inpt_url" type="text" value="{% url 'c_ordlis' %}?lst1=" hidden="hidden" />
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Lista de ordenes a imprimir..</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body" id="mdl_imp">
+
+		      </div>
+		      <div class="modal-footer" id="btn_imp">
+
+		      </div>
+		    </div>
+		  </div>
+		</div>
+{% endblock paginacion1 %}
+
+{% block td1_tabla %}
+	<td>Recibo</td>
+	<td>Canal</td>
+	<td>Usuario</td>
+	<td>Toma</td>
+	<td>Parcela</td>
+	<td>Regará</td>
+	<td>Inicio</td>
+	<td>Duración</td>
+	<td>Estado</td>
+	<td>Acciones</td>
+{% endblock td1_tabla %}
+
+{% block td2_tabla %}
+	<td>Recibo</td>
+	<td>Canal</td>
+	<td>Usuario</td>
+	<td>N° toma</td>
+	<td>Parcela</td>
+	<td>Regará</td>
+	<td>Inicio</td>
+	<td>Duración</td>
+	<td>Estado</td>
+	<td>Acciones</td>
+{% endblock td2_tabla %}
+
+
+{% block body_tabla %}
+		{% for ob in ordenes %}
+
+				<tr id="{{ob.id_orden_riego}}" >
+					<td id="td_{{ob.pk}}">{{ob.id_orden_riego}}   
+						<button class="btn btn-sm btn-outline-primary" onclick="AgrListImp({{ob.pk}},'{{ob.id_parcela.id_auth_user.first_name}}')"><i id="PkImp_{{ob.pk}}" class="fas fa-print"></i></button>
+
+					</td>
+					<td>{{ ob.id_parcela.id_canal.nombre }}</td>
+					<td>{{ob.id_parcela.id_auth_user.first_name}}</td>
+					<td>{{ ob.id_parcela.num_toma}}</td>
+					<td>{{ ob.id_parcela.nombre }}</td>							
+					<td>{{ ob.fecha_establecida.day }}-{{ ob.fecha_establecida.month }}-{{ ob.fecha_establecida.year }}</td>
+					<td><i class="far fa-clock"></i> {{ ob.fecha_inicio.hour }}:{{ ob.fecha_inicio.minute }}</td>
+					<td>{{ob.duracion }} h </td>
+					
+					{% if  ob.estado == 'Solicitada' %}
+						<td><span id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-warning"><i class="fas fa-sign-in-alt"></i>  SOLICITADA</span></td>
+					{% elif ob.estado == 'Rechazada' %}
+						<td><span id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-danger"><i class="fas fa-ban"></i>  RECHAZADA</span></td>
+					{% elif ob.estado == 'Aprobada' %}
+						<td><span  id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-success"><i class="fas fa-check"></i>  APROBADA</span></td>
+					{% else %}
+						<td>{{ob.estado}}</td>
+					{% endif %}
+
+
+
+					<td>
+					<div class="btn-group">
+				        <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				        	<i class="fas fa-cog"></i></button>
+					      <div class="dropdown-menu" >
+					      	<div class="btn-group ml-2">
+								<button class="btn btn-outline-warning btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Solicitada")'>
+									<i class="fas fa-sign-in-alt"></i></button>
+
+								<button class="btn btn-outline-success btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Aprobada")'>
+									<i class="fas fa-check"></i></button>
+
+								<button class="btn btn-outline-danger btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Rechazada")'>
+									<i class="fas fa-ban"></i></button>
+
+								<a class="btn btn-outline-info" href="{% url 'c_orden_hora' %}?id_ord={{ ob.id_orden_riego }}" >
+									<i class="far fa-clock"></i></a>
+							</div>
+				        </div>
+				      </div>
+					</td>
+				</tr>
+		{% endfor %}				
+		
+{% endblock body_tabla %}
+
+
+
+
+{% block btn_nuevo %} {% url 'c_orden_apr_lis' %}?id_rep={{ reparto.id_reparto  }}{% endblock btn_nuevo %}
+{% block btn_t_text %} APROBAR TODO ESTE REPARTO{% endblock btn_t_text %}
+
+
+
+
+{% block graficos %}		
+{% endblock graficos %}
