@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, View
-from apps.inicio.models import Reparto, Multa, DatosPersonales, Noticia, Parcela, Canal, Destajo, OrdenRiego, Caudal
+from apps.inicio.models import Reparto, Multa, DatosPersonales, Noticia, Parcela, Canal, Destajo, OrdenRiego, Caudal, Limpieza
 from apps.canalero.forms import RepartoForm, MultaForm, DestajoForm
 
 
 from apps.presidente.forms import ParcelaForm, CanalForm, NoticiaForm
+from apps.canalero.forms import LimpiezaForm
 from apps.inicio.forms import PersonaForm
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -35,8 +36,81 @@ class AperRep(View):
 
 
 
+class RepartoRep(View):
+
+	def get(self,request,*args,**kwargs):
+		pkr = self.request.GET.get('pkr')
+		reparto= Reparto.objects.get(id_reparto=pkr)
+
+		env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
+		template = env.get_template("canalero/rep_reparto_i.html")
+		path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+		config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+
+		from django.db import connection, transaction
+		result = []
+		cursor = connection.cursor()
+		cursor.execute("CALL sp_reparto_rep ("+str(pkr)+")")
+		detalles = cursor.fetchall()
+		
+		for row in detalles:
+			dic = dict(zip([col[0] for col in cursor.description], row))
+			result.append(dic)
+		cursor.close()
 
 
+
+		total_or=0
+		aprobadas_or=0
+		entregadas_or = 0
+		rechazadas_or = 0
+		importe_re = 0
+		deuda_re = 0
+
+		for r in result:
+			total_or+=1
+			if r['estado'] == 'Aprobada':
+				deuda_re+=float(r['importe'])
+				aprobadas_or +=1
+			elif r['estado'] == 'Entregada':
+				importe_re +=float(r['importe'])
+				entregadas_or +=1
+			elif r['estado'] == 'Rechazada':
+				rechazadas_or +=1
+		print(" importe: "+str(importe_re))
+
+		jsn={
+			'ordenes':result,
+			'fecha':' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' ',
+			'total_or':total_or,
+			'aprobadas_or':aprobadas_or,
+			'entregadas_or':entregadas_or,
+			'rechazadas_or':rechazadas_or,
+			'importe_re':importe_re,
+			'deuda_re':deuda_re,
+			'reparto':reparto
+		}
+
+		html = template.render(jsn)
+		f=open('pdf/canalero/rep_reparto_f.html','w')
+		f.write(html)
+		f.close()
+
+
+		options = {'page-size': 'legal','margin-top':'0.2in','margin-right':'0.2in','margin-bottom':'0.4in','margin-left':'0.2in',}
+		#pdfkit.from_file('html a renderizar', 'donde y cómo se guarda',options=options, configuration=config)
+		pdfkit.from_file('pdf/canalero/rep_reparto_f.html', 'static/pdfs/rep_reparto_p.pdf',options=options, configuration=config)
+
+
+		dicc = {
+			'msj':"llegó el reparto",
+			'pdf':'Listados de las órdenes por reparto',
+			'url_pdf':'pdfs/rep_reparto_p.pdf'
+		}
+
+		return render(request,'reparto/c_reparto_rep.html',dicc)
+	
+		
 
 
 class ImpLstOrd(View):
@@ -61,34 +135,21 @@ class ImpLstOrd(View):
 		print(" ---------------------ciclo FOR---- (actualizado)--------------")
 		for i in range(t):
 			print("  > i="+str(i)+"  | jsn[i]="+str(jsn[str(i)]))
-			if i%2 ==0:
-				cursor = connection.cursor()
-				cursor.execute("CALL sp_imp_orden ("+str(jsn[str(i)])+")")
-				detalles = cursor.fetchall()
-				print("                   ->"+str(detalles))
-				for row in detalles:
-					dic = dict(zip([col[0] for col in cursor.description], row))
-					result.append(dic)
-				cursor.close()
-			else:
-				cursor = connection.cursor()
-				cursor.execute("CALL sp_imp_orden (8)")
-				detalles = cursor.fetchall()
-				cursor.close()
+			
+			cursor = connection.cursor()
+			cursor.execute("CALL sp_imp_orden ("+str(jsn[str(i)])+")")
+			detalles = cursor.fetchall()
+			print("                   ->"+str(detalles))
+			for row in detalles:
+				dic = dict(zip([col[0] for col in cursor.description], row))
+				result.append(dic)
+			cursor.close()
+		
+			cursor = connection.cursor()
+			cursor.execute("CALL sp_imp_orden (8)")
+			detalles = cursor.fetchall()
+			cursor.close()
 
-				cursor = connection.cursor()
-				cursor.execute("CALL sp_imp_orden ("+str(jsn[str(i)])+")")
-				detalles = cursor.fetchall()
-				print("                   :->"+str(detalles))
-				for row in detalles:
-					dic = dict(zip([col[0] for col in cursor.description], row))
-					result.append(dic)
-				cursor.close()
-
-				cursor = connection.cursor()
-				cursor.execute("CALL sp_imp_orden (8)")
-				detalles = cursor.fetchall()
-				cursor.close()
 
 		print(" ---------------------END ciclo FOR------------------")
 		
@@ -116,10 +177,6 @@ class ImpLstOrd(View):
 		dicc['url_pdf']='pdfs/reparto_01.pdf'
 
 		return render(request,'reportes/c_pdf_01.html',dicc)
-
-"""
-"+str(jsn[str(i)])+"
-"""
 
 
 class ImpLstOrd1(View):
@@ -532,9 +589,10 @@ class AprobarListaOrdenes(TemplateView):
 
 	def get(self, request, *args, **kwargs):
 		idrep = self.request.GET.get('id_rep')
+		estrep = self.request.GET.get('est_rep')
 		lo=OrdenRiego.objects.filter(id_reparto=idrep)
 		for l in lo:
-			l.estado='Aprobada'
+			l.estado=estrep
 			l.save()
 		dicc={}
 		dicc['reparto']=Reparto.objects.get(id_reparto=idrep)
@@ -544,19 +602,44 @@ class AprobarListaOrdenes(TemplateView):
 
 
 
-
-
-
 class DestajoCreate(CreateView):
 	model=Destajo
 	form_class=DestajoForm
 	template_name='destajo/c_destajo_reg.html'
 	success_url=reverse_lazy('c_destajo_lis')
 
+
+
+class DestajoList(View):
+	
+	def get(self, request, *args, **kwargs):
+		dicc ={}
+		dicc['canales']=Canal.objects.all()
+		if self.request.GET.get('idc'):
+			idc = self.request.GET.get('idc')
+			dicc['object_list']=Destajo.objects.filter(id_canal=idc)
+		else:
+			dicc['object_list']=Destajo.objects.all()
+		return  render(request,'destajo/c_destajo_lis.html',dicc)
+
+
+
+
+
+"""
 class DestajoList(ListView):
 	model=Destajo
 	template_name='destajo/c_destajo_lis.html'
-	paginate_by=10
+	paginate_by=50
+
+	def get_queryset(self):
+		queryset = Destajo.objects.all().order_by('-pk')
+		return queryset
+
+# object_list
+# queryset = Destajo.objects.all().order_by('-pk')
+"""
+
 
 class DestajoUpdate(UpdateView):
 	model=Destajo
@@ -740,4 +823,32 @@ class RegistrarUsuario(CreateView):
 	template_name="usuario/c_crear_user.html"
 	form_class = RegistroForm
 	success_url=reverse_lazy('RegistrarUsuario')
+
+
+
+
+
+ 
+class LimpiaDelete(DeleteView):
+	model=Limpieza
+	form_class=LimpiezaForm
+	template_name='destajo/c_limpia_eli.html'
+	success_url=reverse_lazy('c_limpia_lis')
+
+class LimpiaUpdate(UpdateView):
+	model=Limpieza
+	form_class=LimpiezaForm
+	template_name='destajo/c_limpia_reg.html'
+	success_url=reverse_lazy('c_limpia_lis') 
+
+class LimpiaCreate(CreateView):
+	model=Limpieza
+	form_class=LimpiezaForm
+	template_name='destajo/c_limpia_reg.html'
+	success_url=reverse_lazy('c_limpia_lis')
+
+class LimpiaList(ListView):
+	model=Limpieza
+	template_name='destajo/c_limpia_lis.html'
+	paginate_by=9
 

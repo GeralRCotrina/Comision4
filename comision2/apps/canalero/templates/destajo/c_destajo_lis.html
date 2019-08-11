@@ -26,19 +26,36 @@
 
 
 {% block noticias1 %}
-
+	<div class="row container mb-2">
+		{% if canales %}
+			<p class="alert alert-success mb-1 mr-1"><strong>TODOS</strong>
+					<a href="{% url 'c_destajo_lis' %}" style="font-style:italic;"> listar!</a></p>
+			{% for c in canales %}
+				<p class="alert alert-success mb-1 mr-1"><strong>{{c.nombre}}</strong>
+					<a href="{% url 'c_destajo_lis' %}?idc={{c.pk}}" style="font-style:italic;">listar!</a></p>
+			{% endfor %}
+			
+		{% endif %}
+	</div>
 {% endblock noticias1 %}
  
 
 
-{% block titulo_tabla %}Listado de Noticias{% endblock titulo_tabla %}
+{% block titulo_tabla %}Listado de Destajos 
+	<a href="#" onclick="tableToExcel('dataTable', 'W3C Example Table')" style="font-style:italic; color:#5FC65A;">
+	Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+{% endblock titulo_tabla %}
+
+{% block paginacion1 %}	
+{% endblock paginacion1 %}
 
 {% block td1_tabla %}
 	<td>Id</td>
 	<td>Canal</td>
 	<td>Parcela</td>
+	<td>Usuario</td>
 	<td>Tamaño</td>
-	<td>N° de orden</td>
+	<td>N°</td>
 	<td>Se registró el</td>
 	<td>Descripción</td>
 	<td></td>
@@ -48,8 +65,9 @@
 	<td>Id</td>
 	<td>Canal</td>
 	<td>Parcela</td>
+	<td>Usuario</td>
 	<td>Tamaño</td>
-	<td>N° de orden</td>
+	<td>N°</td>
 	<td>Se registró el</td>
 	<td>Descripción</td>
 	<td></td>
@@ -62,20 +80,23 @@
 	{% if object_list %}
 		{% for ob in object_list %}
 
-		<tr >
-			<td>[{{ob.id_destajo}}]</td>
+		<tr style="font-size:0.8em;">
+			<td >{{ob.id_destajo}}</td>
 			<td> {{ ob.id_canal }}</td>
 			<td> {{ ob.id_parcela }}</td>
+			<td style="background:#F1FCF2;">{{ ob.id_parcela.id_auth_user.first_name }}</td>
 			<td>{{ ob.tamano }}</td>
 			<td> {{ ob.num_orden }}</td>
 			<td>{{ ob.fecha_registro }}</td>
 			<td> {{ ob.descripcion }}</td>
 			<td>
-				<a class="btn btn-outline-success" href="{% url 'c_destajo_edi' ob.id_destajo %}">
-					<img src="/static/img/editar1.png"  style="width: 25px; height: 25px;"></a>
+				<div class="btn-group btn-sm">
+					<a class="btn btn-outline-success btn-sm" href="{% url 'c_destajo_edi' ob.id_destajo %}">
+						<i class="far fa-edit"></i></a>
 					
-				<a class="btn btn-outline-success" href="{% url 'c_destajo_eli' ob.id_destajo %}" >
-					<img src="/static/img/eliminar1.png" style="width:25px; height: 25px;"></a>
+					<a class="btn btn-outline-danger btn-sm" href="{% url 'c_destajo_eli' ob.id_destajo %}" >
+						<i class="far fa-trash-alt"></i></a>
+				</div>
 			</td>
 		</tr>
 
@@ -89,6 +110,9 @@
 
 {% block btn_nuevo %} {% url 'c_destajo_reg' %} {% endblock btn_nuevo %}
 
+
+{% block paginacion2 %}
+{% endblock paginacion2 %}
 
 
 

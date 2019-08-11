@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html manifest="" lang="es">
+<head>
+<title>Órdenes del reparto</title>
+<link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.css">
+<script src="../highcharts/highcharts.js"></script>
+<script src="../highcharts/data.js"></script>
+<script src="../highcharts/drilldown.js"></script>
+</head>
+<body>
+
+	{% if ordenes %}
+
+			<div class="row breadcrumb" style="height: 70px; width: 100%;">
+                <div class="col">
+                  <div class="float-left">
+                    <img src="../logo.png" style="height: 55px; width: 80px;">
+                    <strong class="font-italic">Comité de Renates NUEVO HORIZONTE</strong>
+                  </div>
+                  <div class="float-right h-100 w-50 p-1 text-right">
+                     <p class="font-italic display-7">{{fecha}}</p>                  
+                  </div>
+                </div>
+              </div>
+
+
+
+             <div class="row" style="position: relative; height: 130px; padding-left:4px;">
+             	<div class="col-6 h-100" style="float: left;">
+             		{% if reparto %}
+             			<strong>REPARTO:</strong><i style="color:white;">_______</i> <i> {{reparto.tipo}}</i> <br>
+	             		<strong>FECHA:</strong><i style="color:white;">_________</i> <i>  {{reparto.fecha_reparto}}</i> <br>
+	             		<strong>HORA:</strong><i style="color:white;">__________</i> <i>  {{reparto.hora_reparto}}</i><br>
+	             		<strong>ESTADO:</strong><i style="color:white;">________</i><span class="badge badge-pill badge-secondary">CERRADO</span><br>	             		
+	             		<strong>DESCRIPCIÓN:</strong><i style="color:white;">___</i> <i>  {{reparto.descripcion}}</i><br>
+	             	{% else %}
+	             		Err al traer el reparto 
+             		{% endif %}	             		
+             	</div>
+             	<div class="col-5 h-100 mb-2 mr-4" style="float: right; border: dotted;">
+             		<strong>TOTAL ORDENES:</strong><i style="color:white;">_____________</i><i>{{total_or}}</i> <br>
+             		<strong>ORDENES SIN PAGAR:</strong><i style="color:white;">________</i><i>{{aprobadas_or}}</i> <br>
+             		<strong>ORDENES ENTREGADAS:</strong><i style="color:white;">______</i><i>{{entregadas_or}}</i> <br>
+             		<strong>ORDENES RECHAZADAS:</strong><i style="color:white;">______</i><i>{{rechazadas_or}}</i> <br>
+             		<strong>IMPORTE TOTAL:</strong><i style="color:white;">____</i>S/.  {{importe_re}}<i style="color:white;">____</i><strong>DEUDA:</strong><i style="color:white;">___</i>[{{deuda_re}}]
+
+             	</div>
+             </div>
+
+
+
+		<table class="table table-sm">
+			<thead>
+				<tr style="background:#E7E4E4; font-style:italic">
+					<td>RECIBO</td><td>CANAL</td><td>TOMA</td><td>PARCELA</td><td>USUARIO</td>
+					<td>FECHA</td><td>INICIO</td><td>HORAS</td><td>IMPORTE</td><td>ESTADO</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for o in ordenes %}
+					<tr>
+						<td>{{o.recibo}}</td><td>{{o.canal}}</td><td>{{o.toma}}</td><td>{{o.parcela}}</td><td>{{o.usuario}}</td>
+						<td>{{o.fecha}}</td><td>{{o.inicio}}</td><td>{{o.horas}}</td><td>{{o.importe}}</td><td>{{o.estado}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	{% else %}
+		ERR: no llego la consulta, contacte al administrador del sistema.
+	{% endif %}
+	
+</body> 

@@ -28,6 +28,7 @@ urlpatterns = [
 	re_path(r'^c_reparto_lis_ord/?/$',login_required(views.SolicitudesPorReparto.as_view()),name='c_reparto_lis_ord'),
 
 	re_path(r'^c_rep_apr/?/$',login_required(views.AperRep.as_view()),name='c_rep_apr'),
+	re_path(r'^c_rep_rep/?/$',login_required(views.RepartoRep.as_view()),name='c_rep_rep'),
 
 
 	re_path(r'^c_orden_apr/?/$',login_required(views.AprobarOrden.as_view()),name='c_orden_apr'),
@@ -68,6 +69,11 @@ urlpatterns = [
 	re_path(r'^c_destajo_lis/$',login_required(views.DestajoList.as_view()),name='c_destajo_lis'),
 	re_path(r'^c_destajo_edi/(?P<pk>\d+)/$',login_required(views.DestajoUpdate.as_view()),name='c_destajo_edi'),
 	re_path(r'^c_destajo_eli/(?P<pk>\d+)/$',login_required(views.DestajoDelete.as_view()),name='c_destajo_eli'),
+
+	re_path(r'^c_limpia_reg/$',login_required(views.LimpiaCreate.as_view()),name='c_limpia_reg'),
+	re_path(r'^c_limpia_lis/$',login_required(views.LimpiaList.as_view()),name='c_limpia_lis'),
+	re_path(r'^c_limpia_edi/(?P<pk>\d+)/$',login_required(views.LimpiaUpdate.as_view()),name='c_limpia_edi'),
+	re_path(r'^c_limpia_eli/(?P<pk>\d+)/$',login_required(views.LimpiaDelete.as_view()),name='c_limpia_eli'),
 
 	]
 

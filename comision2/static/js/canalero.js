@@ -26,6 +26,11 @@ function UrlJS(iOr,iRe,est){
 				sp.classList.add("badge-success");
 				sp.innerHTML = '<i class="fas fa-check"></i> APROBADA';
 			}
+			else if(est == "Entregada")
+			{
+				sp.classList.add("badge-secondary");
+				sp.innerHTML = '<i class="fas fa-money-bill"></i> ENTREGADA';
+			}
 			else if(est == "Solicitada")
 			{
 				sp.classList.add("badge-warning");
@@ -114,98 +119,122 @@ function LlenarTabla(){
 }
 
 
+
+
+
+
+
 var LstImprimir=[];
 var LstImprimirBK=[];
+var conta = 0;
+var esta = true;
 
 function AgrListImp(pko,nom){
-
-	var pko_ico='PkImp_'+pko;
-	var ImpIco = document.getElementById(pko_ico);
 	var esta = true;
-
-	if(LstImprimir.length>0){
-		for (var i = LstImprimir.length - 1; i >= 0; i--) {
-			if(LstImprimir[i]){
-				if(LstImprimir[i].pko1 == pko){
-					alert("ya esta en la cola de impresión");
-					esta = false;
-				}
-			}
+	for (var i = LstImprimir.length - 1; i >= 0; i--) {
+		if(LstImprimir[i] == pko){
+			esta = false;
 		}
 	}
 	if(esta){
-		var pos = LstImprimir.length;
-		var jsn=JSON.parse('{ "pko1":'+pko+', "nom":"'+nom+'"}');
+		LstImprimir[conta]=pko;
+		LstImprimir[conta+1]=nom;
+		conta += 2;
+		PintarModal();
+	}else{
+		alert("ya está en la lista!");
+		esta=true;
+	}	
+}
+
+
+
+
+
+
+
+
+
+
+function QuitarOrd(pko){
+	for (var i = 0 ; i <=LstImprimir.length ; i++) {
+		if(LstImprimir[i] == pko){
+			delete LstImprimir[i];
+			delete LstImprimir[i+1];
+			conta-=2;
+		}
+		i+=1;
 	}
+	var c1 = 0;
+	LstImprimirBK=[];
+	for (var i = 0; i <=LstImprimir.length; i++){
+		if(LstImprimir[i]){
+			LstImprimirBK[c1]=LstImprimir[i];
+			LstImprimirBK[c1+1]=LstImprimir[i+1];
+			c1+=2;
+		}else{
+			console.log("no existe");
+		}
+		i+=1;
+	}
+	LstImprimir=[];
+	LstImprimir=LstImprimirBK;
 
-
-	LstImprimir[pos]=jsn;
-
-	var btn_impr = document.getElementById('btn_cnt_impr');
-	btn_impr.innerHTML="<i class='fas fa-print'></i>="+ (LstImprimir.length);
-	
 	PintarModal();
 }
 
 
+
 function PintarModal(){
+// pinta el boton .......................
+	var btn_impr = document.getElementById('btn_cnt_impr');
+	btn_impr.innerHTML="<i class='fas fa-print'></i>="+ (LstImprimir.length/2);
+// pinta el modal ......................
 	var mdl = document.getElementById('mdl_imp');
 	mdl.innerHTML="";
 
-	for (var i = LstImprimir.length - 1; i >= 0; i--) {
+	for (var i = 0;i<LstImprimir.length; i++) {
 		if(LstImprimir[i]){
-			mdl.innerHTML+='<p class="alert alert-success alert-dismissable">'
-					+'<a href="#" class="close btn" data-dismiss="alert" onclick="QuitarOrd('+i+')">×</a>'
-					+'<strong>'+LstImprimir[i].pko1+'</strong>   '+LstImprimir[i].nom+'</p>';
+			mdl.innerHTML+='<p class="ordenr alert-dismissable" style="border-style: dotted;">'
+					+'<a href="#" class="close btn" data-dismiss="alert" onclick="QuitarOrd('+LstImprimir[i]+')">'
+					+'<i class="fas fa-trash-alt text-danger mt-0" style="font-size:0.7em;"></i></a>'
+					+'<strong>_'+LstImprimir[i]+'</strong>  Usuario:  '+LstImprimir[i+1]
+					+'<br><i style="color: white;"> _____</i><i style="font-size: 0.7em; font-style: italic;">orden de riego ('+((i/2)+1)+')</i></p>';
+			i+=1;
+		}else{
+			alert(" NO EXISTE .... i = "+i +"&& Lst[]="+ LstImprimir[i]);
 		}
 	}
-	BtnImprimirLista();
-}
+	
 
-function QuitarOrd(i){
-	delete LstImprimir[i];
-	var cont1 =0;
-
-	for (var i = LstImprimir.length - 1; i >= 0; i--) {
-		if(LstImprimir[i]){
-			LstImprimirBK[cont1]=LstImprimir[i];
-			cont1 +=1;
-		}
-	}
-	//alert(" > cont: "+cont1+" LstImprimirBK:"+LstImprimirBK.length+"    >LstImprimir: "+LstImprimir.length);
-	LstImprimir=LstImprimirBK;
-	//alert(" > cont: "+cont1+" LstImprimirBK:"+LstImprimirBK.length+"    >LstImprimir: "+LstImprimir.length);
-	var btn_impr = document.getElementById('btn_cnt_impr');
-	btn_impr.innerHTML="<i class='fas fa-print'></i>="+ (LstImprimir.length);
-	al
-	BtnImprimirLista();
-}
-
-function BtnImprimirLista(){
+// 	pintar boton ......
 	var btn_imp=document.getElementById('btn_imp');
+	btn_imp.innerHTML="";
+	
 	var jsn1 ='{';
 	var primero = true;
-	for (var i = LstImprimir.length - 1; i >= 0; i--) {
-		if (LstImprimir[i]) {
-			if(primero){
+	var c2 = 0;
+	for (var i=0;i<LstImprimir.length; i++) {
+		if(primero){
+				jsn1+='"'+c2+'":'+LstImprimir[i];
 				primero=false;
-				jsn1+='"'+i+'":'+LstImprimir[i].pko1;
-			}else{
-				jsn1+=',"'+i+'":'+LstImprimir[i].pko1;
-			}
-			
+		}else if (LstImprimir[i]) {
+				jsn1+=',"'+c2+'":'+LstImprimir[i];
 		}
+		i+=1;
+		c2+=1;
 	}
-
 	jsn1 +='}';
+	//alert("  jsn1 > "+jsn1);
 	var url = document.getElementById('inpt_url').value;
 
 	if(LstImprimir.length > 0){
-		var jsn_btn= "<a href='"+url+jsn1+"&&tam="+LstImprimir.length+"' class='btn btn-primary'><!-- data-dismiss='modal'-->IMPRIMIR</a>";
+		var jsn_btn= "<a href='"+url+jsn1+"&&tam="+(LstImprimir.length/2)+"' class='btn btn-primary'><!-- data-dismiss='modal'-->IMPRIMIR</a>";
 	    btn_imp.innerHTML=jsn_btn;
 	}else{
 		 btn_imp.innerHTML="";
 	}
 
-	    
+
+
 }

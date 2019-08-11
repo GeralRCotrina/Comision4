@@ -1,6 +1,33 @@
 from django import forms
-from apps.inicio.models import Reparto, Multa, MultaAsistencia, MultaLimpia, MultaOrden, Destajo
+from apps.inicio.models import Reparto, Multa, MultaAsistencia, MultaLimpia, MultaOrden, Destajo, Limpieza
 from django.forms import DateTimeField
+
+
+class LimpiezaForm(forms.ModelForm):
+
+	class Meta:
+		model = Limpieza
+		
+		fields = ['id_limpieza','decripcion','tipo','fecha_limpieza','fecha_revision','hora_revision','estado']	
+
+		labels = {
+			'decripcion':'Breve descripción',
+			'tipo':'Tipo de limpieza',
+			'fecha_limpieza':'Fecha de inicio',
+			'fecha_revision':'Fecha de revisión',
+			'hora_revision':'Hora de revisión',
+			'estado':'Estado',
+		}
+
+		widgets={	
+				'decripcion':forms.Textarea(attrs={'class':'form-control','rows':'5'}),
+			    'tipo':forms.Select(attrs={'class':'form-control'}),
+			    'fecha_limpieza':forms.DateTimeInput(attrs={'class':'form-control col-7','placeholder':'dd/mm/aaaa','type':'date'}),
+			    'fecha_revision':forms.DateTimeInput(attrs={'class':'form-control col-7','placeholder':'dd/mm/aaaa','type':'date'}),
+			    'hora_revision':forms.TimeInput(attrs={'class':'form-control col-4','type':'time'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-4'}),
+		    }
+
 
 class RepartoForm(forms.ModelForm):
 
@@ -34,14 +61,15 @@ class DestajoForm(forms.ModelForm):
 	class Meta:
 		model = Destajo
 
-		fields = ['id_destajo','id_canal','id_parcela','tamano','num_orden','descripcion']	
+		fields = ['id_destajo','id_canal','id_parcela','tamano','num_orden','descripcion','estado']	
 
 		labels = {
 			'id_canal':'Seleccione el canal en el que se ubica',
 			'id_parcela':'La parcela a la que corresponde',
 			'tamano':'tamaño en metros',
 			'num_orden':'númer de destajo en el canal',
-			'descripcion':'Descripción'
+			'descripcion':'Descripción',
+			'estado':'Estado'
 		}
 
 		widgets={	
@@ -50,6 +78,7 @@ class DestajoForm(forms.ModelForm):
 			    'tamano':forms.TextInput(attrs={'class':'form-control'}),
 			    'num_orden':forms.TextInput(attrs={'class':'form-control'}),
 			    'descripcion':forms.TextInput(attrs={'class':'form-control'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-4'}),
 		    }
 
 

@@ -17,6 +17,7 @@
     {% block css %}
 
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/ordenr.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css"><!-- Custom fonts for this template-->
     <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet"><!-- Page level plugin CSS-->
     <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet"><!-- Custom styles for this template-->
@@ -134,8 +135,8 @@
             <span>NOTICIA</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_noticia_reg' %}">Registrar</a>
-            <a class="dropdown-item" href="{% url 'c_noticia_lis' %}">Listar</a>
+            <a class="dropdown-item" href="{% url 'c_noticia_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'c_noticia_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
 {% endblock noticia_menu %}
@@ -162,25 +163,39 @@
             <span>CANAL</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_canal_reg' %}">Registrar</a>
-            <a class="dropdown-item" href="{% url 'c_canal_lis' %}">Listar</a>
+            <a class="dropdown-item" href="{% url 'c_canal_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'c_canal_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
 {% endblock canal_menu %} 
+
+
+
+{% block parcela_menu %}
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>PARCELA</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="#"><i class="fas fa-plus"></i>  REGISTRAR</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-list-ol"></i> LISTAR</a>
+          </div>
+        </li>
+{% endblock parcela_menu %}
 
 
 {% block destajo_menu %} 
        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-draw-polygon"></i>
-            <span>DESTAJOS</span>
+            <span>LIMPIEZA</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_destajo_reg' %}">Registrar</a>
-            <a class="dropdown-item" href="{% url 'c_destajo_lis' %}">Listar</a>
-            <a class="dropdown-item" href="#">Canal Madre</a>
-            <a class="dropdown-item" href="#">Ramal 1</a>
-            <a class="dropdown-item" href="#">Ramal 2</a>
+            <a class="dropdown-item" href="{% url 'c_limpia_reg' %}"><i class="fas fa-plus"></i>  LIMPIEZA</a>
+            <a class="dropdown-item" href="{% url 'c_limpia_lis' %}"><i class="fas fa-list-ol"></i>  LIMPIEZA</a>
+            <a class="dropdown-item" href="{% url 'c_destajo_reg' %}"><i class="fas fa-plus"></i>  DESTAJO</a>
+            <a class="dropdown-item" href="{% url 'c_destajo_lis' %}"><i class="fas fa-list-ol"></i>  DESTAJOS</a>
           </div>
         </li>
 {% endblock destajo_menu %} 
@@ -193,8 +208,8 @@
             <span>MULTAS</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_multa_reg' %}">Registrar</a>
-            <a class="dropdown-item" href="{% url 'c_multa_lis' %}">Listar</a>
+            <a class="dropdown-item" href="{% url 'c_multa_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'c_multa_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
 {% endblock multas_menu %} 
@@ -455,7 +470,7 @@
 
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                    <tr style="background: #B3EBAC">
 
@@ -497,7 +512,7 @@
                     
                   </tbody>
                 </table>
-              </div>
+              </div> 
               <div class="row">
 
                   <div class="col-5">
@@ -509,6 +524,9 @@
                         </a>
                   {% endblock btn_t %} </div>
 
+
+
+                {% block paginacion2 %}
                       <div class="col-2">
                         {% if page_obj.has_previous %}
                           <ul class="pagination pagination-sm" >
@@ -537,6 +555,7 @@
                           </ul> 
                         {% endif %}
                       </div>
+                      {% endblock paginacion2 %}
                   </div>
                   
             </div>
@@ -658,6 +677,7 @@
 
   <!--  JS -->
     <script src="{% static 'js/canalero.js' %}"></script>
+    <script src="{% static 'js/tableToExcel.js' %}"></script>
     {% endblock js %}
 
   </body>

@@ -163,8 +163,8 @@ class Canal(models.Model):
         db_table = 'canal'
 
     def __str__(self):
-        cadena="[{0}] {1}"
-        return cadena.format(self.id_canal,self.nombre)
+        cadena="{0}"
+        return cadena.format(self.nombre)
 
 
 class Caudal(models.Model):
@@ -245,6 +245,12 @@ class DatosPersonales(models.Model):
 
 
 class Destajo(models.Model):
+    ESTADO = (
+        ('0', 'REGISTRADO'),
+        ('1', 'HABILITADO'),
+        ('2', 'EN LIMPIA'),
+        ('3', 'MULTADO'),
+    )
     id_destajo = models.AutoField(primary_key=True)
     id_canal = models.ForeignKey(Canal, models.DO_NOTHING, db_column='id_canal', blank=True, null=True)
     id_parcela = models.ForeignKey('Parcela', models.DO_NOTHING, db_column='id_parcela', blank=True, null=True)
@@ -252,10 +258,13 @@ class Destajo(models.Model):
     num_orden = models.IntegerField(blank=True, null=True)
     fecha_registro = models.DateField(blank=True, null=True, editable=False)
     descripcion = models.CharField(max_length=45, blank=True, null=True)
+    estado = models.CharField(max_length=1, blank=True, null=True,choices=ESTADO)
 
     class Meta:
         managed = False
         db_table = 'destajo'
+
+
 
 
 class DetAsambCanal(models.Model):
@@ -364,17 +373,31 @@ class HojaAsistencia(models.Model):
 
 
 class Limpieza(models.Model):
+    ESTADO = (
+        ('0', 'REGISTRADA'),
+        ('1', 'EN PROCESO'),
+        ('2', 'CERRADA'),
+    )
+    TIPO = (
+        ('0', 'GENERAL'),
+        ('1', 'DESFAGINE MATRIZ'),
+        ('2', 'DESFAGINE RAMALES'),
+        ('3', 'ALGUNOS RAMALES'),
+    )
     id_limpieza = models.AutoField(primary_key=True)
     decripcion = models.CharField(max_length=45, blank=True, null=True)
-    tipo = models.CharField(max_length=15, blank=True, null=True)
+    tipo = models.CharField(max_length=1, blank=True, null=True, choices=TIPO)
     fecha_registro = models.DateField(blank=True, null=True)
     fecha_limpieza = models.DateField(blank=True, null=True)
     fecha_revision = models.DateTimeField(blank=True, null=True)
+    hora_revision = models.TimeField(blank=True, null=True)
+    estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
 
     class Meta:
         managed = False
         db_table = 'limpieza'
 
+   
 
 class Lista(models.Model):
     id_lista = models.AutoField(primary_key=True)
@@ -480,8 +503,9 @@ class OrdenRiego(models.Model):
 
 class Parcela(models.Model):
     ESTADO = (
-        ('ACTIVA', 'ACTIVA'),
-        ('REGISTRADA', 'REGISTRADA'),
+        ('0', 'REGISTRADA'),
+        ('1', 'ACTIVA'),
+        ('2', 'NEGADA'),
     )
     id_parcela = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=60, blank=True, null=True)
@@ -502,8 +526,8 @@ class Parcela(models.Model):
         db_table = 'parcela'
 
     def __str__(self):
-        cadena = "[{0}] {1} - ubicada en {2}"
-        return cadena.format(self.id_parcela,self.nombre, self.ubicacion)
+        cadena = "{0} - ubicada en {1}"
+        return cadena.format(self.nombre, self.ubicacion)
 
 
 class Reparto(models.Model):
@@ -515,7 +539,8 @@ class Reparto(models.Model):
     ESTADO = (
         ('1', 'CREADO'),
         ('2', 'APERTURADO'),
-        ('3', 'CERRADO'),
+        ('3', 'EMITIDO'),
+        ('4', 'CERRADO'),
     )
     id_reparto = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=500, blank=True, null=True)

@@ -71,14 +71,18 @@
 				                			 <i class="far fa-eye"></i></a>{% endif %}
 				                	</div>
 				                	<div class="col-3">
-				                		{% if ob.estado == "3" %}.{% else %}
+				                		{% if ob.estado == "3" %}
+				                		<a href="{% url 'c_rep_rep' %}?pkr={{ob.pk}}" class="float-left text-white">
+				                			<i class="fas fa-print"></i></a>
+				                		{% else %}
 				                		<a href="{% url 'c_reparto_edi' ob.id_reparto %}" class="float-left text-white">
-				                			<i class="fas fa-cog"></i></a>{% endif %}
+				                			<i class="fas fa-cog"></i></a>
+				                		{% endif %}
 				                	</div>
 				                	<div class="col-3">
 				                		{% if ob.estado == "1" %}.{% else %}
 				                		<a href="{% url 'c_rep_print'%}?id_repa={{ ob.id_reparto }}" class="float-left text-white">
-				                			<i class="fas fa-print"></i> </a>{% endif %}
+				                			<i class="fas fa-money-bill"></i> </a>{% endif %}
 				                	</div>
 				            </div>
 			              </div>
@@ -119,7 +123,6 @@ LISTADO DE ÓRDENES DEL REPAERTO
 			<i class="fas fa-search"></i>
 		</button>
 <br><br>
-		<a href="{% url 'c_ordlis' %}?lst1={'a':1,'b':2}">probando</a>
 	</div>
 
 
@@ -194,6 +197,8 @@ LISTADO DE ÓRDENES DEL REPAERTO
 						<td><span id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-danger"><i class="fas fa-ban"></i>  RECHAZADA</span></td>
 					{% elif ob.estado == 'Aprobada' %}
 						<td><span  id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-success"><i class="fas fa-check"></i>  APROBADA</span></td>
+					{% elif ob.estado == 'Entregada' %}
+						<td><span  id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-secondary"><i class="fas fa-money-bill"></i>  ENTREGADA</span></td>
 					{% else %}
 						<td>{{ob.estado}}</td>
 					{% endif %}
@@ -215,6 +220,9 @@ LISTADO DE ÓRDENES DEL REPAERTO
 								<button class="btn btn-outline-danger btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Rechazada")'>
 									<i class="fas fa-ban"></i></button>
 
+								<button class="btn btn-outline-secondary btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Entregada")'>
+									<i class="fas fa-money-bill"></i></button>
+
 								<a class="btn btn-outline-info" href="{% url 'c_orden_hora' %}?id_ord={{ ob.id_orden_riego }}" >
 									<i class="far fa-clock"></i></a>
 							</div>
@@ -229,8 +237,14 @@ LISTADO DE ÓRDENES DEL REPAERTO
 
 
 
-{% block btn_nuevo %} {% url 'c_orden_apr_lis' %}?id_rep={{ reparto.id_reparto  }}{% endblock btn_nuevo %}
-{% block btn_t_text %} APROBAR TODO ESTE REPARTO{% endblock btn_t_text %}
+{% block btn_t %} 
+
+<div class="btn-group">
+	<a href="{% url 'c_orden_apr_lis' %}?id_rep={{ reparto.id_reparto  }}&&est_rep=Aprobada" class="btn btn-outline-success">APROBAR TODO</a>
+	<a href="{% url 'c_orden_apr_lis' %}?id_rep={{ reparto.id_reparto  }}&&est_rep=Entregada" class="btn btn-outline-secondary">ENTREGAR TODO</a>
+</div>
+
+ {% endblock btn_t %}
 
 
 

@@ -5,7 +5,7 @@ from apps.usuario.forms import OrdenRForm
 
 
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView,UpdateView,DeleteView, TemplateView
+from django.views.generic import ListView, CreateView,UpdateView,DeleteView, TemplateView, View
 
 
 import datetime
@@ -22,7 +22,7 @@ def Pruebas(request):
 
 class FiltrarParcelas(ListView):
     model = Parcela
-    template_name = 'u_misparcelas_lis.html'
+    template_name = 'parcela/u_misparcelas_lis.html'
 
     def get_queryset(self):
         queryset = super(FiltrarParcelas, self).get_queryset()
@@ -34,26 +34,39 @@ class FiltrarParcelas(ListView):
 
 class MisOrdenes(ListView):
     model = Parcela
-    template_name = 'u_mis_ordenes_lis.html'
+    template_name = 'orden/u_mis_ordenes_lis.html'
 
     def get_queryset(self):
         queryset = super(MisOrdenes, self).get_queryset()
         idauth = self.request.GET.get('id_auth')
-        queryset = OrdenRiego.objects.filter(id_parcela__id_auth_user=idauth)
+        queryset = OrdenRiego.objects.filter(id_parcela__id_auth_user=idauth).order_by('-pk')
         return queryset
 
 
-class VerRepartos(ListView):
-	model=Reparto
-	template_name='u_reparto_lis.html'
-	x = datetime.datetime.now()
-	queryset = Reparto.objects.filter(fecha_reparto__gte=x)
+
+class VerRepartos(View):
+
+	def get(self, request, *args, **kwargs):
+		from django.db import connection, transaction	
+		cursor = connection.cursor()
+		cursor.execute("CALL sp_rep_disponibles")
+		result = []
+		detalles = cursor.fetchall()
+		for row in detalles:
+		        dic = dict(zip([col[0] for col in cursor.description], row))				
+		        result.append(dic)
+		cursor.close()
+		diccionario={}
+		diccionario['object_list']=result
+		for d in result:
+			print('   - -  - >',d)
+		return render(request,'reparto/u_reparto_lis.html',diccionario)
 
 
 class EliOrden(UpdateView):
 	model=OrdenRiego
 	form_class=OrdenRForm
-	template_name='u_orden_eli.html'
+	template_name='orden/u_orden_eli.html'
 	success_url=reverse_lazy('usuario')
 
 	
@@ -65,7 +78,7 @@ class SolOrdenList(TemplateView):
 		idrepa = self.request.GET.get('id_repa')
 		parcelas=Parcela.objects.filter(id_auth_user=idauth)
 		reparto =Reparto.objects.get(id_reparto=idrepa)
-		return render(request,'u_orden_sol.html',{'parcelas':parcelas,'reparto':reparto})
+		return render(request,'orden/u_orden_sol.html',{'parcelas':parcelas,'reparto':reparto})
 
 	def post(self, request, *args, **kwargs):
 		id_repa = self.request.POST.get('id_repa')
@@ -84,7 +97,7 @@ class SolOrdenList(TemplateView):
 		validador['reparto'] = reparto
 		if float(cantidad) <= 0:
 			validador['mensaje'] = 'Ingrese horas correctas!'
-			return render(request,'u_orden_sol.html',validador)
+			return render(request,'orden/u_orden_sol.html',validador)
 		else: 
 			id_r=Reparto.objects.get(id_reparto=int(id_repa))
 			id_p=Parcela.objects.get(id_parcela=int(id_par))
@@ -100,75 +113,13 @@ class SolOrdenList(TemplateView):
 				ori.save()			
 				validador['hecho'] = True
 				validador['mensaje'] = 'Orden registrada con éxito'
-		return render(request,'u_orden_sol.html',validador)
+		return render(request,'orden/u_orden_sol.html',validador)
 
 
-
-
-	
-"""
-
-
-def registrar_usuario(request):	
-	if request.method == 'POST':
-		form = UsuarioForm(request.POST)
-		if form.is_valid():
-			form.save() 
-		return redirect('lista_usuarios')
-
-	else:
-		form=UsuarioForm()
-	return render(request,'registrar_usuario.html',{'form':form})
-
-
-
-
-
-        print("---------------------->",idauth)
-diccionario = {}
-	diccionario["parcelas"] = Parcela.objects.filter(id_auth_user=auth)
-	diccionario["id_repa"] = idrepa
-
-def ListaE(request):
-	auth = AuthUser.objects.all()
-	datos = DatosPersonales.objects.all()
-	diccionario = {}
-	diccionario["auth"] = auth
-	diccionario["datos"] = datos
-	return render(request,'listae.html',diccionario)
-
-
-
-class UsersListView(generic.ListView):
-    model = Publicacion
-    template_name = 'users/users_list.html'
-    context_object_name = 'users'
-    paginate_by = 20
-    queryset = User.objects.filter(is_superuser=False)
-
-    def get_queryset(self):
-
-        if self.request.user.is_superuser:
-            return User.objects.all()
-        else:
-            return User.objects.filter(is_superuser=False)
-
-	def get_queryset(self):
-        queryset = super(SolOrden, self).get_queryset()
-        idauth = self.request.GET.get('fecha_reparto')
-        queryset = Reparto.objects.filter(id_reparto=1)
-        return queryset
-
-
-	print(time.strftime("%H:%M:%S")) #Formato de 24 horas
-	print(time.strftime("%I:%M:%S")) #Formato de 12 horas
-	print (time.strftime("%d/%m/%y"))fecha_reparto__gte(datetime.datetime.now()))
-
-"""
 
 class NoticiaList(ListView):
 	model=Noticia
-	template_name='u_noticia_lis.html'
+	template_name='noticia/u_noticia_lis.html'
 	paginate_by=9
 
 
@@ -177,24 +128,24 @@ class NoticiaList(ListView):
 class OrdenDelete(DeleteView):
 	model=OrdenRiego
 	form_class=OrdenRForm
-	template_name='u_orden_eli.html'
+	template_name='orden/u_orden_eli.html'
 	success_url=reverse_lazy('u_orden_lis')
 
 class OrdenUpdate(UpdateView):
 	model=OrdenRiego
 	form_class=OrdenRForm
-	template_name='u_orden_reg.html'
+	template_name='orden/u_orden_reg.html'
 	success_url=reverse_lazy('u_orden_lis') 
 
 class OrdenCreate(CreateView):
 	model=OrdenRiego
 	form_class=OrdenRForm
-	template_name='u_orden_reg.html'
+	template_name='orden/u_orden_reg.html'
 	success_url=reverse_lazy('u_orden_lis')
 
 class OrdenList(ListView):
 	model=OrdenRiego
-	template_name='u_orden_lis.html'
+	template_name='orden/u_orden_lis.html'
 	paginate_by=10
 
 

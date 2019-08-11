@@ -4,36 +4,18 @@ from django.contrib.auth.models import User
 from apps.presidente.forms import RegistroForm
 
 
-from django.views.generic import CreateView
+from django.views.generic import CreateView, View
 from django.urls import reverse_lazy
 
 from django.contrib.auth import authenticate, login
 
 from django.contrib import messages
+from apps.inicio.models import AuthUser
+
+import time
 
 
-"""
 
-def login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                return redirect('index')
-        else:
-            messages.error(request,'username or password not correct')
-            return redirect('login')
-
-    else:
-        form = AuthenticationForm()
-    return render(request, 'todo/login.html', {'form': form})
-
-"""
 
 
 
