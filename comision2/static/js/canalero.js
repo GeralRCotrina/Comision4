@@ -234,7 +234,51 @@ function PintarModal(){
 	}else{
 		 btn_imp.innerHTML="";
 	}
+}
 
 
+function MrcDestajo(pkd,std){
+	var id_spn= "spn_"+pkd;
+	spn = document.getElementById(id_spn)
+
+	spn.classList.remove("badge-success");
+	spn.classList.remove("badge-primary");
+	spn.classList.remove("badge-warning");
+	spn.classList.remove("badge-danger");
+
+
+	if(std == 1){
+		spn.innerHTML="Revisado"
+		spn.classList.add("badge-primary");
+	}else if(std == 2){
+		spn.innerHTML="Mal Hecho"
+		spn.classList.add("badge-warning");
+	}else if(std == 3){
+		spn.innerHTML="No Hecho"
+		spn.classList.add("badge-danger");
+	}else{
+		spn.innerHTML="Err"
+	}
+
+	CmbStdDetDestajo(pkd,std);
+}
+
+
+function CmbStdDetDestajo(pkd,std){
+	var urll = document.getElementById('id_url_dtdestajo').value;
+
+
+	var xhr = new XMLHttpRequest();
+	var cad = ""+urll+"?pkd="+pkd+"&&std="+std;
+
+	xhr.open('GET',cad,true); // sincrono o asincrono
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			console.log(" >> "+xhr.response);
+		}
+	}
+	xhr.send();
 
 }
+
+		

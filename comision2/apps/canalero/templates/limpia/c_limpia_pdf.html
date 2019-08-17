@@ -1,0 +1,35 @@
+{% extends "c_base.html" %}
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+
+{% block pdfs_menu %}	
+{% endblock pdfs_menu %} 
+
+
+
+{% block cuerpo %}
+
+
+	{% if pdf %}
+	 	<h1 class="text-success">{{ pdf }}</h1>
+	 {% else %}
+	 	<h1 class="text-muted">No llegó el PDF</h1>
+	 {% endif %} 
+
+	<div class="row container h-100">
+		<div class="col h-100">
+			<embed src="/static/{{ url_pdf }}" width="100%" height="100%"></embed>
+		</div>
+	</div>
+	<br>
+	<br>
+
+{% endblock cuerpo %}

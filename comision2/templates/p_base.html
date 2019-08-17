@@ -327,7 +327,10 @@
          {% block tabla %}
 
             <div class="card mb-3">
-              <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}</div>
+              <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}
+                      <a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+              </div>
 
                 <div class="row p-1">
 
@@ -565,7 +568,8 @@
 
   <!--  JS -->
     <script src="{% static 'js/presidente.js' %}"></script>
-    <script src="{% static 'js/presidenteAsam.js' %}"></script>
+    <script src="{% static 'js/presidenteAsam.js' %}"></script>    
+    <script src="{% static 'js/tableToExcel.js' %}"></script>
 
     {% endblock js %}
 

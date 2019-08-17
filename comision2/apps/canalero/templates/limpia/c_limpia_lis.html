@@ -1,0 +1,122 @@
+{% extends "c_base.html" %}
+
+
+{% block txt_cabecera %}
+	NOTICIAS
+{% endblock txt_cabecera %}
+
+
+
+{% block usuario_menu %}	
+{% endblock usuario_menu %}
+
+
+{% block noticia_menu %}	
+{% endblock noticia_menu %}
+
+
+
+{% block pdfs_menu %}	
+{% endblock pdfs_menu %} 
+
+
+{% block noticias %}
+
+{% endblock noticias %}
+
+
+{% block noticias1 %}
+{% endblock noticias1 %}
+ 
+
+
+{% block titulo_tabla %}Listado de Limpiezas{% endblock titulo_tabla %}
+
+{% block td1_tabla %}
+	<td>Id</td>
+	<td>DESCRIPCIÓN</td>
+	<td>TIPO</td>
+	<td>SE REGISTRÓ</td>
+	<td>COMIENZA</td>
+	<td>FINALIZA</td>
+	<td>ESTADO</td>
+	<td></td>
+{% endblock td1_tabla %}
+
+{% block td2_tabla %}
+	<td>Id</td>
+	<td>DESCRIPCIÓN</td>
+	<td>TIPO</td>
+	<td>SE REGISTRÓ</td>
+	<td>COMIENZA</td>
+	<td>FINALIZA</td>
+	<td>ESTADO</td>
+	<td></td>
+{% endblock td2_tabla %}
+
+
+{% block body_tabla %}
+	{% csrf_token %}
+
+	{% if object_list %}
+		{% for ob in object_list %}
+
+		<tr style="font-size:0.9em">
+			<td>{{ob.id_limpieza}}</td>
+			<td style="font-size:0.8em"> {{ ob.decripcion }}</td>
+			<td><span class="badge badge-pill badge-secondary">
+				{% if ob.tipo == '0' %} GENEAL {% elif ob.tipo == '1' %} DEFAGINE MATRIZ
+				{% elif ob.tipo == '2' %} DESFAGINE RAMALES
+				{% elif ob.tipo == '3' %} RAMALES
+				{% endif %}</span>
+			</td>
+			<td>{{ ob.fecha_registro.day }}/{{ ob.fecha_registro.month }}/{{ ob.fecha_registro.year }}</td>
+			<td>{{ ob.fecha_limpieza.day }}/{{ ob.fecha_limpieza.month }}/{{ ob.fecha_limpieza.year }}</td>
+			<td>{{ ob.fecha_revision.day }}/{{ ob.fecha_revision.month }}/{{ ob.fecha_revision.year }}   {{ ob.hora_revision }}</td>
+			<td> 
+				{% if  ob.estado == '0' %}
+					<span class="badge badge-pill badge-info">REGISTRADA</span>
+				{% elif  ob.estado == '1' %}
+					<span class="badge badge-pill badge-success">EN PROCESO</span>
+				{% elif  ob.estado == '2' %}
+					<span class="badge badge-pill badge-secondary">CERRADA</span>
+				{% else %}
+					Err
+				{% endif %}
+			</td>
+			<td>
+				<div class="btn-group btn-sm text-center">
+					<a class="btn btn-sm btn-outline-warning" href="{% url 'c_limpia_edi' ob.id_limpieza %}">
+						<i class="far fa-edit"></i></a>
+
+				{% if ob.estado != '0' %}	
+					<a class="btn btn-sm btn-outline-success" href="{% url 'c_limp_rev' ob.id_limpieza %}" >
+						<i class="fas fa-check-double"></i></a>
+					<a class="btn btn-sm btn-outline-secondary" href="{% url 'c_limp_pie' ob.id_limpieza %}" >
+						<i class="fas fa-chart-pie"></i></a>
+					<a class="btn btn-sm btn-outline-secondary" href="{% url 'c_limp_pdf' ob.id_limpieza %}" >
+						<i class="fas fa-file-pdf"></i></a>
+				{% endif %}					
+					<a class="btn btn-sm btn-outline-danger" href="{% url 'c_limpia_eli' ob.id_limpieza %}" >
+						<i class="far fa-trash-alt"></i></a>
+				</div>
+			</td>
+		</tr>
+
+		{% endfor %}				
+	{% else %}
+		<h1>NO HAY LIMPIEZAS REGISTRADAS</h1>
+	{% endif %}
+
+{% endblock body_tabla %}
+
+
+{% block btn_nuevo %} {% url 'c_limpia_reg' %} {% endblock btn_nuevo %}
+
+
+
+
+
+{% block graficos %}
+	
+{% endblock graficos %}

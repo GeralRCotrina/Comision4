@@ -1,5 +1,5 @@
 from django import forms
-from apps.inicio.models import Reparto, Multa, MultaAsistencia, MultaLimpia, MultaOrden, Destajo, Limpieza
+from apps.inicio.models import Reparto, Multa, Destajo, Limpieza
 from django.forms import DateTimeField
 
 
@@ -24,8 +24,8 @@ class LimpiezaForm(forms.ModelForm):
 			    'tipo':forms.Select(attrs={'class':'form-control'}),
 			    'fecha_limpieza':forms.DateTimeInput(attrs={'class':'form-control col-7','placeholder':'dd/mm/aaaa','type':'date'}),
 			    'fecha_revision':forms.DateTimeInput(attrs={'class':'form-control col-7','placeholder':'dd/mm/aaaa','type':'date'}),
-			    'hora_revision':forms.TimeInput(attrs={'class':'form-control col-4','type':'time'}),
-			    'estado':forms.Select(attrs={'class':'form-control col-4'}),
+			    'hora_revision':forms.TimeInput(attrs={'class':'form-control col-7','type':'time'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
 		    }
 
 
@@ -34,11 +34,12 @@ class RepartoForm(forms.ModelForm):
 	class Meta:
 		model = Reparto
 		
-		fields = ['id_reparto','descripcion','tipo','fecha_reparto','hora_reparto','estado']	
+		fields = ['id_reparto','descripcion','tipo','fecha_registro','fecha_reparto','hora_reparto','estado']	
 
 		labels = {
 			'descripcion':'Breve descripción',
 			'tipo':'Tipo de reparto',
+			'fecha_registro':'Fecha de registro',
 			'fecha_reparto':'Fecha de entrega de órdenes',
 			'hora_reparto':'Hora de reparto',
 			'estado':'Estado',
@@ -47,9 +48,10 @@ class RepartoForm(forms.ModelForm):
 		widgets={	
 				'descripcion':forms.Textarea(attrs={'class':'form-control','rows':'5'}),
 			    'tipo':forms.Select(attrs={'class':'form-control'}),
-			    'fecha_reparto':forms.DateTimeInput(attrs={'class':'form-control col-7','placeholder':'dd/mm/aaaa','type':'date'}),
-			    'hora_reparto':forms.TimeInput(attrs={'class':'form-control col-4','type':'time'}),
-			    'estado':forms.Select(attrs={'class':'form-control col-4'}),
+			    'fecha_registro':forms.DateTimeInput(attrs={'class':'form-control col-7','type':'date','disabled':'disabled'}),
+			    'fecha_reparto':forms.DateTimeInput(attrs={'class':'form-control col-7','type':'date'}),
+			    'hora_reparto':forms.TimeInput(attrs={'class':'form-control col-7','type':'time'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
 		    }
 
 
@@ -61,14 +63,15 @@ class DestajoForm(forms.ModelForm):
 	class Meta:
 		model = Destajo
 
-		fields = ['id_destajo','id_canal','id_parcela','tamano','num_orden','descripcion','estado']	
+		fields = ['id_destajo','id_canal','id_parcela','tamano','num_orden','descripcion','fecha_registro','estado']	
 
 		labels = {
 			'id_canal':'Seleccione el canal en el que se ubica',
 			'id_parcela':'La parcela a la que corresponde',
-			'tamano':'tamaño en metros',
-			'num_orden':'númer de destajo en el canal',
+			'tamano':'Tamaño en metros',
+			'num_orden':'Número de orden en el canal',
 			'descripcion':'Descripción',
+			'fecha_registro':'Fecha registro',
 			'estado':'Estado'
 		}
 
@@ -78,7 +81,8 @@ class DestajoForm(forms.ModelForm):
 			    'tamano':forms.TextInput(attrs={'class':'form-control'}),
 			    'num_orden':forms.TextInput(attrs={'class':'form-control'}),
 			    'descripcion':forms.TextInput(attrs={'class':'form-control'}),
-			    'estado':forms.Select(attrs={'class':'form-control col-4'}),
+			    'fecha_registro':forms.TextInput(attrs={'class':'form-control','disabled':'disabled'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
 		    }
 
 
@@ -93,67 +97,12 @@ class MultaForm(forms.ModelForm):
 			'concepto':'Concepto de la multa',
 			'fecha':'Fecha de emisión',
 			'estado':'Estado de la Multa',
-			'tipo':'tipo de la Multa',
+			'tipo':'Tipo de la Multa',
 		}
 
-		widgets={	
-			    'tipo':forms.TextInput(attrs={'class':'form-control'}),
-			    'concepto':forms.Textarea(attrs={'class':'form-control'}),
-			    'fecha':forms.DateInput(attrs={'class':'form-control','type':'date'}),
-			    'estado':forms.TextInput(attrs={'class':'form-control'}),
-			    'tipo':forms.TextInput(attrs={'class':'form-control'}),
+		widgets={
+			    'concepto':forms.Textarea(attrs={'class':'form-control','rows':'5'}),
+			    'fecha':forms.DateInput(attrs={'class':'form-control col-7','type':'date','disabled':'disabled'}),
+			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
+			    'tipo':forms.Select(attrs={'class':'form-control col-7'}),
 		    }
-
-
-class MultaAsistenciaForm(forms.ModelForm):
-
-	class Meta:
-		model = MultaAsistencia
-
-		fields=['id_multa_asistencia','id_multa','id_hoja_asistencia']
-
-		labels = {
-		'id_multa':'Multa',
-		'id_hoja_asistencia':'Asistencia a multar',
-		}
-
-		widgets={
-		'id_multa':forms.Select(attrs={'class':'form-control'}),
-		'id_hoja_asistencia':forms.Select(attrs={'class':'form-control'}),
-		}
-
-
-class MultaLimpiaForm(forms.ModelForm):
-
-	class Meta:
-		model = MultaLimpia
-
-		fields=['id_multa_limpia','id_multa','id_det_limpia']
-
-		labels = {
-		'id_multa':'Multa',
-		'id_det_limpia':'Destajo a Multar',
-		}
-
-		widgets={
-		'id_multa':forms.Select(attrs={'class':'form-control'}),
-		'id_det_limpia':forms.Select(attrs={'class':'form-control'}),
-		}
-
-
-class MultaOrdenForm(forms.ModelForm):
-
-	class Meta:
-		model = MultaOrden
-
-		fields=['id_multa_orden','id_multa','id_orden']
-
-		labels = {
-		'id_multa':'Multa',
-		'id_orden':'Orden a Multar',
-		}
-
-		widgets={
-		'id_multa':forms.Select(attrs={'class':'form-control'}),
-		'id_orden':forms.Select(attrs={'class':'form-control'}),
-		}

@@ -31,7 +31,7 @@
 
     <nav class="navbar navbar-expand  static-top" style="background: #317631">
 
-      <a class="navbar-brand mr-1 text-white" href="{% url 'usuario' %}"> {% block txt_cabecera %} USUARIO {% endblock txt_cabecera %} </a>
+      <a class="navbar-brand mr-1 text-white" href="{% url 'usuario' %}">{{ request.user.first_name}}</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
@@ -289,7 +289,10 @@
          {% block tabla %}
 
             <div class="card mb-3">
-              <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}</div>
+              <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}
+                      <a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+              </div>
 
                <div class="row p-1">
 
@@ -503,6 +506,9 @@
     <script src="{% static 'js/demo/chart-bar-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
     <script src="{% static 'js/teclaayudau.js' %}"></script>
+
+    
+    <script src="{% static 'js/tableToExcel.js' %}"></script>
 
     {% endblock js %}
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html manifest="" lang="es">
+<head>
+<title>Órdenes del reparto</title>
+<link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.css">
+<script src="../highcharts/highcharts.js"></script>
+<script src="../highcharts/data.js"></script>
+<script src="../highcharts/drilldown.js"></script>
+</head>
+<body>
+
+	{% if dtlmp %}
+
+			<div class="row breadcrumb" style="height: 70px; width: 100%;">
+                <div class="col">
+                  <div class="float-left">
+                    <img src="../logo.png" style="height: 55px; width: 80px;">
+                    <strong class="font-italic">Comité de Renates NUEVO HORIZONTE</strong>
+                  </div>
+                  <div class="float-right h-100 w-50 p-1 text-right">
+                     <p class="font-italic display-7">{{fecha}}</p>                  
+                  </div>
+                </div>
+              </div>
+
+
+
+             <div class="row" style="position: relative; height: 130px; padding-left:4px;">
+             	<div class="col-6 h-100" style="float: left;">
+             		{% if lmp %}
+             			<strong>LIMPIEZA:</strong><i style="color:white;">____________</i>
+             				<STRONG> {% if lmp.tipo == '0' %}GENERAL{% elif lmp.tipo =='1' %}MATRIZ {% else %}RAMALES {% endif %}</STRONG> <br>
+	             		<strong>ESTADO:</strong><i style="color:white;">_____________</i> <span class="badge badge-pill badge-secondary">
+	             			{% if lmp.estado == '0' %}REGISTRADA{% elif lmp.estado =='1' %}EN PROCESO {% else %}CERRADA {% endif %}</span> <br>
+	             		<strong>FECHA:</strong><i style="color:white;">_______________</i> <i>  {{lmp.fecha_limpieza}}</i><br>
+	             		<strong>DESCRIPCIÓN:</strong><i style="color:white;">________</i><i font-style="italic">{{lmp.decripcion}}</i><br>	
+	             	{% else %}
+	             		Err al traer el lmp
+             		{% endif %}	             		
+             	</div>
+             	<div class="col-5 h-100 mb-2 mr-4" style="float: right; border: dotted;">
+             		<strong>TOTAL DESTAJOS:</strong><i style="color:white;">________________</i><i>{{dt}}</i> <br>
+             		<strong>DESTAJOS BIEN HECHOS:</strong><i style="color:white;">________</i><i>{{db}}</i> <br>
+             		<strong>DESTAJOS MAL HECHOS:</strong><i style="color:white;">_________</i><i>{{dm}}</i> <br>
+             		<strong>DESTAJOS NO HECHOS:</strong><i style="color:white;">__________</i><i>{{dn}}</i> <br>
+
+             	</div>
+             </div>
+
+
+
+		<table class="table table-sm">
+			<thead>
+				<tr style="background:#E7E4E4; font-style:italic">
+					<td>CANAL</td><td>N° DESTAJO</td><td>PARCELA</td><td>USUARIO</td><td>ESTADO</td><td>TAMAÑO</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for o in dtlmp %}
+					<tr>
+						<td>{{o.canal}}</td><td>{{o.orden}}</td><td>{{o.parcela}}</td><td>{{o.usuario}}</td>
+						<td>
+							{% if o.estado == '0' %}
+								<span class="badge badge-secondary">No Revisado</span>
+							{% elif  o.estado == '1' %}
+								<span class="badge badge-secondary">Revisado</span>
+							{% elif  o.estado == '2' %}
+								<span class="badge badge-secondary">Mal Hecho</span>
+							{% elif  o.estado == '3' %}
+								<span class="badge badge-secondary">No Hecho</span>
+							{% else %}
+								Err
+							{% endif %}
+						</td>
+						<td>{{o.tamano}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	{% else %}
+		ERR: no llego la consulta, contacte al administrador del sistema.
+	{% endif %}
+	
+</body> 

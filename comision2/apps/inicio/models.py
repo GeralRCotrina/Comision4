@@ -1,18 +1,18 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
-from django.db import models
-#from django.contrib.auth.models import User
 
-# En este punto, el usuario es un objeto User que ya se ha guardado
-# a la base de datos. Puedes continuar cambiando sus atributos
-# si desea cambiar otros campos.
+from django.db import models
 
 from django.utils.translation import ugettext as _
+
+
+from datetime import datetime
+def get_date_now():
+    return datetime.now().strftime("%Y-%m-%d")
+
+def get_hour_now():
+    return datetime.now().strftime("%H:%M:%S")
+
+def get_hour_rep():
+    return datetime.now().strftime("16:30:00")
 
 
 class AgendaAsamblea(models.Model):
@@ -256,7 +256,7 @@ class Destajo(models.Model):
     id_parcela = models.ForeignKey('Parcela', models.DO_NOTHING, db_column='id_parcela', blank=True, null=True)
     tamano = models.FloatField(blank=True, null=True)
     num_orden = models.IntegerField(blank=True, null=True)
-    fecha_registro = models.DateField(blank=True, null=True, editable=False)
+    fecha_registro = models.DateField(default=get_date_now)
     descripcion = models.CharField(max_length=45, blank=True, null=True)
     estado = models.CharField(max_length=1, blank=True, null=True,choices=ESTADO)
 
@@ -278,15 +278,25 @@ class DetAsambCanal(models.Model):
 
         
 class DetLimpieza(models.Model):
+    ESTADO = (
+        ('0', 'CREADO'),
+        ('1', 'VERIFICADO'),
+        ('2', 'MAL HECHO'),
+        ('3', 'NO HECHO'),
+    )
     id_det_limpieza = models.AutoField(primary_key=True)
     id_destajo = models.ForeignKey(Destajo, models.DO_NOTHING, db_column='id_destajo', blank=True, null=True)
     id_limpieza = models.ForeignKey('Limpieza', models.DO_NOTHING, db_column='id_limpieza', blank=True, null=True)
-    estado = models.CharField(max_length=15, blank=True, null=True)
+    estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
     fecha = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'det_limpieza'
+
+
+
+
 
 
 class DetLista(models.Model):
@@ -372,6 +382,8 @@ class HojaAsistencia(models.Model):
         db_table = 'hoja_asistencia'
 
 
+
+
 class Limpieza(models.Model):
     ESTADO = (
         ('0', 'REGISTRADA'),
@@ -382,32 +394,31 @@ class Limpieza(models.Model):
         ('0', 'GENERAL'),
         ('1', 'DESFAGINE MATRIZ'),
         ('2', 'DESFAGINE RAMALES'),
-        ('3', 'ALGUNOS RAMALES'),
     )
     id_limpieza = models.AutoField(primary_key=True)
-    decripcion = models.CharField(max_length=45, blank=True, null=True)
+    decripcion = models.CharField(max_length=500, blank=True, null=True)
     tipo = models.CharField(max_length=1, blank=True, null=True, choices=TIPO)
-    fecha_registro = models.DateField(blank=True, null=True)
-    fecha_limpieza = models.DateField(blank=True, null=True)
-    fecha_revision = models.DateTimeField(blank=True, null=True)
-    hora_revision = models.TimeField(blank=True, null=True)
+    fecha_registro = models.DateField(default=get_date_now)
+    fecha_limpieza = models.DateField(default=get_date_now)
+    fecha_revision = models.DateTimeField(default=get_date_now)
+    hora_revision = models.TimeField(default=get_hour_now)
     estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
 
     class Meta:
         managed = False
         db_table = 'limpieza'
 
-   
+
 
 class Lista(models.Model):
     id_lista = models.AutoField(primary_key=True)
     id_comite = models.ForeignKey(Comite, models.DO_NOTHING, db_column='id_comite', blank=True, null=True)
     nombre_lista = models.CharField(max_length=100, blank=True, null=True)
-    fecha_creacion = models.DateTimeField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(default=get_date_now)
     estado = models.CharField(max_length=20, blank=True, null=True)
     foto = models.CharField(max_length=150, blank=True, null=True)
-    fecha_inicio = models.DateField(blank=True, null=True)
-    fecha_termino = models.DateField(blank=True, null=True)
+    fecha_inicio = models.DateField(default=get_date_now)
+    fecha_termino = models.DateField(default=get_date_now)
 
     class Meta:
         managed = False
@@ -415,52 +426,32 @@ class Lista(models.Model):
 
 
 class Multa(models.Model):
+    ESTADO = (
+        ('0', 'CREADA'),
+        ('1', 'PAGADA'),
+        ('2', 'ANULADA'),
+    )
+    TIPO = (
+        ('0', 'POR INASISTENCIA'),
+        ('1', 'POR NO LIMPIAR DESTAJO'),
+        ('2', 'ORDEN DE RIEGO'),
+    )
     id_multa = models.AutoField(primary_key=True)
     concepto = models.CharField(max_length=100, blank=True, null=True)
-    fecha = models.DateTimeField(blank=True, null=True)
-    estado = models.CharField(max_length=10, blank=True, null=True)
-    tipo = models.CharField(max_length=15, blank=True, null=True)
+    fecha = models.DateTimeField(default=get_date_now)
+    estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
+    tipo = models.CharField(max_length=1, blank=True, null=True, choices=TIPO)
 
     class Meta:
         managed = False
         db_table = 'multa'
 
 
-class MultaAsistencia(models.Model):
-    id_multa_asistencia = models.AutoField(primary_key=True)
-    id_multa = models.ForeignKey(Multa, models.DO_NOTHING, db_column='id_multa')
-    id_hoja_asistencia = models.ForeignKey(HojaAsistencia, models.DO_NOTHING, db_column='id_hoja_asistencia')
-
-    class Meta:
-        managed = False
-        db_table = 'multa_asistencia'
-
-
-class MultaLimpia(models.Model):
-    id_multa_limpia = models.AutoField(primary_key=True)
-    id_multa = models.ForeignKey(Multa, models.DO_NOTHING, db_column='id_multa')
-    id_det_limpia = models.ForeignKey(DetLimpieza, models.DO_NOTHING, db_column='id_det_limpia')
-
-    class Meta:
-        managed = False
-        db_table = 'multa_limpia'
-
-
-class MultaOrden(models.Model):
-    id_multa_orden = models.AutoField(primary_key=True)
-    id_orden = models.ForeignKey('OrdenRiego', models.DO_NOTHING, db_column='id_orden')
-    id_multa = models.ForeignKey(Multa, models.DO_NOTHING, db_column='id_multa')
-
-    class Meta:
-        managed = False
-        db_table = 'multa_orden'
-
-
 class Noticia(models.Model):
     id_noticia = models.AutoField(primary_key=True)
     titular = models.CharField(max_length=45, blank=True, null=True)
     descripcion = models.CharField(max_length=400, blank=True, null=True)
-    fecha = models.DateTimeField(blank=True, null=True)
+    fecha = models.DateTimeField(default=get_date_now)
     foto = models.ImageField(upload_to='photos')
 
     class Meta:
@@ -472,7 +463,7 @@ class Obra(models.Model):
     id_obra = models.AutoField(primary_key=True)
     id_canal = models.ForeignKey(Canal, models.DO_NOTHING, db_column='id_canal', blank=True, null=True)
     decripcion = models.CharField(max_length=100, blank=True, null=True)
-    fecha = models.DateField(blank=True, null=True)
+    fecha = models.DateField(default=get_date_now)
     monto = models.FloatField(blank=True, null=True)
     foto = models.CharField(max_length=150, blank=True, null=True)
 
@@ -485,7 +476,7 @@ class OrdenRiego(models.Model):
     id_orden_riego = models.AutoField(primary_key=True)
     id_reparto = models.ForeignKey('Reparto', models.DO_NOTHING, db_column='id_reparto', blank=True, null=True)
     id_parcela = models.ForeignKey('Parcela', models.DO_NOTHING, db_column='id_parcela', blank=True, null=True)
-    fecha_establecida = models.DateField(blank=True, null=True)
+    fecha_establecida = models.DateField(default=get_date_now)
     fecha_inicio = models.DateTimeField(blank=True, null=True)
     duracion = models.FloatField(blank=True, null=True)
     unidad = models.CharField(max_length=15, blank=True, null=True)
@@ -545,9 +536,9 @@ class Reparto(models.Model):
     id_reparto = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=500, blank=True, null=True)
     tipo = models.CharField(max_length=15, blank=True, null=True, choices=TIPO)
-    fecha_registro = models.DateField(blank=True, null=True, editable=False)
-    fecha_reparto = models.DateField(blank=False, null=True)
-    hora_reparto = models.TimeField(blank=False, null=True)
+    fecha_registro = models.DateField(default=get_date_now)
+    fecha_reparto = models.DateField(default=get_date_now)
+    hora_reparto = models.TimeField(default=get_hour_now)
     estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
 
     class Meta:

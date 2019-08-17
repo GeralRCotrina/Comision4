@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, View
-from apps.inicio.models import Reparto, Multa, DatosPersonales, Noticia, Parcela, Canal, Destajo, OrdenRiego, Caudal, Limpieza
-from apps.canalero.forms import RepartoForm, MultaForm, DestajoForm
+from apps.inicio.models import *
+from apps.canalero.forms import *
 
 
 from apps.presidente.forms import ParcelaForm, CanalForm, NoticiaForm
@@ -134,7 +134,7 @@ class ImpLstOrd(View):
 		result = []
 		print(" ---------------------ciclo FOR---- (actualizado)--------------")
 		for i in range(t):
-			print("  > i="+str(i)+"  | jsn[i]="+str(jsn[str(i)]))
+			print("  > jsn["+str(i)+"]="+str(jsn[str(i)]))
 			
 			cursor = connection.cursor()
 			cursor.execute("CALL sp_imp_orden ("+str(jsn[str(i)])+")")
@@ -656,11 +656,26 @@ class DestajoDelete(DeleteView):
 
 
 
-class MultaCreate(CreateView):
-	model=Multa
-	form_class=MultaForm
-	template_name='multa/c_multa_reg.html'
-	success_url=reverse_lazy('c_multa_lis')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class MultaList(ListView):
 	model=Multa
@@ -678,6 +693,50 @@ class MultaDelete(DeleteView):
 	form_class=MultaForm
 	template_name='multa/c_multa_eli.html'
 	success_url=reverse_lazy('c_multa_lis')
+
+
+
+
+    
+class MultaCreate(CreateView):
+	model=Multa
+	form_class=MultaForm
+	template_name='multa/c_multa_reg.html'
+	success_url=reverse_lazy('c_multa_lis')
+
+	def get(self, request, *args, **kwargs):
+		print("  > > GET de CreateView")
+		#return  render(request,'destajo/c_destajo_lis.html',dicc)
+		return render(request, self.template_name, {'form': self.form_class} )
+
+
+	def post(self,request,*args,**kwargs):
+		print("  > > POST de CreateView")
+		jsn = {}
+
+		concept = self.request.POST.get('concepto')
+		estad = self.request.POST.get('estado')
+		tip = self.request.POST.get('tipo')
+		fech = datetime.datetime.now().strftime("%Y-%m-%d")
+
+		if self.request.POST.get('tipo') == "0":
+			lstaa = HojaAsistencia.objects.all()
+		elif self.request.POST.get('tipo') == "1":
+			lstaa = Destajo.objects.all()
+		elif self.request.POST.get('tipo') == "2":
+			lstaa = OrdenRiego.objects.all()
+		else:
+			print(" > Err")
+
+		mult = Multa(concepto=concept,fecha=fech,estado=estad,tipo=tip)
+
+		print("  > name: "+concept+" > "+str(fech)+" > "+str(estad)+" > "+str(tip))
+		
+		return render(request,'multa/c_mul_fin.html', {'lstaa': lstaa} )
+   
+
+
+
 
 
 
@@ -832,23 +891,246 @@ class RegistrarUsuario(CreateView):
 class LimpiaDelete(DeleteView):
 	model=Limpieza
 	form_class=LimpiezaForm
-	template_name='destajo/c_limpia_eli.html'
+	template_name='limpia/c_limpia_eli.html'
 	success_url=reverse_lazy('c_limpia_lis')
+
+	def get(self, request, *args, **kwargs):
+		print("  > > GET de DeleteView")
+		pkl=self.kwargs.get('pk')
+		print("  >>  --|- "+str(pkl))
+		return render(request, self.template_name, {'form': self.form_class} )
+
+
+	def post(self,request,*args,**kwargs):
+		print("  > > POST de DeleteView")
+		pkl=self.kwargs.get('pk')
+		lmp=Limpieza.objects.get(pk=pkl)
+		if DetLimpieza.objects.filter(id_limpieza=lmp).exists():
+			DetLimpieza.objects.filter(id_limpieza=lmp).delete()
+		lmp.delete()
+		object_list = Limpieza.objects.all().order_by('-pk')
+		return render(request, 'limpia/c_limpia_lis.html', {'object_list': object_list} )
+
 
 class LimpiaUpdate(UpdateView):
 	model=Limpieza
 	form_class=LimpiezaForm
-	template_name='destajo/c_limpia_reg.html'
+	template_name='limpia/c_limpia_reg.html'
 	success_url=reverse_lazy('c_limpia_lis') 
 
 class LimpiaCreate(CreateView):
 	model=Limpieza
 	form_class=LimpiezaForm
-	template_name='destajo/c_limpia_reg.html'
+	template_name='limpia/c_limpia_reg.html'
 	success_url=reverse_lazy('c_limpia_lis')
 
 class LimpiaList(ListView):
 	model=Limpieza
-	template_name='destajo/c_limpia_lis.html'
+	template_name='limpia/c_limpia_lis.html'
 	paginate_by=9
 
+	def get(self, request, *args, **kwargs):
+		pkl=self.kwargs.get('pk')
+		object_list = Limpieza.objects.all().order_by('-pk')
+		return render(request, self.template_name, {'object_list': object_list} )
+
+class LimpiaRev(View):
+
+	def get(self, request, *args, **kwargs):
+		dicc ={}
+		pkl=self.kwargs.get('pk')
+
+		dicc['lmp']=Limpieza.objects.get(pk=pkl)
+		limp=Limpieza.objects.get(pk=pkl)
+
+		if Limpieza.objects.filter(pk=pkl).exists():
+			print("  >> existe la limpia, bueno llegó")
+			if DetLimpieza.objects.filter(id_limpieza=limp).exists():
+				print("  >> ya tiene su detalle ")
+			else:
+				print("  >> se creará detalle")
+				if Limpieza.objects.get(pk=pkl).tipo == "0":
+					print("  >> es GENERAL")
+					tds=Destajo.objects.all()
+					for d in tds:
+						dtlmp = DetLimpieza(id_destajo=d,id_limpieza=limp,estado="0",fecha="2019-01-01 00:00:00")
+						dtlmp.save()
+
+				elif Limpieza.objects.get(pk=pkl).tipo == "1":
+					print("  >> es DESFAGINE MATRIZ")
+					tds=Destajo.objects.filter(id_canal=1)
+					for d in tds:
+						dtlmp = DetLimpieza(id_destajo=d,id_limpieza=limp,estado="0",fecha="2019-01-01 00:00:00")
+						dtlmp.save()
+
+				elif Limpieza.objects.get(pk=pkl).tipo == "2":
+					print("  >> es DESFAGINE RAMALES")
+					tds=Destajo.objects.exclude(id_canal=1)
+					for d in tds:
+						dtlmp = DetLimpieza(id_destajo=d,id_limpieza=limp,estado="0",fecha="2019-01-01 00:00:00")
+						dtlmp.save()
+
+				else:
+					print("  >> Err ")
+
+		if DetLimpieza.objects.filter(id_limpieza=limp).exists():
+			dicc['destajos']=DetLimpieza.objects.filter(id_limpieza=limp)
+
+		return  render(request,'limpia/c_limp_rev.html',dicc)
+
+
+class DetLimpEst(View):
+
+	def get(self, request, *args, **kwargs):
+		pkd = request.GET.get('pkd')
+		std = request.GET.get('std')
+		
+		if DetLimpieza.objects.filter(pk=pkd).exists():
+			hr= datetime.datetime.now()
+			DetLimpieza.objects.filter(pk=pkd).update(estado=std,fecha=hr)
+		return  HttpResponse('ok')
+
+	def post(self, request, *args, **kwargs):
+		pkl = request.POST.get('pk_lmp')
+		print("  >> POST "+str(pkl))
+		lista= DetLimpieza.objects.filter(id_limpieza=pkl)
+		hr= datetime.datetime.now()
+		for l in lista:
+			l.estado='0'
+			l.fecha=hr
+			l.save()
+		print("  >> end")
+
+
+
+		dicc={}
+		dicc['lmp']=Limpieza.objects.get(pk=pkl)
+		if DetLimpieza.objects.filter(id_limpieza=pkl).exists():
+			dicc['destajos']=DetLimpieza.objects.filter(id_limpieza=pkl)
+
+		return  render(request,'limpia/c_limp_rev.html',dicc)
+
+
+
+
+
+
+class LimpiaPie(View):
+
+	def get(self, request, *args, **kwargs):
+		pkl=self.kwargs.get('pk')
+		lmp=Limpieza.objects.get(pk=pkl)
+		dicc={}
+		dicc['lmp']=lmp
+		dtlmp=DetLimpieza.objects.filter(id_limpieza=pkl)		
+		dicc['dtlmp']=dtlmp
+		hr= datetime.datetime.now()
+		dicc['hr']=hr
+
+		dm=0
+		dn=0
+		db=0
+		df=0
+
+		for dl in dtlmp:
+			if dl.estado == '1':
+				db+=1
+			elif dl.estado == '2':
+				dm+=1
+			elif dl.estado == '3':
+				dn+=1
+			elif dl.estado == '0':
+				df +=1
+			else:
+				print("Err")
+
+
+		dicc['dm']=dm
+		dicc['dn']=dn
+		dicc['db']=db
+		dicc['df']=df
+
+		print("  >> ok "+str(dtlmp.count())+" db="+str(db)+"  hr="+str(hr))
+		
+		return  render(request,'limpia/c_limpia_pie.html',dicc)
+
+
+
+
+class LimpiaPdf(View):
+
+	def get(self, request, *args, **kwargs):
+		pkl=self.kwargs.get('pk')
+		lmp=Limpieza.objects.get(pk=pkl)
+		diccionario={}
+		diccionario['lmp']=lmp
+		dtlmp=DetLimpieza.objects.filter(id_limpieza=pkl)		
+		diccionario['dtlmp']=dtlmp
+		hr= datetime.datetime.now()
+		diccionario['hr']=hr
+
+		dm=0
+		dn=0
+		db=0
+		df=0
+
+		for dl in dtlmp:
+			if dl.estado == '1':
+				db+=1
+			elif dl.estado == '2':
+				dm+=1
+			elif dl.estado == '3':
+				dn+=1
+			elif dl.estado == '0':
+				df +=1
+			else:
+				print("Err")
+
+
+		diccionario['dm']=dm
+		diccionario['dn']=dn
+		diccionario['db']=db
+		diccionario['df']=df
+		diccionario['dt']=dtlmp.count()
+
+		env= Environment(loader=FileSystemLoader("pdf"))
+		template = env.get_template("canalero/limp_i.html")
+
+		path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+		config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+		
+		from django.db import connection, transaction
+		cursor = connection.cursor()
+		cursor.execute("CALL sp_dtlimpieza (%s)",[pkl])
+
+		result = []
+		detalles = cursor.fetchall()
+		for row in detalles:
+		        dic = dict(zip([col[0] for col in cursor.description], row))				
+		        result.append(dic)
+		        print("  >> "+str(dic))
+		cursor.close()
+
+		diccionario['dtlmp']=result
+		diccionario['fecha']= ' '+time.strftime("%d/%m/%y")+'; '+time.strftime("%X")+' '
+
+		html = template.render(diccionario)
+		f=open('pdf/canalero/limp_f.html','w')
+		f.write(html)
+		f.close()
+
+		options = { 
+			'page-size':'A4',
+			'margin-top':'0.2in',
+			'margin-right':'0.2in',
+			'margin-bottom':'0.3in',
+			'margin-left':'0.2in',
+			}
+
+		pdfkit.from_file('pdf/canalero/limp_f.html', 'static/pdfs/c_lmp.pdf',options=options, configuration=config)
+
+		dicc = {}
+		dicc['pdf']='Listados de las órdenes por reparto'
+		dicc['url_pdf']='pdfs/c_lmp.pdf'
+
+		return render(request,'limpia/c_limpia_pdf.html',dicc)

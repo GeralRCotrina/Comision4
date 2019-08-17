@@ -70,10 +70,16 @@ urlpatterns = [
 	re_path(r'^c_destajo_edi/(?P<pk>\d+)/$',login_required(views.DestajoUpdate.as_view()),name='c_destajo_edi'),
 	re_path(r'^c_destajo_eli/(?P<pk>\d+)/$',login_required(views.DestajoDelete.as_view()),name='c_destajo_eli'),
 
+
 	re_path(r'^c_limpia_reg/$',login_required(views.LimpiaCreate.as_view()),name='c_limpia_reg'),
 	re_path(r'^c_limpia_lis/$',login_required(views.LimpiaList.as_view()),name='c_limpia_lis'),
 	re_path(r'^c_limpia_edi/(?P<pk>\d+)/$',login_required(views.LimpiaUpdate.as_view()),name='c_limpia_edi'),
 	re_path(r'^c_limpia_eli/(?P<pk>\d+)/$',login_required(views.LimpiaDelete.as_view()),name='c_limpia_eli'),
+
+	re_path(r'^c_limp_rev/(?P<pk>\d+)/$',login_required(views.LimpiaRev.as_view()),name='c_limp_rev'),
+	re_path(r'^c_dtlimp_std/$',login_required(views.DetLimpEst.as_view()),name='c_dtlimp_std'),
+	re_path(r'^c_limp_pie/(?P<pk>\d+)/$',login_required(views.LimpiaPie.as_view()),name='c_limp_pie'),
+	re_path(r'^c_limp_pdf/(?P<pk>\d+)/$',login_required(views.LimpiaPdf.as_view()),name='c_limp_pdf'),
 
 	]
 

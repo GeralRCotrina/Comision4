@@ -1,8 +1,9 @@
 {% extends "c_base.html" %}
 
 {% block txt_cabecera %}
-	ELIMINAR LIMPIEZA
+	REGISTRAR MULTA
 {% endblock txt_cabecera %}
+
 
 
 {% block usuario_menu %}	
@@ -20,15 +21,23 @@
 
 
 {% block noticias %}
-	<div class="container border">
-		<br>
-		<form method="post">
-			{% csrf_token %}
-			<h2>¿Seguro que desea eliminar esta limpieza: "{{ object.id_destajo }} de la parcela {{ object.id_parcela }}" ?</h2>
-			<a href="{% url 'c_destajo_lis' %}" class="btn btn-success">Cancelar</a>
-			<button class="btn  btn-danger" type="submit">Sí, eliminar</button>		
-		</form><br>
+	
+	<div class="row">
+		<div class="container border">
+
+		{% if lstaa %}
+			llegó
+			{% for l in lstaa %}
+				<p>{{l}}</p>
+			{% endfor %}
+		{% else %}
+			Err 
+		{% endif %}
+
+				
+		</div>
 	</div>
+
 {% endblock noticias %}
 
 

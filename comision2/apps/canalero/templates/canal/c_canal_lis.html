@@ -59,11 +59,13 @@
 			<td>{{ ob.tamano }}</td>
 			<td>{{ ob.ubicacion }}</td>
 			<td>
-				<a class="btn btn-outline-success" href="{% url 'c_canal_edi' ob.id_canal %}">
-					<img src="/static/img/editar1.png"  style="width: 25px; height: 25px;"></i></a>
+				<div class="btn-group btn-sm">
+					<a class="btn btn-outline-success btn-sm" href="{% url 'c_canal_edi' ob.id_canal %}">
+						<i class="far fa-edit"></i></a>
 					
-				<a class="btn btn-outline-success" href="{% url 'c_canal_eli' ob.id_canal %}" >
-					<img src="/static/img/eliminar1.png" style="width:25px; height: 25px;"></a>
+					<a class="btn btn-outline-danger btn-sm" href="{% url 'c_canal_eli' ob.id_canal %}" >
+						<i class="far fa-trash-alt"></i></a>
+				</div>
 			</td>
 		</tr>
 

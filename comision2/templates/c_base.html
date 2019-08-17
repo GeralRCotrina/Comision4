@@ -4,7 +4,7 @@
 
   <head> 
 
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -30,7 +30,7 @@
       <script src="{% static 'code/modules/exporting.js' %}"></script>
       <script src="{% static 'code/modules/export-data.js' %}"></script> 
     {% endblock jquery %}
-    
+     
   
   </head> 
 
@@ -185,17 +185,28 @@
 {% endblock parcela_menu %}
 
 
+{% block limpia_menu %} 
+       <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-broom"></i>
+            <span>LIMPIEZA</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="{% url 'c_limpia_reg' %}"><i class="fas fa-plus"></i>  REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'c_limpia_lis' %}"><i class="fas fa-list-ol"></i>  LISTAR</a>
+          </div>
+        </li>
+{% endblock limpia_menu %} 
+
 {% block destajo_menu %} 
        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-draw-polygon"></i>
-            <span>LIMPIEZA</span>
+            <span>DESTAJO</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_limpia_reg' %}"><i class="fas fa-plus"></i>  LIMPIEZA</a>
-            <a class="dropdown-item" href="{% url 'c_limpia_lis' %}"><i class="fas fa-list-ol"></i>  LIMPIEZA</a>
-            <a class="dropdown-item" href="{% url 'c_destajo_reg' %}"><i class="fas fa-plus"></i>  DESTAJO</a>
-            <a class="dropdown-item" href="{% url 'c_destajo_lis' %}"><i class="fas fa-list-ol"></i>  DESTAJOS</a>
+            <a class="dropdown-item" href="{% url 'c_destajo_reg' %}"><i class="fas fa-plus"></i>  REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'c_destajo_lis' %}"><i class="fas fa-list-ol"></i>  LISTAR</a>
           </div>
         </li>
 {% endblock destajo_menu %} 
@@ -431,9 +442,12 @@
          {% block tabla %}
 
             <div class="card mb-3">
-              <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}</div>
-
-                {% block paginacion1 %}
+              <div class="card-header">
+              			 {% block titulo_tabla %} listado {% endblock titulo_tabla %}
+              				<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+								Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+							</div>
+					 {% block paginacion1 %}
                <div class="row p-1">
 
                   <div class="col-5"></div>
