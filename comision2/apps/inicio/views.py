@@ -34,7 +34,9 @@ def index(request):
 
 
 def mylogin(request):
+
     if request.method == 'POST':
+        
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
@@ -52,7 +54,17 @@ def mylogin(request):
             else:
                 return redirect('usuario')
         else:
-            return render(request, 'loginn.html')
+            messages.info(request, 'Corrija los datos')
+            return render(request, 'login.html')
     else:
-        return render(request, 'loginn.html')
+        return render(request, 'login.html')
 
+
+"""
+            messages.debug(request, 'SQL statements were executed.')
+            messages.info(request, 'Three credits remain in your account.')
+            messages.success(request, 'Profile details updated.')
+            messages.warning(request, 'Your account expires in three days.')
+            messages.error(request, 'Document deleted.')
+
+"""

@@ -50,13 +50,13 @@
         </div>
 
 
-        <div class="card-body">
+        <div class="card-body pt-1 pl-1 pr-1 pb-1">
 
 
           <!--img src="{% static 'img/logo1.png' %}" class="w-100 img-thumbnail" style="height: 9.5em;"-->
 
 
-    <div class="col-12 border" >
+    <!--div class="col-12 border" -->
       <div id="demo" class="carousel slide w-100" data-ride="carousel">
   <!-- INDICADORES  -->
         <ul class="carousel-indicators w-100">
@@ -102,7 +102,7 @@
         <a href="#demo" class="carousel-control-prev" data-slide="prev"><span class="carousel-control-prev-icon"></span></a> 
         <a href="#demo" class="carousel-control-next" data-slide="next"><span class="carousel-control-next-icon"></span></a> 
       </div>
-    </div>
+    <!--/div-->
 
 
 
@@ -111,15 +111,17 @@
 
 
         {% if messages %}
+
           {% for message in messages %}
-            <div class="alert alert-danger text-center">
+            <div class="alert alert-danger text-center mt-1">
               <a class="close" href="#" data-dismiss="alert" >×</a>
-                    <i class="fas fa-shield-alt" style="font-size:2.0em;"></i> 
-                      {{ message }} 
+                    <i class="fas fa-shield-alt pt-0 pb-0" style="font-size:2.0em;"></i> 
+                      __{{ message }}__
                       <i class="fas fa-user-secret" style="font-size:2.0em;"></i>
               </div>
-            {% endfor %}          
+            {% endfor %}       
         {% endif %}
+
 
 
 
@@ -128,7 +130,7 @@
               {% csrf_token %} 
   
  
-              <div class="container-fluid">
+              <div class="container-fluid mt-0">
                 <div class="row">
                   <div class="col-5 text-right" style="font-size:1.4em; line-height: 2.0em; text-shadow: 2px 2px 2px #85D895;">
                     <label class = "control-label">Usuario : </label>
@@ -163,8 +165,8 @@
               </div>
 
 
-                  <div class="form-group text-center">
-                    <div class="checkbox">
+                  <div class="form-group text-center mt-0 pb-0 mb-0">
+                    <div class="checkbox pb-0">
                       <label>
                         <input type="checkbox" value="remember-me">
                         Recordar contraseña
@@ -172,20 +174,19 @@
                     </div>
                   </div>
 
-                  <button type="submit" id = "login" class = "btn btn-success btn-block">Iniciar sesión</button>
-                  <!--span class="badge badge-pill badge-warning">
-                      <a href="{% url 'RegistrarUsuario' %}" >...registrarse</a>
-                  </span-->                       
+                  <button type="submit" id = "login" class = "btn btn-success btn-block">
+                    <i class="fas fa-sign-in-alt"></i>    Iniciar sesión
+                  </button>                     
               </form>
         </div>
 
-        <div class="card-footer" style="font-size: 0.7em; line-height: 0.1em;">
-          <p class="text-right font-italic">de momento solo los directivos pueden registrar nuevos usuarios</p>
-          <p class="text-right font-italic">...proximamente se expandirá</p>
+        <div class="card-footer pb-1 mr-0" style="font-size: 0.8em;">
+          <p class="text-right font-italic" style="line-height: 1.0em;">de momento solo los directivos pueden registrar nuevos usuarios
+            <br>...proximamente se expandirá</p>
         </div>
 
       </div>
-      <br><br><br>
+      <br><br><br><br>. <br>
     </div>
 
 
@@ -203,12 +204,12 @@
 </body>
   <!-- Sticky Footer -->
 
-    <footer class="sticky-footer">
+    <!--footer class="sticky-footer">
       <div class="container-fluid my-auto">
         <div class="copyright text-center my-auto">
-          <span>Cotrina Lezama © Proyecto de tesis 2018</span>
+          <span>Cotrina Lezama © Proyecto de tesis 2019</span>
         </div>
       </div>
-    </footer>
+    </footer-->
        
 </html>

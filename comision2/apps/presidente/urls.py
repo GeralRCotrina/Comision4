@@ -7,8 +7,6 @@ urlpatterns = [
 
 
 	re_path(r'^$', login_required(views.presidente),name='presidente'),
-	re_path(r'^listae$', views.ListaE,name='ListaE'),
-
 
 	re_path(r'^p_act_usu/$', views.ActUsuario.as_view(),name='p_act_usu'),
 	re_path(r'^p_cam_usu/$', views.CambioUSER.as_view(),name='p_cam_usu'),

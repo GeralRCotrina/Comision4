@@ -42,13 +42,15 @@
 		{% for ob in object_list %}
 
 		<tr >
-			<td>[{{ob.id_noticia}}] {{ ob.titular }}</td>
+			<td>{{ ob.titular }}</td>
 			<td>{{ ob.descripcion }}</td>
 			<td>{{ ob.fecha }}</td>
 			<td><img src="/media/{{ ob.foto }}" style="height: 100px; width: 65px;"></td>
 			<td>
-				<a class="btn btn-outline-success" href="{% url 'p_noticia_edi' ob.id_noticia %}"><i class="far fa-edit"></i></a>		
-				<a class="btn btn-outline-danger" href="{% url 'p_noticia_eli' ob.id_noticia %}" ><i class="fas fa-trash-alt"></i></a>
+				<div class="btn-group btn-group-vertical">
+					<a class="btn btn-sm btn-outline-success" href="{% url 'p_noticia_edi' ob.id_noticia %}"><i class="far fa-edit"></i></a>		
+					<a class="btn btn-sm btn-outline-danger" href="{% url 'p_noticia_eli' ob.id_noticia %}" ><i class="fas fa-trash-alt"></i></a>
+				</div>					
 			</td>
 		</tr>
 

@@ -50,14 +50,6 @@ class UsuarioDelete(DeleteView):
 	template_name='usuario/p_user_del.html'
 	success_url=reverse_lazy('p_auth_lis')
 
-"""
-class NoticiaList(ListView):
-	model=Noticia
-	template_name='p_noticia_lis.html'
-	paginate_by=9
-"""
-
-
 
 
 
@@ -70,7 +62,7 @@ class ActUsuario(View):
 	def get(self, request, *args, **kwargs):
 		dicc={}
 		dicc['userr']= 'bacío'
-		return render(request,'p_act_usu.html',dicc)
+		return render(request,'usuario/p_act_usu.html',dicc)
 
 	def post(self, request, *args, **kwargs):
 		dicc={}
@@ -84,7 +76,7 @@ class ActUsuario(View):
 			dicc['msj']= 'nda'
 		else:
 			dicc['msj']= 'nusr'
-		return render(request,'p_act_usu.html',dicc)
+		return render(request,'usuario/p_act_usu.html',dicc)
 
 
 class CambioUSER(View):
@@ -111,7 +103,7 @@ class CambioUSER(View):
 		else:
 			print('__________ ... el usu a cambiar no existe!!!!!!!!1')	
 
-		return render(request,'p_act_usu.html',dicc)
+		return render(request,'usuario/p_act_usu.html',dicc)
 
 
 class CambioPASS(View):
@@ -136,7 +128,7 @@ class CambioPASS(View):
 					print(' _______Se cambió la PASS de ',usuario,' por <',p1,'>')
 					dicc['passs']= u.password		
 					dicc['msj']= 'succ2'
-					return render(request,'p_act_usu.html',dicc)
+					return render(request,'usuario/p_act_usu.html',dicc)
 				else:
 					print('_______false')
 					dicc['usuario']= 'bacío'			
@@ -151,7 +143,7 @@ class CambioPASS(View):
 				dicc['msj']= 'nda'
 			else:
 				dicc['msj']= 'nusr'
-		return render(request,'p_act_usu.html',dicc)
+		return render(request,'usuario/p_act_usu.html',dicc)
 
 
 class RepPeparto1(View):
@@ -364,7 +356,7 @@ class CaudalCreate(TemplateView):
 		dicc={}
 		can = Canal.objects.all()
 		dicc['canales']=can
-		return render(request,'p_caudal_reg.html',dicc)
+		return render(request,'caudal/p_caudal_reg.html',dicc)
 
 	def post(self, request, *args, **kwargs):
 		can=Canal.objects.all()
@@ -375,31 +367,19 @@ class CaudalCreate(TemplateView):
 			cau.save()
 		dicc={}
 		dicc['mensaje']='Registro de caudal hecho correctamente'
-		return render(request,'p_caudal_reg.html',dicc)
-
- 
-def ListaE(request):
-	auth = AuthUser.objects.all()
-	datos = DatosPersonales.objects.all()
-	diccionario = {}
-	diccionario["auth"] = auth
-	diccionario["datos"] = datos
-	return render(request,'listae.html',diccionario)
-
+		return render(request,'caudal/p_caudal_reg.html',dicc)
 
 
 class CaudalList(ListView):
 	model=Caudal
-	template_name='p_caudal_lis.html'
+	template_name='caudal/p_caudal_lis.html'
 	paginate_by=9
 
 class CaudalDelete(DeleteView):
 	model=Caudal
 	form_class=CaudalForm
-	template_name='p_caudal_eli.html'
+	template_name='caudal/p_caudal_eli.html'
 	success_url=reverse_lazy('p_caudal_lis')
-
-
 
 
  
@@ -407,24 +387,24 @@ class CaudalDelete(DeleteView):
 class NoticiaCreate(CreateView):
 	model=Noticia
 	form_class=NoticiaForm
-	template_name='p_noticia_reg.html'
+	template_name='noticia/p_noticia_reg.html'
 	success_url=reverse_lazy('p_noticia_lis')
 
 class NoticiaList(ListView):
 	model=Noticia
-	template_name='p_noticia_lis.html'
+	template_name='noticia/p_noticia_lis.html'
 	paginate_by=9
 
 class NoticiaUpdate(UpdateView):
 	model=Noticia
 	form_class=NoticiaForm
-	template_name='p_noticia_reg.html'
+	template_name='noticia/p_noticia_reg.html'
 	success_url=reverse_lazy('p_noticia_lis') 
 
 class NoticiaDelete(DeleteView):
 	model=Noticia
 	form_class=NoticiaForm
-	template_name='p_noticia_eli.html'
+	template_name='noticia/p_noticia_eli.html'
 	success_url=reverse_lazy('p_noticia_lis')
 
 
@@ -436,24 +416,24 @@ class NoticiaDelete(DeleteView):
 class ParcelaCreate(CreateView):
 	model=Parcela
 	form_class=ParcelaForm
-	template_name='p_parcela_reg.html'
+	template_name='parcela/p_parcela_reg.html'
 	success_url=reverse_lazy('p_parcela_lis')
 
 class ParcelaList(ListView):
 	model=Parcela
-	template_name='p_parcela_lis.html'
+	template_name='parcela/p_parcela_lis.html'
 	paginate_by=20
 
 class ParcelaUpdate(UpdateView):
 	model=Parcela
 	form_class=ParcelaForm
-	template_name='p_parcela_reg.html'
+	template_name='parcela/p_parcela_reg.html'
 	success_url=reverse_lazy('p_parcela_lis') 
 
 class ParcelaDelete(DeleteView):
 	model=Parcela
 	form_class=ParcelaForm
-	template_name='p_parcela_eli.html'
+	template_name='parcela/p_parcela_eli.html'
 	success_url=reverse_lazy('p_parcela_lis')
 
 
@@ -461,24 +441,24 @@ class ParcelaDelete(DeleteView):
 class CanalCreate(CreateView):
 	model=Canal
 	form_class=CanalForm
-	template_name='p_canal_reg.html'
+	template_name='canal/p_canal_reg.html'
 	success_url=reverse_lazy('p_canal_lis')
 
 class CanalList(ListView):
 	model=Canal
-	template_name='p_canal_lis.html'
+	template_name='canal/p_canal_lis.html'
 	paginate_by=9
 
 class CanalUpdate(UpdateView):
 	model=Canal
 	form_class=CanalForm
-	template_name='p_canal_reg.html'
+	template_name='canal/p_canal_reg.html'
 	success_url=reverse_lazy('p_canal_lis') 
 
 class CanalDelete(DeleteView):
 	model=Canal
 	form_class=CanalForm
-	template_name='p_canal_eli.html'
+	template_name='canal/p_canal_eli.html'
 	success_url=reverse_lazy('p_canal_lis')
 
 
@@ -487,24 +467,24 @@ class CanalDelete(DeleteView):
 class DatosDelete(DeleteView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='p_usuario_eli.html'
+	template_name='usuario/p_usuario_eli.html'
 	success_url=reverse_lazy('p_usuario_lis')
 
 class DatosUpdate(UpdateView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='p_usuario_reg.html'
+	template_name='usuario/p_usuario_reg.html'
 	success_url=reverse_lazy('p_usuario_lis') 
 
 class DatosCreate(CreateView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='p_usuario_reg.html'
+	template_name='usuario/p_usuario_reg.html'
 	success_url=reverse_lazy('p_usuario_lis')
 
 class DatosList(ListView):
 	model=DatosPersonales
-	template_name='p_usuario_lis.html'
+	template_name='usuario/p_usuario_lis.html'
 	paginate_by=9
 
 
@@ -512,7 +492,7 @@ class DatosList(ListView):
 
 class AuthList(ListView):
 	model=AuthUser
-	template_name='p_auth_lis.html'
+	template_name='usuario/p_auth_lis.html'
 	paginate_by=50
 
 
@@ -523,4 +503,4 @@ class BuscarAuthList(TemplateView):
 		buscar = request.POST['buscar']
 		auths=AuthUser.objects.all()
 		dicc = {"personas":auths}		
-		return render(request,'p_auth_lis.html',dicc)
+		return render(request,'usuario/p_auth_lis.html',dicc)
