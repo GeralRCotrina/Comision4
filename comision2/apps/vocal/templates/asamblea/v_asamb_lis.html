@@ -31,7 +31,7 @@
 		<form method="post">
 			{% csrf_token %}
 
-			<div class="row m-2 btn-grou">
+			<div class="row py-2 justify-content-around ">
 				<p class="alert alert-primary alert-dismissable"><strong>PRONTO</strong></p>
 				<p class="alert alert-danger alert-dismissable"><strong>YA COMENZÓ</strong></p>
 				<p class="alert alert-secondary alert-dismissable"><strong>YA PASÓ</strong></p>
@@ -48,7 +48,8 @@
 			                  <div class="card-body-icon">
 			                  	<i class="fas fa-clipboard-list"></i>
 			                  </div>
-			                  <div class="mr-2">{{ a.tipo }}<br> 
+			                  <div class="mr-2"><span class="badge badge-light" style="font-size:0.5em;">{{a.pk}}</span>
+			                  	{{ a.tipo }}<br> 
 			                  	<i class="fas fa-table"></i> 
 			                  	{{a.fecha_asamblea.day}}/{{a.fecha_asamblea.month}}
 			                  	<i class="far fa-clock"></i>  {{a.fecha_asamblea.hour}}:
@@ -61,8 +62,7 @@
 			                </div>
 			                <dic class="row card-footer">			                	
 				                	<div class="col-3">
-				                		{% if a.estado == "3" %}.{% else %}
-				                		<a href="{% url 'v_hasis_gen' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-user-check"></i></a>{% endif %}
+				                		<a href="{% url 'v_hasis_gen' %}?id_asamb={{ a.pk }}" class="float-left text-white"><i class="fas fa-user-check"></i></a>
 				                	</div>
 
 				                	<div class="col-2">{% if a.estado == "3" %}

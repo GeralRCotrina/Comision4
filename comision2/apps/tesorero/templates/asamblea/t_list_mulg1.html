@@ -1,0 +1,97 @@
+{% extends "t_base.html" %}
+{% load static %}
+
+{% block txt_not1 %}{% endblock txt_not1 %}
+
+
+{% block p_msj %} 
+{% endblock p_msj %}
+
+
+
+{% block cuerpo %}
+
+{% if tpo == "0" %}
+		<div class="row">
+			<div class="col-12">
+
+
+				<div class="w-100" style="height: 130px; ">
+			
+					<div class="col-12" style="padding-left:15px; border: dotted;">
+			     		{% if asamblea %}
+			     			<strong>ASAMBLEA:</strong><i style="color:white;">__________</i><STRONG> {{ asamblea.tipo }}</STRONG>
+			     			<span class="badge badge-secondary" style="font-size:0.6em;">{{asamblea.pk}}</span> <br>
+			         		<strong>ESTADO:</strong><i style="color:white;">_____________</i> <span class="badge badge-pill badge-secondary">
+			         			{% if asamblea.estado == '0' %}REGISTRADA{% elif asamblea.estado == '1' %}EN PROCESO {% else %}CERRADA {% endif %}</span> <br>
+			         		<strong>FECHA:</strong><i style="color:white;">_______________</i> 
+			         		<i>  {{asamblea.fecha_asamblea.day}}/{{asamblea.fecha_asamblea.month}}/{{asamblea.fecha_asamblea.year}} + 
+			         			{{asamblea.fecha_asamblea.hour}}: {% if asamblea.fecha_asamblea.minute <= 9 %}0{% endif %}{{asamblea.fecha_asamblea.minute}}</i><br>
+			         		<strong>DESCRIPCIÓN:</strong><i style="color:white;">________</i><i font-style="italic">{{asamblea.descripcion}}</i><br>	
+			         	{% else %}
+			         		Err al traer el lmp
+			     		{% endif %}	
+					</div>
+				</div>
+				
+
+			</div>
+
+
+
+			<div class="col-12">
+				
+
+
+		<table class="table table-sm table-striped">
+			<thead>
+				<tr style="background: #C7C7C7;">
+					<td>Usuario</td>
+					<td>Hora Llegada</td>
+					<td>Hora Multa</td>
+					<td>Estado</td>
+					<td>Btn</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ma in lma %}
+					<tr>
+						<td>{{ma.id_hoja_asistencia.id_auth_user.first_name}}</td>
+						<td>{{ ma.id_hoja_asistencia.hora.hour }}:
+								{% if   ma.id_hoja_asistencia.hora.minute <= 9%}0{% endif %}{{ ma.id_hoja_asistencia.hora.minute }}</td>
+						<td>{{ ma.id_multa.fecha.day }}/{{ ma.id_multa.fecha.month }} 
+							{{ ma.id_multa.fecha.hour }}:{% if   ma.id_multa.fecha.minute <= 9 %}0{% endif %}{{ ma.id_multa.fecha.minute }}</td>
+						<td>	
+							{% if ma.id_multa.estado == "0" %}
+								<span class="badge badge-pill" style="background:#FD6569">CREADA</span>
+							{% elif ma.id_multa.estado == "1" %}
+								<span class="badge badge-pill" style="background:#5ED44E">PAGADA</span>
+							{% elif ma.id_multa.estado == "2" %}
+								<span class="badge badge-pill" style="background:#C6C6C6">ANULADA</span>
+							{% else %}
+								Err: {{ma.id_multa.estado}}
+							{% endif %}
+						</td>
+						<td>
+							<div class="btn-group">
+								<button class="btn btn-sm btn-outline-success" onclick="#"><i class="fas fa-check"></i></button>
+								<button class="btn btn-sm btn-outline-info" onclick="alert(12)"><i class="far fa-clock"></i></button>
+								<button class="btn btn-sm btn-outline-secondary" onclick="alert(rr)"><i class="far fa-times-circle"></i></button>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+				
+			</div>
+		</div>
+				
+	
+{% else  %}
+	noo
+{% endif %}
+
+{% endblock cuerpo %}

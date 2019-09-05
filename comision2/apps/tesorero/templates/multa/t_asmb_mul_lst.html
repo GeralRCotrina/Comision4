@@ -1,0 +1,114 @@
+{% extends "t_base.html" %}
+
+{% load static %}
+
+{% block txt_not1 %}Multas de asistencias{% endblock txt_not1 %}
+
+{% block p_msj %}	
+{% endblock p_msj %}
+
+
+{% block cuerpo %}
+
+<div class="container">
+
+
+	{% if hoja_multas %}
+		<table class="table table-striped table-sm">
+			<thead>
+				<tr style="background:#EBF3ED;" align="center">
+					<td> <strong> Id Multa</strong></td>
+					<td><strong>Usuario</strong></td>
+					<td><strong>Hora llegada</strong></td>
+					<td><strong>Estado</strong></td>
+					<td><strong>Monto</strong></td>
+					<td><strong>Concepto</strong></td>
+					<td><i class="fas fa-box-open"></i></td>
+				</tr>
+			</thead>
+			<tbody>				
+				{% for hm in hoja_multas %}
+					<tr id="tr_{{hm.pk}}">
+						<td>{{hm.pk}}</td>
+						<td>{{hm.id_hoja_asistencia.id_auth_user.last_name}}, {{hm.id_hoja_asistencia.id_auth_user.first_name}}</td>
+						<td align="center">{{hm.id_hoja_asistencia.hora.hour}}:{% if hm.id_hoja_asistencia.hora.minute <= 9 %}0{% endif %}{{hm.id_hoja_asistencia.hora.minute}}</td>
+						<td align="center">{% if hm.id_hoja_asistencia.estado == "3" %}<span class="badge badge-pill badge-secondary">Faltó</span>{% elif  hm.id_hoja_asistencia.estado == "2" %}<span class="badge badge-pill badge-info">Tardanza</span>{% endif %}</td>
+						<td id="tdmon{{hm.pk}}">S/. {{hm.id_multa.monto}}</td>
+						<td id="tdcon{{hm.pk}}" style="font-size:0.7em;">{{hm.id_multa.concepto}}</td>
+						<td align="center">
+							<a href="#" data-toggle="modal" data-target="#ModalEditar{{hm.pk}}" style="color:#FAC257;" title="Editar"><i class="far fa-edit"></i></a>
+							<a href="#" data-toggle="modal" data-target="#ModalDelete{{hm.pk}}" style="color:#FC4646;" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+							<a href="{% url 't_mul_imp' %}?pka={{hm.pk}}" style="color:#308BF1;" title="Imprimir"><i class="fas fa-print"></i></a>
+							
+								<!-- Modal Edit -->
+								<div class="modal fade" id="ModalEditar{{hm.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								  <div class="modal-dialog" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h5 class="modal-title" id="exampleModalLabel">Editar multa</h5>
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+								      </div>
+								      <div class="modal-body">
+								      	Multa de <strong>{{hm.id_hoja_asistencia.id_auth_user.last_name}}, {{hm.id_hoja_asistencia.id_auth_user.first_name}}</strong><br> por un monto de S/. <strong>{{hm.id_multa.monto}}</strong>.
+								      	<hr>
+								      	<table>
+									      	<tr><td>Nuevo Monto</td><td><input id="nue_mon_{{hm.pk}}" type="number" min="0" step="0.1" class="form-control" /></td></tr>
+									      	<tr><td>Por concepto</td><td> <textarea id="nue_con_{{hm.pk}}" cols="30" rows="2"></textarea> </tr>
+									    </table>
+								      </div>
+								      <div class="modal-footer">
+
+								        <a href="#" class="btn btn-success" data-dismiss="modal">Cancelar</a>
+								        <a href="#" class="btn btn-primary" onclick="EdiMulta({{hm.pk}})" data-dismiss="modal">Actualizar</a>
+
+								      </div>
+								    </div>
+								  </div>
+								</div>
+								<!-- Modal delete -->
+								<div class="modal fade" id="ModalDelete{{hm.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								  <div class="modal-dialog" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h5 class="modal-title" id="exampleModalLabel">Eliminar multa</h5>
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+								      </div>
+								      <div class="modal-body">Multa de <strong>{{hm.id_hoja_asistencia.id_auth_user.last_name}}, {{hm.id_hoja_asistencia.id_auth_user.first_name}}</strong><br> por un monto de S/. <strong>{{hm.id_multa.monto}}</strong>.
+								      </div>
+								      <div class="modal-footer">
+								        <a href="#" class="btn btn-success" data-dismiss="modal">Cancelar</a>
+								        <a href="#" class="btn btn-danger" onclick="EliMulta({{hm.pk}})" data-dismiss="modal">Eliminar</a>
+								      </div>
+								    </div>
+								  </div>
+								</div>
+								
+
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<h3>no llegó</h3>	
+	{% endif %}
+
+
+
+			
+
+
+
+
+</div>
+
+{% endblock cuerpo %}
+
+
+
+
+

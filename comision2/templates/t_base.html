@@ -161,8 +161,6 @@
      
  <div id="content-wrapper"> <!-- /.content-wrapper **************-->
 
-{% block cuerpo %}
-
           
 <div class="container-fluid m-2">
 
@@ -176,10 +174,15 @@
     <li class="breadcrumb-item active">{{ user.get_full_name}}</li>
   </ol>
   <h1> {% block txt_not1 %}Panel de Control de Tesorero{% endblock txt_not1 %} </h1><!-- Page Content -->
-  <p class="font-italic mb-0" style="font-size: 0.8em">“Tienes que aprender las reglas del juego y después jugar mejor que nadie” - Albert Einstein</p>
+  {% block p_msj %}
+    <p class="font-italic mb-0" style="font-size: 0.8em">“Tienes que aprender las reglas del juego y después jugar mejor que nadie” - Albert Einstein</p>
+  {% endblock p_msj %}
+  
   <hr class="mt-0">
 {% endblock noticias %}
 
+
+{% block cuerpo %}
 
 
 {% block noticias1 %}
@@ -194,7 +197,7 @@
                   </div>
                   <div class="mr-5">MULTA DE ASISTENCIA</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
+                <a class="card-footer text-white clearfix small z-1" href="{% url 't_asmb' %}">
                   <span class="float-left">Registrar..</span>
                   <span class="float-right">
                     <i class="fas fa-angle-right"></i>
@@ -344,6 +347,7 @@
 
   <!--  JS -->  
     <script src="{% static 'js/tableToExcel.js' %}"></script>
+    <script src="{% static 'js/tesorero.js' %}"></script>
 
     {% endblock js %}
 

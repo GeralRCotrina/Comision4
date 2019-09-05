@@ -1,0 +1,79 @@
+{% extends "t_base.html" %}
+
+{% block txt_not1 %}Listado de asambleas{% endblock txt_not1 %}
+
+{% block p_msj %}	
+{% endblock p_msj %}
+
+
+
+
+
+{% block cuerpo %}
+	<div class="container border">
+
+	
+		<div class="col-12">
+			<div class="row">
+				{% if asambleas %}
+					<table class="table table-sm">
+						<thead>
+							<tr style="background:#CCEFCF;">
+								<td>ÍNDICE</td>
+								<td>TIPO</td>
+								<td>FECHA</td>
+								<td>DESCRIPCIÓN</td>
+								<td>ESTADO</td>
+								<td><i class="fas fa-box-open"></i></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% for a in asambleas %}
+								<tr>
+									<td>{{a.pk}}</td>
+									<td>
+										{% if a.tipo == 'General' %}
+											<span class="badge" style="background:#9ECB9E;">GENERAL</span>
+										{% else %}
+											<span class="badge" style="background:#B6EEB6;">SIMPLE</span>											
+										{% endif %}
+									</td>
+									<td>{{a.fecha_asamblea.day}}/{{a.fecha_asamblea.month}}/{{a.fecha_asamblea.year}}</td>
+									<td>{{a.descripcion}}</td>
+									<td>
+										{% if a.estado == '1' %}
+											<span class="badge" style="background:#BCF98A;">CREADA</span>
+										{% elif a.estado == '2' %}
+											<span class="badge" style="background:#F8F485;">INICIADA</span>
+										{% elif a.estado == '3' %}
+											<span class="badge" style="background:#B0B9B0;">CERRADA</span>
+										{% else %}
+											<span class="badge" style="background:#FEA2AD;">ANULADA</span>											
+										{% endif %}
+									</td>
+									<td>
+										<div class="btn-group">
+											<a href="{% url 't_asmb_mul' a.pk %}" class="btn btn-sm btn-outline-warning" title="Ver hoja de asistencia">
+												<i class="fas fa-list-ol"></i></a>
+											<a href="{% url 't_h_mul' %}?pko={{a.pk}}" class="btn btn-sm btn-outline-info" title="Ver hoja de multas">
+												<i class="fas fa-donate"></i></a>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						
+					</table>
+				{% else %}
+					Error al traer las asambleas
+				{% endif %}
+			</div>
+		</div>
+		
+
+
+
+
+	</div>
+
+{% endblock cuerpo %}

@@ -161,7 +161,7 @@ Highcharts.chart('container', {
 					{% for ob in lstHAsis %}
 					<tr>
 						<td hidden="hidden">{{ob.pk}}</td>
-						<td>{{ ob.id_auth_user.first_name }}</td>
+						<td>{{ ob.id_auth_user.first_name }} </td>
 						<td>{{ ob.id_auth_user.dni}}</td>
 						<td id="{{ob.pk}}">
 							{% if ob.estado == '0' %}

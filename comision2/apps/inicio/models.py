@@ -438,6 +438,7 @@ class Multa(models.Model):
     )
     id_multa = models.AutoField(primary_key=True)
     concepto = models.CharField(max_length=100, blank=True, null=True)
+    monto = models.FloatField(blank=True, null=True)
     fecha = models.DateTimeField(default=get_date_now)
     estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
     tipo = models.CharField(max_length=1, blank=True, null=True, choices=TIPO)
@@ -445,6 +446,43 @@ class Multa(models.Model):
     class Meta:
         managed = False
         db_table = 'multa'
+
+
+
+class MultaAsistencia(models.Model):
+    id_multa_asistencia = models.AutoField(primary_key=True)
+    id_multa = models.ForeignKey(Multa, models.DO_NOTHING, db_column='id_multa')
+    id_hoja_asistencia = models.ForeignKey(HojaAsistencia, models.DO_NOTHING, db_column='id_hoja_asistencia')
+    tipo = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'multa_asistencia'
+
+
+class MultaLimpia(models.Model):
+    id_multa_limpia = models.AutoField(primary_key=True)
+    id_multa = models.ForeignKey(Multa, models.DO_NOTHING, db_column='id_multa')
+    id_det_limpia = models.ForeignKey(DetLimpieza, models.DO_NOTHING, db_column='id_det_limpia')
+
+    class Meta:
+        managed = False
+        db_table = 'multa_limpia'
+
+
+class MultaOrden(models.Model):
+    id_multa_orden = models.AutoField(primary_key=True)
+    id_orden = models.ForeignKey('OrdenRiego', models.DO_NOTHING, db_column='id_orden')
+    id_multa = models.ForeignKey(Multa, models.DO_NOTHING, db_column='id_multa')
+
+    class Meta:
+        managed = False
+        db_table = 'multa_orden'
+
+
+
+
+
 
 
 class Noticia(models.Model):

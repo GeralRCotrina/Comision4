@@ -1,0 +1,116 @@
+{% extends "t_base.html" %}
+
+{% block txt_not1 %}Hoja de asistencias{% endblock txt_not1 %}
+
+{% block p_msj %}	
+{% endblock p_msj %}
+
+
+{% block cuerpo %}
+	<div class="container border">
+
+
+<div class="col-12">
+	<div class="row">
+			<div class="col-12 col-md-12 col-lg-4 btn-group">
+				<div class="row w-100 pt-2">
+					<div class="col-12">
+						<a href="{% url 't_mul_todas' %}?pko={{asamblea.pk}}" class="btn btn-sm btn-block btn-success">MULTAR TODAS</a>
+						<a href="{% url 't_mul_todas' %}?pko={{asamblea.pk}}" class="btn btn-sm btn-block btn-outline-primary">VER MULTAS</a>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-12 col-md-12 col-lg-8 btn-group mt-1">
+				<div class="w-100" style="height: 130px; ">
+			
+					<div class="col-12" style="padding-left:15px; border: dotted;">
+			     		{% if asamblea %}
+			     			<strong>ASAMBLEA:</strong><i style="color:white;">__________</i><STRONG> {{ asamblea.tipo }}</STRONG>
+			     			<span class="badge badge-secondary" style="font-size:0.6em;">{{asamblea.pk}}</span> <br>
+			         		<strong>ESTADO:</strong><i style="color:white;">_____________</i> <span class="badge badge-pill badge-secondary">
+			         			{% if asamblea.estado == '0' %}REGISTRADA{% elif asamblea.estado == '1' %}EN PROCESO {% else %}CERRADA {% endif %}</span> <br>
+			         		<strong>FECHA:</strong><i style="color:white;">_______________</i> 
+			         		<i>  {{asamblea.fecha_asamblea.day}}/{{asamblea.fecha_asamblea.month}}/{{asamblea.fecha_asamblea.year}} + 
+			         			{{asamblea.fecha_asamblea.hour}}: {% if asamblea.fecha_asamblea.minute <= 9 %}0{% endif %}{{asamblea.fecha_asamblea.minute}}</i><br>
+			         		<strong>DESCRIPCIÓN:</strong><i style="color:white;">________</i><i font-style="italic">{{asamblea.descripcion}}</i><br>	
+			         	{% else %}
+			         		Err al traer el lmp
+			     		{% endif %}	
+					</div>
+				</div>
+			</div>
+	</div>
+</div>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div class="col-12 mt-2 mb-2"  style="width: 100%; height:400px; overflow-x: scroll;">
+
+
+
+			{% if hoja_asistencia %}
+				<table class="table table-sm table-striped">
+					<thead>
+						<tr style="background:#C0E3C4;">
+							<td>USUARIO</td>
+							<td>HORA DE LLEGADA</td>
+							<td>ESTADO</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for ha in hoja_asistencia %}
+							<tr>
+								<td>{{ha.id_auth_user.first_name}} {{ha.id_auth_user.last_name}} </td>
+								<td><i class="far fa-clock"></i>
+									{% if ha.hora.hour <= 9 %}0{% endif %}{{ha.hora.hour}}: {% if ha.hora.minute <= 9 %}0{% endif %}{{ha.hora.minute}}</td>
+								<td>
+									{% if ha.estado == '0' %}
+										<span class="badge badge-pill badge-light">ESPERANDO</span>
+									{% elif ha.estado == '1' %}
+										<span class="badge badge-pill badge-success">ASISTIÓ</span>
+									{% elif ha.estado == '2' %}
+										<span class="badge badge-pill badge-info">TARDE</span>
+									{% elif ha.estado == '3' %}
+										<span class="badge badge-pill badge-secondary">FALTÓ</span>
+									{% else %}
+										<span class="badge badge-pill badge-info">ERR</span>
+									{% endif %} 
+								</td>
+								<td>
+									{% if ha.estado == '1' %}
+										<button class="btn btn-sm btn-outline-success" disabled>._OK_.</button>
+									{% elif ha.estado == '2' %}
+										<a href="{% url 't_mul' %}?pka={{ ha.pk }}" class="btn btn-sm btn-outline-info"> Multar</a>
+									{% elif ha.estado == '3' %}
+										<a href="{% url 't_mul' %}?pka={{ ha.pk }}" class="btn btn-sm btn-outline-secondary"> Multar</a>
+									{% endif %}
+									
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+						
+				
+			{% endif %}
+
+
+
+
+{% endblock cuerpo %}

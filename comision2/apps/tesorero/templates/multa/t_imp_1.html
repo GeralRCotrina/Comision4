@@ -1,0 +1,29 @@
+{% extends "t_base.html" %}
+
+{% load static %}
+
+{% block txt_not1 %}
+{% endblock txt_not1 %}
+
+{% block p_msj %}	
+{% endblock p_msj %}
+
+
+
+
+{% block cuerpo %}
+
+{% if url_pdf %}
+	<div class="row container h-100">
+		<div class="col h-100">
+			<embed src="{% static url_pdf %} " width="1000" height="700"></embed>
+		</div>
+	</div>
+	<br>
+	<br>
+
+{% else %}
+	Err
+{% endif %}
+
+{% endblock cuerpo %}
