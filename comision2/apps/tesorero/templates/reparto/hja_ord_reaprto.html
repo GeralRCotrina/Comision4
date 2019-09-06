@@ -1,0 +1,60 @@
+{% extends "t_base.html" %}
+{% load static %}
+
+
+{% block txt_not1 %}Hoja de ordenes delreparto.{% endblock txt_not1 %}
+<br><br>
+
+
+{% block p_msj %} 
+{% endblock p_msj %}
+
+
+
+{% block cuerpo %}
+
+
+<div class="container">
+  {% if hja_or_reparto %}
+
+    <table class="table table-sm text-center">
+      <thead>
+        <tr>
+          <td><strong>ID</strong></td>
+          <td><strong>USUARIO</strong></td>
+          <td><strong>PARCELA</strong></td>
+          <td><strong>HORA</strong></td>
+          <td><strong>ESTADO</strong></td>
+          <td><i class="fas fa-box-open"></i></td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ord in hja_or_reparto %}
+            <tr><!-- style="font-size:0.8em;"-->
+              <td>{{ord.pk}}</td>
+              <td>{{ord.id_parcela.id_auth_user.first_name}}</td>
+              <td>{{ord.id_parcela.nombre}}</td>
+              <td>{{ord.fecha_inicio.hour}}:{% if ord.fecha_inicio.minute <= 9 %}0{% endif %}{{ord.fecha_inicio.minute}}</td>
+              <td><span class="badge {% if ord.estado == 'Aprobada' %}badge-success{% elif  ord.estado == 'Solicitada' %}badge-warning{% elif  ord.estado == 'Rechazada' %}badge-danger{% elif  ord.estado == 'Entregada' %}badge-secondary{% else %}Err{% endif %}">{{ord.estado}}</span></td>
+            <td>
+              {% if ord.estado == 'Aprobada' or ord.estado == 'Entregada' %}
+                <a href="{% url 'mul_or' %}?pko={{ord.pk}}" class="btn btn-sm btn-outline-secondary">Multar</a> 
+              {% endif %}            
+            </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+        
+  {% else %}
+    Err al traer los reaprtos.
+  {% endif %}
+</div>
+
+
+
+
+
+
+{% endblock cuerpo %}

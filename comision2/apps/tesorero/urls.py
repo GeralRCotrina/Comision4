@@ -14,5 +14,18 @@ urlpatterns = [
 	re_path(r'^t_edi_mul/?/$',login_required(views.EditarMulta.as_view()),name='t_edi_mul'),
 	re_path(r'^t_eli_mul/?/$',login_required(views.EliminarMulta.as_view()),name='t_eli_mul'),
 	re_path(r'^t_mul_imp/?/$',login_required(views.ImprimirMulta.as_view()),name='t_mul_imp'),
+	re_path(r'^t_std_mul/?/$',login_required(views.EstdoMulta.as_view()),name='t_std_mul'),
+
+	re_path(r'^t_edi_mulo/?/$',login_required(views.EditarMultaO.as_view()),name='t_edi_mulo'),
+	re_path(r'^t_eli_mulo/?/$',login_required(views.EliminarMultaO.as_view()),name='t_eli_mulo'),
+	re_path(r'^t_std_mulo/?/$',login_required(views.EstdoMultaO.as_view()),name='t_std_mulo'),
+	re_path(r'^t_mul_impo/?/$',login_required(views.ImprimirMultaO.as_view()),name='t_mul_impo'),
+
+
+	re_path(r'^t_lst_repartos/?/$',login_required(views.LstRepartos.as_view()),name='t_lst_repartos'),
+	re_path(r'^hj_ml_reparto/?/$',login_required(views.HjaMulReparto.as_view()),name='hj_ml_reparto'),
+	re_path(r'^hj_or_reparto/?/$',login_required(views.HjaOrdReparto.as_view()),name='hj_or_reparto'),
+
+	re_path(r'^mul_or/?/$',login_required(views.MultaOrden.as_view()),name='mul_or'),
 ]
  

@@ -205,75 +205,28 @@ class EliminarMulta(View):
 		return HttpResponse(rpta)
 
 
-class ImprimirMulta1(View):
-
-	def get(self, request, *args, **kwargs):
-		print(" >> ImprimirMulta")
-		pka = self.request.GET.get('pka')
-		rpta = 'Ok'
-		dicc={}
-		if pka != "":
-			print('  >> Ok: '+str(pka))
-			url='multa/t_imp_1.html'
-			dicc['msj']="ók"
-			#--------------------------------------------------pdf
-			env= Environment(loader=FileSystemLoader("pdf"))
-			template = env.get_template("tesorero/impMul1.html")
-
-			path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
-			config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-
-			jsn={'fch':datetime.datetime.now()}
-
-			html = template.render(jsn)
-			f=open('pdf/tesorero/impMul2.html','w')
-			f.write(html)
-			f.close()
-
-
-			options = {'page-size': 'legal','margin-top':'0.1in','margin-right':'0.3in','margin-bottom':'0.9in','margin-left':'0.3in',}
-
-			pdfkit.from_file('pdf/tesorero/impMul2.html', 'static/pdfs/impMul3.pdf',options=options, configuration=config)
-
-			dicc = {}
-			dicc['pdf']='Listados de las órdenes por reparto'
-			dicc['url_pdf']='pdfs/impMul3.pdf'
-			#--------------------------------------------------pdf
-			print("  >> finaló 1")
-		else:
-			print("  >> Err")
-		return render(request,url,dicc)
-
-
-
 class ImprimirMulta(View):
 
 	def get(self, request, *args, **kwargs):
-		print(" >> ImprimirMulta")
 		pka = self.request.GET.get('pka')
 		rpta = 'Ok'
 		dicc={}
 		if pka != "":
-			print('  >> Ok: '+str(pka))
 			url='multa/t_imp_1.html'
 			dicc['msj']="ók"
 			#--------------------------------------------------pdf
 			env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
-			print("-----0")
 			template = env.get_template("tesorero/impMul1.html")
-			print("-----1")
-
 			path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
-			print("-----2")
 			config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 			
 			dicc['fch']=datetime.datetime.now()
+			if MultaAsistencia.objects.filter(pk=pka).exists():
+				dicc['multa']=MultaAsistencia.objects.get(pk=pka)
 
 			html = template.render(dicc)
 			f=open('pdf/tesorero/impMul2.html','w')
-			print(" ----")
 			f.write(html)
-			print(" ----2")
 			f.close()
 	 
 			options = { 'page-size':'A4','margin-top':'0.2in','margin-right':'0.2in',
@@ -281,12 +234,216 @@ class ImprimirMulta(View):
 
 			pdfkit.from_file('pdf/tesorero/impMul2.html', 'static/pdfs/impMul3.pdf',options=options, configuration=config)
 
-			dicc['pdf']='Listados de las órdenes por reparto'
 			dicc['url_pdf']='pdfs/impMul3.pdf'
-			#--------------------------------------------------pdf
+			#--------------------------------------------------end pdf
 			print("  >> finaló 1")
 		else:
 			print("  >> Err")
 		return render(request,url,dicc)
 
+
+class EstdoMulta(View):
+
+	def get(self, request, *args, **kwargs):
+		#print(" >> StdMulta")
+		pka = self.request.GET.get('pka')
+		std = self.request.GET.get('std')
+		rpta = 'Ok'
+		if MultaAsistencia.objects.filter(pk=pka).exists():
+			hma= MultaAsistencia.objects.get(pk=pka)
+			if Multa.objects.filter(id_multa=hma.id_multa.pk).exists():
+				Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std)
+			else:
+				rpta = 'Err'
+				print("  >> Err1")
+		else:
+			rpta = 'Err'
+			print("  >> Err2")
+		return HttpResponse(rpta)
+
+
+#===================================== ORDEN 
+
+class EditarMultaO(View):
+
+	def get(self, request, *args, **kwargs):
+		print(" >> EditarMulta")
+		pka = self.request.GET.get('pka')
+		mon = self.request.GET.get('monto')
+		con = self.request.GET.get('concepto')
+		rpta = 'Ok'
+		from apps.inicio.models import MultaOrden
+		if MultaOrden.objects.filter(pk=pka).exists():
+			hma= MultaOrden.objects.get(pk=pka)
+			if Multa.objects.filter(id_multa=hma.id_multa.pk).exists():
+				Multa.objects.filter(id_multa=hma.id_multa.pk).update(monto=float(mon),concepto=con)
+			else:
+				rpta = 'Err'
+		else:
+			rpta = 'Err'
+		return HttpResponse(rpta)
+
+
+
+
+class EliminarMultaO(View):
+
+	def get(self, request, *args, **kwargs):
+		print(" >> EliminarMulta")
+		pka = self.request.GET.get('pka')
+		rpta = 'Ok'
+		from apps.inicio.models import MultaOrden
+		if MultaOrden.objects.filter(pk=pka).exists():
+			pko=MultaOrden.objects.get(pk=pka).pk
+			MultaOrden.objects.filter(pk=pka).delete()
+			Multa.objects.filter(pk=pko).delete()
+		else:
+			rpta = 'Err'
+			print("  >> Err + "+str(pka))
+		return HttpResponse(rpta)
+
+
+class ImprimirMultaO(View):
+
+	def get(self, request, *args, **kwargs):
+		pka = self.request.GET.get('pka')
+		rpta = 'Ok'
+		dicc={}
+		if pka != "":
+			url='multa/t_imp_1.html'
+			dicc['msj']="ók"
+			#--------------------------------------------------pdf
+			env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
+			template = env.get_template("tesorero/impMulO1.html")
+			path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+			config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+			
+			dicc['fch']=datetime.datetime.now()
+			from apps.inicio.models import MultaOrden
+			if MultaOrden.objects.filter(pk=pka).exists():
+				dicc['multa']=MultaOrden.objects.get(pk=pka)
+
+			html = template.render(dicc)
+			f=open('pdf/tesorero/impMulO2.html','w')
+			f.write(html)
+			f.close()
+	 
+			options = { 'page-size':'A4','margin-top':'0.2in','margin-right':'0.2in',
+				'margin-bottom':'0.3in','margin-left':'0.2in'}
+
+			pdfkit.from_file('pdf/tesorero/impMulO2.html', 'static/pdfs/impMulO3.pdf',options=options, configuration=config)
+
+			dicc['url_pdf']='pdfs/impMulO3.pdf'
+			#--------------------------------------------------end pdf
+			print("  >> finaló 1")
+		else:
+			print("  >> Err")
+		return render(request,url,dicc)
+
+
+class EstdoMultaO(View):
+
+	def get(self, request, *args, **kwargs):
+		#print(" >> StdMulta")
+		pka = self.request.GET.get('pka')
+		std = self.request.GET.get('std')
+		rpta = 'Ok'
+		from apps.inicio.models import MultaOrden
+		if MultaOrden.objects.filter(pk=pka).exists():
+			hma= MultaOrden.objects.get(pk=pka)
+			if Multa.objects.filter(id_multa=hma.id_multa.pk).exists():
+				Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std)
+			else:
+				rpta = 'Err'
+				print("  >> Err1")
+		else:
+			rpta = 'Err'
+			print("  >> Err2")
+		return HttpResponse(rpta)
+
+#===================================== END ORDEN
+
+
+#-----------------------------------------------------reparto
+
+class LstRepartos(View):
+
+	def get(self, request, *args, **kwargs):
+		#print(" >> StdMulta")
+		print("  >> ok")
+
+		dicc = {}
+		dicc['lst_repartos']=Reparto.objects.all().order_by('-pk')
+
+		return render(request,'reparto/t_lst_repartos.html',dicc)
+
+
+class HjaMulReparto(View):
+
+	def get(self, request, *args, **kwargs):
+		print("  >> ok")		
+		pkr = self.request.GET.get('pkr')
+
+		dicc = {}
+		from apps.inicio.models import MultaOrden
+		if MultaOrden.objects.filter(id_orden__id_reparto=pkr).exists():
+			dicc['hja_mul_reparto']=MultaOrden.objects.filter(id_orden__id_reparto=pkr)
+		else:
+			print("  >> Nooo hay multas de ordenes")
+
+		return render(request,'reparto/hja_mul_reaprto.html',dicc)
+
+
+
+class HjaOrdReparto(View):
+
+	def get(self, request, *args, **kwargs):
+		print("  >> ok-or")		
+		pkr = self.request.GET.get('pkr')
+		dicc = {}
+		if OrdenRiego.objects.filter(id_reparto=pkr).exists():
+			print("  >> Si hay multas de ordenes")
+			dicc['hja_or_reparto']=OrdenRiego.objects.filter(id_reparto=pkr).order_by('-estado')
+		else:
+			print("  >> Nooo hay multas de ordenes")
+		return render(request,'reparto/hja_ord_reaprto.html',dicc)
+		
+
+class MultaOrden(View):
+
+	def get(self, request, *args, **kwargs):
+		print("  >> get")		
+		pko = self.request.GET.get('pko')
+		dicc = {}
+		dicc['fch']=datetime.datetime.now()
+		if OrdenRiego.objects.filter(id_orden_riego=pko).exists():
+			print("  >> Si está ordene")
+			dicc['orden_riego']=OrdenRiego.objects.get(id_orden_riego=pko)
+		return render(request,'reparto/multa_ord.html',dicc)
+
+	def post(self, request, *args, **kwargs):
+		print("  >> post")		
+		mon = self.request.POST.get('monto')
+		pko = self.request.POST.get('pko')
+		concept = self.request.POST.get('concepto')
+
+		print("  >> monto: "+str(mon)+"  >> pko: "+str(pko)+"  >> con: "+str(concept))
+		dicc={}
+		#----------------creamos la multa
+		if OrdenRiego.objects.filter(pk=int(pko)).exists():
+			from apps.inicio.models import MultaOrden
+			if MultaOrden.objects.filter(id_orden=pko).exists():
+				dicc['rpta']="ya existe."
+				print("  >> ya existe.")
+			else:
+				print("  >> creará.")
+				mo=Multa(concepto=concept,fecha=datetime.datetime.now(),estado="0",tipo="1",monto=float(mon))
+				mo.save()
+				ordn=OrdenRiego.objects.get(pk=int(pko))			
+				dml=MultaOrden(id_multa=mo,id_orden=ordn)
+				dml.save()
+				dicc['rpta']="creada con éxito!"
+
+
+		return render(request,'reparto/multa_ord.html',dicc)
 

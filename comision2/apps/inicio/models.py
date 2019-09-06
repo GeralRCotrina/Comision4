@@ -15,6 +15,12 @@ def get_hour_rep():
     return datetime.now().strftime("16:30:00")
 
 
+
+
+
+
+
+
 class AgendaAsamblea(models.Model):
     id_agenda = models.AutoField(primary_key=True)
     id_asamblea = models.ForeignKey('Asamblea', models.DO_NOTHING, db_column='id_asamblea', blank=True, null=True)
@@ -469,6 +475,7 @@ class MultaLimpia(models.Model):
         managed = False
         db_table = 'multa_limpia'
 
+#--------------------------------------------------------------
 
 class MultaOrden(models.Model):
     id_multa_orden = models.AutoField(primary_key=True)
@@ -478,11 +485,6 @@ class MultaOrden(models.Model):
     class Meta:
         managed = False
         db_table = 'multa_orden'
-
-
-
-
-
 
 
 class Noticia(models.Model):
@@ -597,3 +599,4 @@ class Talonario(models.Model):
     class Meta:
         managed = False
         db_table = 'talonario'
+

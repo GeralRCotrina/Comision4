@@ -1,0 +1,63 @@
+{% extends "t_base.html" %}
+{% load static %}
+
+
+{% block txt_not1 %}Lista de repartos{% endblock txt_not1 %}
+<br><br>
+
+
+{% block p_msj %} 
+{% endblock p_msj %}
+
+
+
+{% block cuerpo %}
+
+
+<div class="container">
+  {% if lst_repartos %}
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td><strong>ID</strong></td>
+          <td><strong>DESCRIPCIÓN</strong></td>
+          <td><strong>FECHA</strong></td>
+          <td><strong>TIPO</strong></td>
+          <td><strong>ESTADO</strong></td>
+          <td><i class="fas fa-box-open"></i></td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lr in lst_repartos %}
+            <tr style="font-size:0.8em;">
+              <td>{{lr.pk}}</td>
+              <td>{{lr.descripcion}}</td>
+              <td>{{lr.fecha_reparto}}</td>
+              <td><span class="badge" style="background:#A0D8B2;">{{lr.tipo}}</span></td>
+              <td>{% if lr.estado == '1' %}<span class="badge" style="background:#68E168;">Creado</span>{% elif lr.estado == '2' %}<span class="badge" style="background:#E9CA4C;">Aperturado</span>{% elif lr.estado == '3' %}<span class="badge" style="background:#F885A0;">Emitido</span>{% elif lr.estado == '4' %}<span class="badge" style="background:#B6B6B5;">Cerrado</span>{% else %}Err{% endif %}</td>
+              <td>
+                <div class="btn-group">
+                    <a href="{% url 'hj_or_reparto' %}?pkr={{lr.pk}}" class="btn btn-sm btn-outline-warning" title="Ver hoja de reaprto">
+                      <i class="fas fa-list-ol"></i></a>
+                    <a href="{% url 'hj_ml_reparto' %}?pkr={{lr.pk}}" class="btn btn-sm btn-outline-info" title="Ver hoja de multas">
+                      <i class="fas fa-donate"></i></a>
+                  </div>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+        
+  {% else %}
+    Err al traer los reaprtos.
+  {% endif %}
+</div>
+
+
+
+
+
+
+{% endblock cuerpo %}
