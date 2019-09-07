@@ -39,6 +39,13 @@ urlpatterns = [
 	re_path(r'^t_lst_dstjs/?/$',login_required(views.LstDestajos.as_view()),name='t_lst_dstjs'),
 	re_path(r'^mul_dest_cre/?/$',login_required(views.CrearMulDstj.as_view()),name='mul_dest_cre'),
 
+	re_path(r'^lst_muls_lmp/?/$',login_required(views.LstMulsLimpia.as_view()),name='lst_muls_lmp'),
+
+	re_path(r'^t_std_muld/?/$',login_required(views.EstdoMultaD.as_view()),name='t_std_muld'),
+	re_path(r'^t_eli_muld/?/$',login_required(views.EliminarMultaD.as_view()),name='t_eli_muld'),
+	re_path(r'^t_edi_muld/?/$',login_required(views.EditarMultaD.as_view()),name='t_edi_muld'),
+	re_path(r'^t_mul_impd/?/$',login_required(views.ImprimirMultaD.as_view()),name='t_mul_impd'),
+
 
 	
 

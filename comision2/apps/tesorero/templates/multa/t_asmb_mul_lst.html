@@ -16,8 +16,8 @@
 	{% if hoja_multas %}
 		<table class="table table-striped table-sm">
 			<thead>
-				<tr style="background:#EBF3ED;" align="center">
-					<td> <strong>Id Multa</strong></td>
+				<tr style="background:#2DA544; color:white;" align="center">
+					<td> <strong>Id Multa.-</strong></td>
 					<td><strong>Usuario</strong></td>
 					<td><strong>Hora llegada</strong></td>
 					<td><strong>Motivo</strong></td>
@@ -29,7 +29,7 @@
 			</thead>
 			<tbody>				
 				{% for hm in hoja_multas %}
-					<tr id="tr_{{hm.pk}}">
+					<tr id="tr_{{hm.pk}}" style="font-style:italic; font-size:0.8em;">
 						<td>{{hm.pk}}</td>
 						<td>{{hm.id_hoja_asistencia.id_auth_user.last_name}}, {{hm.id_hoja_asistencia.id_auth_user.first_name}}</td>
 						<td align="center">{{hm.id_hoja_asistencia.hora.hour}}:{% if hm.id_hoja_asistencia.hora.minute <= 9 %}0{% endif %}{{hm.id_hoja_asistencia.hora.minute}}</td>
@@ -40,8 +40,9 @@
 						<td align="center">
 							<a href="#" data-toggle="modal" data-target="#ModalEditar{{hm.pk}}" style="color:#FAC257;" title="Editar"><i class="far fa-edit"></i></a>
 							<a href="#" data-toggle="modal" data-target="#ModalDelete{{hm.pk}}" style="color:#FC4646;" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+							<a href="#" data-toggle="modal" data-target="#ModalEst{{hm.pk}}" style="color:#46A95B;" title="Estado"><i class="fas fa-cog"></i></a>
 							<a href="{% url 't_mul_imp' %}?pka={{hm.pk}}" style="color:#308BF1;" title="Imprimir"><i class="fas fa-print"></i></a>
-							<a href="#" data-toggle="modal" data-target="#ModalEst{{hm.pk}}" style="color:#46A95B;" title="Estado"><i class="fas fa-money-bill-wave"></i></a>
+							
 
 							<!-- Modal Esta -->
 								<div class="modal fade" id="ModalEst{{hm.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

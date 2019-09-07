@@ -64,18 +64,18 @@
 
 
 			{% if hoja_asistencia %}
-				<table class="table table-sm table-striped">
+				<table class="table table-sm table-striped text-center">
 					<thead>
-						<tr style="background:#C0E3C4;">
+						<tr style="background:#2DA544; color:white; font-weight: bold;">
 							<td>USUARIO</td>
 							<td>HORA DE LLEGADA</td>
 							<td>ESTADO</td>
-							<td></td>
+							<td><i class="fas fa-box-open"></i></td>
 						</tr>
 					</thead>
 					<tbody>
 						{% for ha in hoja_asistencia %}
-							<tr>
+							<tr style="font-style:italic; font-size:0.8em;">
 								<td>{{ha.id_auth_user.first_name}} {{ha.id_auth_user.last_name}} </td>
 								<td><i class="far fa-clock"></i>
 									{% if ha.hora.hour <= 9 %}0{% endif %}{{ha.hora.hour}}: {% if ha.hora.minute <= 9 %}0{% endif %}{{ha.hora.minute}}</td>

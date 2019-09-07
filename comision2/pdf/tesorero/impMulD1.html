@@ -1,0 +1,101 @@
+
+<link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.css">
+
+<title>Mulata por destajo</title>
+
+<table class="table table-sm table-borderless w-100"><!--table-borderless-->
+	
+      <tr style="border: 1px solid #D9D7D7;">
+
+        <td style="width:40%; margin-left: 0px;  margin-bottom: 0px;  margin-top: 0px;  margin-right: 0px;">
+
+            <div>
+                  <table class="w-100" >
+
+                    <tr  style="background: #F1EEEE;" ><td colspan="2"> 
+                      <span class="float-left mt-2"><span class="badge badge-secondary"><strong>Comp. MULTA {{multa.id_multa.pk}}</strong></span></span>
+                      <span class="float-right font-italic text-muted">Cr NH <img src='../logo.png' height="30px;" width="50px;"></span>
+                    </td></tr>
+
+                    <tr><td colspan="2" class="text-center"> <strong>SANCIÓN DEL COMITÉ DE REGANTES</strong> <br></td></tr>
+                    <tr><td colspan="2"></td></tr>
+                    <tr><td><strong>Usuario:</strong></td><td>{{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.last_name}}, {{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.first_name}}</td></tr>
+                    <tr><td><strong>Motivo:</strong></td><td>Por limpieza de canales.</td></tr>
+                    <tr><td colspan="2"><strong>Concepto:</strong>
+                      <textarea class="w-100 form-control" rows="3" style="font-size: 0.9em; font-style:italic;">{{ multa.id_multa.concepto}}</textarea></td></tr>
+                    <tr><td></td><td class="text-right"><span class="badge badge-secondary">
+                        . . . . . . . . . . Recibo por ingresos</span></td></tr>
+                    <tr><td><strong>Mon: </strong> S/. {{ multa.id_multa.monto}}</td> <td><strong>Fecha: </strong> {{multa.id_multa.fecha.day}}/{{multa.id_multa.fecha.month}}/{{multa.id_multa.fecha.year}}</td></tr>
+                    <tr><td></td><td><strong> Hora: </strong> {{multa.id_multa.fecha.hour}}:{% if multa.id_multa.fecha.minute <= 9 %}0{% endif %}{{multa.id_multa.fecha.minute}}:{{multa.id_multa.fecha.second}}</td></tr>
+                    <tr><td colspan="2">
+                      <div class="text-center font-italic" style="font-size: 0.7em; line-height: 1.0em;">
+                        Este recibo es de caracter legal  y puede ayudar a solucionar problemas <br> Maneje el documento con cuidado!.
+                        <br><br>
+                      </div> 
+                    </td></tr>
+
+                    <tr><td colspan="2"></td></tr>
+
+                    <tr style="background: #C7C3C3;"><td colspan="2"><i class="text-white font-italic">{{fch}}</i></td></tr>
+                  </table>         
+            </div>
+        </td>
+
+
+
+
+<td style="width: 60%; margin-left: 0px;  margin-bottom: 0px;  margin-top: 0px;  margin-right: 0px;">
+
+            <div>
+                  <table class="w-100" >
+
+                    <tr  style="background: #F1EEEE;" ><td colspan="3"> 
+                      <span class="float-left mt-2"><span class="badge badge-secondary"><strong>Comprobante de MULTA {{multa.id_multa.pk}}</strong></span></span>
+                      <span class="float-right font-italic text-muted">Comisión de Regantes NUEVO HORIZONTE <img src='../logo.png' height="30px;" width="50px;"></span>
+                    </td></tr>
+
+                    <tr><td colspan="3" class="text-center"> <strong>SANCIÓN DEL COMITÉ DE REGANTES AL USUARIO</strong></td></tr>
+                    <tr><td colspan="3" style="background:#E7E3E5;"></td></tr>
+
+                    <tr><td colspan="3"><strong>USUARIO:</strong>  {{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.last_name}}, {{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.first_name}}</td></tr>
+
+                    <tr><td colspan="2"><strong>MOTIVO:</strong>   Por limpieza de canales.</td><td><strong>ESTADO: </strong> {% if multa.id_multa.estado == "0" %}Creada{% elif multa.id_multa.estado == "1" %}Pagada{% elif multa.id_multa.estado == "2" %}Anulada{% else %}Err{% endif %}</td></tr>
+
+                    <tr><td colspan="3"><strong>CONCEPTO:</strong>
+                      <textarea class="w-100 form-control" rows="3" style="font-size: 0.9em; font-style:italic;">{{ multa.id_multa.concepto}}</textarea></td></tr>
+
+                    <tr><td></td><td></td><td class="text-right"><span class="badge badge-secondary">
+                        . . . . . . . . . . Recibo de pago.</span></td>
+                      </tr>
+
+                    <tr><td><i><strong>Ud CANCELÓ: </strong>  S/. {{ multa.id_multa.monto}}</i></td> <td colspan="2"></td>
+                    </tr>
+
+                    <tr><td colspan="2"><strong>FECHA: </strong> {{multa.id_multa.fecha.day}}/{{multa.id_multa.fecha.month}}/{{multa.id_multa.fecha.year}}, {{multa.id_multa.fecha.hour}}:{% if multa.id_multa.fecha.minute <= 9 %}0{% endif %}{{multa.id_multa.fecha.minute}}:{{multa.id_multa.fecha.second}}</td>
+                      <td class="text-center">............................................................ <br>
+                        <i style="font-size:0.7em; line-height: 1.0em;">Sello del tesorero</i></td></tr>
+
+                 
+                    <tr><td colspan="3">
+                      <div class="text-center font-italic" style="font-size: 0.7em; line-height: 1.0em;">
+                        Este recibo es de caracter legal  y puede ayudar a solucionar problemas <br> Maneje el documento con cuidado!.
+                      </div> 
+                    </td></tr>
+
+                    <tr><td colspan="3"></td></tr>
+
+                    <tr style="background: #C7C3C3;"><td colspan="3"><i class="text-white font-italic">{{fch}}</i></td></tr>
+                  </table>         
+            </div>
+        </td>
+      </tr>
+
+
+
+
+      <tr><td colspan="2"><hr></td></tr>
+
+
+	</table>
+</table>
+

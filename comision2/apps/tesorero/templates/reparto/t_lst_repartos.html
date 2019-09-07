@@ -17,9 +17,9 @@
 <div class="container">
   {% if lst_repartos %}
 
-    <table class="table table-striped">
+    <table class="table table-sm table-striped text-center">
       <thead>
-        <tr>
+         <tr style="background:#2DA544; color:white;">
           <td><strong>ID</strong></td>
           <td><strong>DESCRIPCIÓN</strong></td>
           <td><strong>FECHA</strong></td>
@@ -30,7 +30,7 @@
       </thead>
       <tbody>
         {% for lr in lst_repartos %}
-            <tr style="font-size:0.8em;">
+            <tr style="font-size:0.8em; font-style:italic;">
               <td>{{lr.pk}}</td>
               <td>{{lr.descripcion}}</td>
               <td>{{lr.fecha_reparto}}</td>

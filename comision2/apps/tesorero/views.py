@@ -556,4 +556,117 @@ class CrearMulDstj(View):
 	
 		return HttpResponse(rpta)
 		
+
+class LstMulsLimpia(View):
+
+
+	def get(self, request, *args, **kwargs):
+		pkl = self.request.GET.get('pkl')
+		
+		print("  >> pkl: "+str(pkl))
+		dicc = {}
+		if MultaLimpia.objects.filter(id_det_limpia__id_limpieza=pkl).exists():
+			dicc["hja_mul_limpia"]=MultaLimpia.objects.filter(id_det_limpia__id_limpieza=pkl)
+			
+		return render(request,'limpia/lst_mul.html',dicc)
+		
+		
 # =================================== END COMPROBANTE ============	
+
+
+# ======================================= MUL LIMPIEZA ============
+class EstdoMultaD(View):
+
+	def get(self, request, *args, **kwargs):
+		#print(" >> StdMulta")
+		pkd = self.request.GET.get('pkd')
+		std = self.request.GET.get('std')
+		rpta = 'Ok'
+		#from apps.inicio.models import MultaOrden
+		if MultaLimpia.objects.filter(pk=pkd).exists():
+			hmd= MultaLimpia.objects.get(pk=pkd)
+			if Multa.objects.filter(id_multa=hmd.id_multa.pk).exists():
+				Multa.objects.filter(id_multa=hmd.id_multa.pk).update(estado=std)
+			else:
+				rpta = 'Err'
+				print("  >> Err1")
+		else:
+			rpta = 'Err'
+			print("  >> Err2")
+		return HttpResponse(rpta)
+
+class EliminarMultaD(View):
+
+	def get(self, request, *args, **kwargs):
+		pkd = self.request.GET.get('pkd')
+		rpta = 'Ok'
+		#from apps.inicio.models import MultaOrden
+		if MultaLimpia.objects.filter(pk=pkd).exists():
+			pko=MultaLimpia.objects.get(pk=pkd).pk
+			MultaLimpia.objects.filter(pk=pkd).delete()
+			Multa.objects.filter(pk=pko).delete()
+		else:
+			rpta = 'Err'
+			print("  >> Err + "+str(pkd))
+		return HttpResponse(rpta)
+
+class EditarMultaD(View):
+
+	def get(self, request, *args, **kwargs):
+		print(" >> EditarMulta")
+		pkd = self.request.GET.get('pkd')
+		mon = self.request.GET.get('monto')
+		con = self.request.GET.get('concepto')
+		rpta = 'Ok'
+		#from apps.inicio.models import MultaOrden
+		if MultaLimpia.objects.filter(pk=pkd).exists():
+			hma= MultaLimpia.objects.get(pk=pkd)
+			if Multa.objects.filter(id_multa=hma.id_multa.pk).exists():
+				Multa.objects.filter(id_multa=hma.id_multa.pk).update(monto=float(mon),concepto=con)
+			else:
+				rpta = 'Err'
+		else:
+			rpta = 'Err'
+		return HttpResponse(rpta)
+
+
+class ImprimirMultaD(View):
+
+	def get(self, request, *args, **kwargs):
+		print("  >> this is us")
+		pka = self.request.GET.get('pkd')
+		rpta = 'Ok'
+		dicc={}
+		if pka != "":
+			url='multa/t_imp_1.html'
+			dicc['msj']="ók"
+			#--------------------------------------------------pdf
+			env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
+			template = env.get_template("tesorero/impMulD1.html")
+			path_wkthmltopdf = b'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+			config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+			
+			dicc['fch']=datetime.datetime.now()
+			#from apps.inicio.models import MultaOrden
+			if MultaLimpia.objects.filter(pk=pka).exists():
+				dicc['multa']=MultaLimpia.objects.get(pk=pka)
+
+			html = template.render(dicc)
+			f=open('pdf/tesorero/impMulD2.html','w')
+			f.write(html)
+			f.close()
+	 
+			options = { 'page-size':'A4','margin-top':'0.2in','margin-right':'0.2in',
+				'margin-bottom':'0.3in','margin-left':'0.2in'}
+
+			pdfkit.from_file('pdf/tesorero/impMulD2.html', 'static/pdfs/impMulD3.pdf',options=options, configuration=config)
+
+			dicc['url_pdf']='pdfs/impMulD3.pdf'
+			#--------------------------------------------------end pdf
+			print("  >> finaló 1")
+		else:
+			print("  >> Err")
+		return render(request,url,dicc)
+
+
+# ======================================= MUL LIMPIEZA ============

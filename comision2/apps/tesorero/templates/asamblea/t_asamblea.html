@@ -16,9 +16,9 @@
 		<div class="col-12">
 			<div class="row">
 				{% if asambleas %}
-					<table class="table table-sm">
+					<table class="table table-sm text-center">
 						<thead>
-							<tr style="background:#CCEFCF;">
+							<tr style="background:#2DA544; color:white; font-weight: bold;">
 								<td>ÍNDICE</td>
 								<td>TIPO</td>
 								<td>FECHA</td>
@@ -29,7 +29,7 @@
 						</thead>
 						<tbody>
 							{% for a in asambleas %}
-								<tr>
+								<tr  style="font-style:italic; font-size:0.8em;">
 									<td>{{a.pk}}</td>
 									<td>
 										{% if a.tipo == 'General' %}
