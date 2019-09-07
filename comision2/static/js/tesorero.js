@@ -92,6 +92,37 @@ function EdiMulta(pka){
 
 
 
+function CrearMultaDstj(pkd){
+
+	var idmon ="mon"+pkd
+	var idcon = "con"+pkd
+	var mon= document.getElementById(idmon).value;
+	var con = document.getElementById(idcon).value;
+
+	if (mon != "" && con != "") {
+		var xhr = new XMLHttpRequest();
+		var cad = "/tesorero/mul_dest_cre/?pkd="+pkd+"&&monto="+mon+"&&concepto="+con;
+		xhr.open('GET',cad,true); // sincrono o asincrono
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				if (xhr.response=="Ok") {
+					alert(" >> Ok")
+				}else if(xhr.response=="Inv"){
+					alert("Ya tiene una multa creada, edite ella.")
+				}else{
+					alert("Algo salió mal en el servidor, intente nuevamente o verifique al administrador.")
+				}
+			}
+		}
+		xhr.send();
+	}else{
+		alert("TIENE QUE COLOCAR AMBOS DATOS.");
+	}
+
+	
+
+}
+
 /*
  =================================ORDEN DE RIEGO ===============
 */
@@ -131,7 +162,7 @@ function EstMultaO(pka){
 	
 }
 
-function EliMultaO(pka){
+function EliMultaO1(pka){
 	var id_tr="tr_"+pka;
 	var tr = document.getElementById(id_tr);
 	if(tr != null){
@@ -188,4 +219,42 @@ function EdiMultaO(pka){
 	}
 }
 
+
+
+/*
+----------------------------------------ORDEN DE RIEGO
+*/
+
+function PagarOrd(pko){
+
+	var idtdstd = "tdstd"+pko;
+	var idslc = "slc"+pko;
+
+	var tdstd = document.getElementById(idtdstd);
+	var slc = document.getElementById(idslc);
+
+	if (tdstd != null) {
+		var xhr = new XMLHttpRequest();
+		var cad = "/tesorero/t_ord_std/?pko="+pko+"&&std="+slc.value;
+		xhr.open('GET',cad,true); // sincrono o asincrono
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				if (xhr.response=="Ok") {
+					if (slc.value == "Pagada") {
+						tdstd.innerHTML = '<span class="badge badge-info">Pagada</span>';
+					}else if (slc.value == "Rechazada") {
+						tdstd.innerHTML = '<span class="badge badge-danger">Rechazada</span>';
+					}else{
+						alert("Err: .");
+					}
+				}else{
+					alert("Algo salió mal en el servidor, intente nuevamente o verifique al administrador.")
+				}
+			}
+		}
+		xhr.send();
+	}else{
+		alert(" >> Err");
+	}
+}
 

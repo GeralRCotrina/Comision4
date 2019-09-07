@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic import View
 from apps.inicio.models import *
@@ -404,6 +404,7 @@ class HjaOrdReparto(View):
 		if OrdenRiego.objects.filter(id_reparto=pkr).exists():
 			print("  >> Si hay multas de ordenes")
 			dicc['hja_or_reparto']=OrdenRiego.objects.filter(id_reparto=pkr).order_by('-estado')
+			dicc['reparto']=Reparto.objects.get(id_reparto=pkr)
 		else:
 			print("  >> Nooo hay multas de ordenes")
 		return render(request,'reparto/hja_ord_reaprto.html',dicc)
@@ -447,3 +448,112 @@ class MultaOrden(View):
 
 		return render(request,'reparto/multa_ord.html',dicc)
 
+
+
+
+class EstadoOrden(View):
+	def get(self, request, *args, **kwargs):
+		pko = self.request.GET.get('pko')
+		std = self.request.GET.get('std')
+		rpta = "Err"
+		if OrdenRiego.objects.filter(id_orden_riego=pko).exists():
+			OrdenRiego.objects.filter(id_orden_riego=pko).update(estado=std)
+			rpta = "Ok"
+		else:
+			rpta='Err'
+		return HttpResponse(rpta)
+
+
+
+
+# =================================== COMPROBANTE ============
+from django.db.models import Q
+class CompGenerar(View):
+	def get(self, request, *args, **kwargs):
+		pkr = self.request.GET.get('pkr')
+		pkt = self.request.GET.get('pkt')
+		rpta = "Err"
+		print("  >> pko.."+pkr+"  >> pkt.."+pkt)
+
+		if Reparto.objects.filter(pk=pkr).exists():
+			hr_e=OrdenRiego.objects.filter(Q(id_reparto=pkr) & Q(estado="Entregada"))
+			for ho in hr_e:
+				print("  rpta: >"+CrearCompOrd(1,ho.pk))
+		return redirect('/tesorero/t_cmp_lst/?pkr='+pkr)
+
+
+def CrearCompOrd(pkt,pko):
+	rpta ="Err"
+	if Talonario.objects.filter(pk=pkt).exists():
+		if CompOrden.objects.filter(id_orden=pko).exists():
+			rpta="Inv"
+		else:
+			ordn=OrdenRiego.objects.get(pk=pko)
+			tln=Talonario.objects.get(pk=pkt)
+			cp=Comprobante(id_talonario=tln,ticket_numero=ordn.pk,concepto="Genérico",tipo="0",monto=ordn.importe,estado=0)
+			cp.save()
+			cop=CompOrden(id_comprobante=cp,id_orden=ordn)
+			cop.save()
+			rpta="Ok"
+	return rpta
+
+
+
+class CompListarOrd(View):
+
+	def get(self, request, *args, **kwargs):
+		pkr = self.request.GET.get('pkr')
+		print("  >> pko::"+pkr)
+		dicc={}
+		if CompOrden.objects.filter(id_orden__id_reparto=pkr).exists():
+			dicc["lst_cmp"]=CompOrden.objects.filter(id_orden__id_reparto=pkr).order_by('-pk')
+		else:
+			dicc["msj"]="Reparto sin comprobantes."
+
+		return render(request,'reparto/lst_comp_ord.html',dicc)
+
+
+
+class LstLimpiezas(View):
+
+	def get(self, request, *args, **kwargs):
+		dicc={}
+		dicc["lst_lmps"]=Limpieza.objects.all().order_by('-pk')
+		return render(request,'limpia/lst_lmps.html',dicc)
+
+class LstDestajos(View):
+
+	def get(self, request, *args, **kwargs):
+		pkl = self.request.GET.get('pkl')
+		print("  >> pkl::"+pkl)
+		dicc={}
+		if DetLimpieza.objects.filter(id_limpieza=pkl).exists():
+			dicc["lst_dstjs"]=DetLimpieza.objects.filter(id_limpieza=pkl).order_by('-pk')
+		else:
+			dicc['msj']="La limpieza no a generado aún su hoja de revisión."
+		return render(request,'limpia/lst_dstjs.html',dicc)
+
+
+class CrearMulDstj(View):
+
+	def get(self, request, *args, **kwargs):
+		pkd = self.request.GET.get('pkd')
+		mon = self.request.GET.get('monto')
+		con = self.request.GET.get('concepto')
+		#print("  >> pkd: "+str(pkd)+"  > monto: "+str(mon)+"  > con:"+str(con))
+		rpta = "Err"
+		if MultaLimpia.objects.filter(id_det_limpia=pkd).exists():
+			print("  >> Err: ya tiene mullta creada, editese.")
+			rpta="Inv"
+		else:
+			dtl=DetLimpieza.objects.get(pk=pkd)
+			fch=datetime.datetime.now()
+			mlt=Multa(concepto=con,fecha=fch,estado="0",tipo="3",monto=float(mon))
+			mlt.save()
+			mltl=MultaLimpia(id_multa=mlt,id_det_limpia=dtl)
+			mltl.save()
+			rpta="Ok"
+	
+		return HttpResponse(rpta)
+		
+# =================================== END COMPROBANTE ============	

@@ -1,0 +1,55 @@
+{% extends "t_base.html" %}
+{% load static %}
+
+{% block txt_not1 %}Listado de limpias{% endblock txt_not1 %}
+<br><br>
+{% block p_msj %} 
+{% endblock p_msj %}
+
+
+
+{% block cuerpo %}
+
+
+<div class="container">
+{% if lst_lmps %}
+  <table class="table table-sm table-striped text-center">
+    <thead>
+      <tr style="background:#2DA544; font-weight: bold; color:white;">
+        <td>ID</td>
+        <td>FECHA</td>
+        <td>TIPO</td>
+        <td>DESCRIPCIÓN</td>
+        <td>ESTADO</td>
+        <td><i class="fas fa-box-open"></i></td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ll in lst_lmps %}
+        <tr style="font-style:italic;">
+          <td>LMP00{{ll.pk}}</td>
+          <td>{{ll.fecha_limpieza}}</td>
+          <td>{% if ll.tipo == "0" %}<span class="badge" style="background:#5CCC61;">GENERAL</span>
+            {% elif ll.tipo == "1" %}<span class="badge" style="background:#86F98E;">MATRIZ</span>
+            {% elif ll.tipo == "2" %}<span class="badge" style="background:#CBF095;">RAMALES</span>
+            {% else %}Err{% endif %}</td>
+          <td style="font-size:0.8em;">{{ll.decripcion}}</td>
+          <td>{% if ll.estado == "0" %}<span class="badge" style="background:#F1D66A;">Registrada</span>
+            {% elif ll.estado == "1" %}<span class="badge" style="background:#7CDD9C;">En Proceso</span>
+            {% elif ll.estado == "2" %}<span class="badge" style="background:#ABAAA7;">Cerrada</span>
+            {% else %}Err{% endif %}</td>
+          <td>
+            <div class="btn-group">
+              <a  href="{% url 't_lst_dstjs' %}?pkl={{ll.pk}}" class="btn btn-sm btn-outline-info" title="Ver hoja de destajos"><i class="fas fa-list-ol"></i></a>
+              <a  href="#" class="btn btn-sm btn-outline-secondary" title="Ver hoja de multas"><i class="fas fa-money-check-alt"></i></a>
+            </div>              
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+{% endif %}
+</div>
+
+{% endblock cuerpo %}

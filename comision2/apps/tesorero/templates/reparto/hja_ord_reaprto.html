@@ -16,10 +16,47 @@
 
 <div class="container">
   {% if hja_or_reparto %}
+  <div class="container m-1 p-2 border">
+    <div class="btn-group btn-block">
+      <a href="#" data-toggle="modal" data-target="#ModalGenComp" class="btn btn-outline-info form-control">GENERAR COMPROBANTES</a>
+      <a href="{% url 't_cmp_lst' %}?pkr={{reparto.pk}}" class="btn btn-outline-secondary form-control">VER COMPROBANTES</a>
+    </div>
+      
+      
+       <!-- Modal Esta -->
+            <div class="modal fade" id="ModalGenComp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">GENERAR COMPROBANTES</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                        Se etá generando la hoja de comprobante que almacena de manera permanente e inmodificable la información de las órdenes <span class="badge badge-secondary">Entregadas</span>, para poderse usar con fines históricos.
+                  </div>
+                  <div class="modal-footer">
+                    <a href="#" class="btn btn-sm btn-success" data-dismiss="modal">Cancelar</a>
+                    <a href="{% url 't_comp_gen' %}?pkr={{reparto.pk}}&&pkt=1" class="btn btn-sm btn-primary">GENERAR</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+  </div>
+
+
+
+
+
+
+
+
+
 
     <table class="table table-sm text-center">
       <thead>
-        <tr>
+        <tr style="background:#C2CAC6">
           <td><strong>ID</strong></td>
           <td><strong>USUARIO</strong></td>
           <td><strong>PARCELA</strong></td>
@@ -35,11 +72,51 @@
               <td>{{ord.id_parcela.id_auth_user.first_name}}</td>
               <td>{{ord.id_parcela.nombre}}</td>
               <td>{{ord.fecha_inicio.hour}}:{% if ord.fecha_inicio.minute <= 9 %}0{% endif %}{{ord.fecha_inicio.minute}}</td>
-              <td><span class="badge {% if ord.estado == 'Aprobada' %}badge-success{% elif  ord.estado == 'Solicitada' %}badge-warning{% elif  ord.estado == 'Rechazada' %}badge-danger{% elif  ord.estado == 'Entregada' %}badge-secondary{% else %}Err{% endif %}">{{ord.estado}}</span></td>
+              <td id="tdstd{{ord.pk}}"><span class="badge {% if ord.estado == 'Aprobada' %}badge-success{% elif  ord.estado == 'Solicitada' %}badge-warning{% elif  ord.estado == 'Pagada' %}badge-info{% elif  ord.estado == 'Rechazada' %}badge-danger{% elif  ord.estado == 'Entregada' %}badge-secondary{% else %}Err{% endif %}">{{ord.estado}}</span></td>
             <td>
-              {% if ord.estado == 'Aprobada' or ord.estado == 'Entregada' %}
-                <a href="{% url 'mul_or' %}?pko={{ord.pk}}" class="btn btn-sm btn-outline-secondary">Multar</a> 
-              {% endif %}            
+              <div class="btn-group">  
+                {% if ord.estado == 'Aprobada' %}
+                  <a  href="#" data-toggle="modal" data-target="#ModalEst{{ord.pk}}" class="btn btn-sm btn-outline-info" title="Registrar pago">Estado</a> 
+
+                   <!-- Modal Esta -->
+                        <div class="modal fade" id="ModalEst{{ord.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Estado</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-8">
+                                    Registrar pago de <strong>{{ord.id_parcela.id_auth_user.first_name}}</strong><br> por un monto de S/. <strong>{{ord.importe}}</strong>.
+                                  </div>
+                                  <div class="col-4">
+                                    <select name="slc{{ord.pk}}" id="slc{{ord.pk}}" class="form-control">
+                                      <option value="Pagada">Pagada</option>
+                                      <option value="Rechazada">Rechazada</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                
+                                    
+                              </div>
+                              <div class="modal-footer">
+                                <a href="#" class="btn btn-sm btn-success" data-dismiss="modal">Cancelar</a>
+                                <a href="#" class="btn btn-sm btn-primary" onclick="PagarOrd({{ord.pk}})" data-dismiss="modal">Actualizar</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                {% endif %}                
+                {% if ord.estado == 'Aprobada' or ord.estado == 'Entregada' or ord.estado == 'Pagada' %}
+                  <a href="{% url 'mul_or' %}?pko={{ord.pk}}" class="btn btn-sm btn-outline-secondary" title="Registrar multa.">Multar</a> 
+                {% endif %}
+              </div>
+
+                   
             </td>
             </tr>
         {% endfor %}

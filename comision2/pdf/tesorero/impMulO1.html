@@ -20,7 +20,7 @@
                     <tr><td colspan="2" class="text-center"> <strong>SANCIÓN DEL COMITÉ DE REGANTES</strong> <br></td></tr>
                     <tr><td colspan="2"></td></tr>
                     <tr><td><strong>Usuario:</strong></td><td>{{ multa.id_orden.id_parcela.id_auth_user.last_name}}, {{ multa.id_orden.id_parcela.id_auth_user.first_name}}</td></tr>
-                    <tr><td><strong>Motivo:</strong></td><td>{% if multa.tipo == 2 %}Por tardanza{% elif multa.tipo == 3 %}Por Inasistencia{% else %}Err{% endif %}</td></tr>
+                    <tr><td><strong>Motivo:</strong></td><td>Por orden de riego.</td></tr>
                     <tr><td colspan="2"><strong>Concepto:</strong>
                       <textarea class="w-100 form-control" rows="3" style="font-size: 0.9em; font-style:italic;">{{ multa.id_multa.concepto}}</textarea></td></tr>
                     <tr><td></td><td class="text-right"><span class="badge badge-secondary">
@@ -59,7 +59,7 @@
 
                     <tr><td colspan="3"><strong>USUARIO:</strong>  {{ multa.id_orden.id_parcela.id_auth_user.last_name}}, {{ multa.id_orden.id_parcela.id_auth_user.first_name}}</td></tr>
 
-                    <tr><td colspan="2"><strong>MOTIVO:</strong> {% if multa.tipo == 2 %}Por tardanza{% elif multa.tipo == 3 %}Por Inasistencia{% else %}Err{% endif %}</td><td><strong>ESTADO: </strong> {% if multa.id_multa.estado == "0" %}Creada{% elif multa.id_multa.estado == "1" %}Pagada{% elif multa.id_multa.estado == "2" %}Anulada{% else %}Err{% endif %}</td></tr>
+                    <tr><td colspan="2"><strong>MOTIVO:</strong>   Por orden de riego.</td><td><strong>ESTADO: </strong> {% if multa.id_multa.estado == "0" %}Creada{% elif multa.id_multa.estado == "1" %}Pagada{% elif multa.id_multa.estado == "2" %}Anulada{% else %}Err{% endif %}</td></tr>
 
                     <tr><td colspan="3"><strong>CONCEPTO:</strong>
                       <textarea class="w-100 form-control" rows="3" style="font-size: 0.9em; font-style:italic;">{{ multa.id_multa.concepto}}</textarea></td></tr>

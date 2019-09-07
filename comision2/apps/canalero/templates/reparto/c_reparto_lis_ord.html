@@ -165,7 +165,7 @@ LISTADO DE ÓRDENES DEL REPAERTO
 	<td>Recibo</td>
 	<td>Canal</td>
 	<td>Usuario</td>
-	<td>N° toma</td>
+	<td>Toma</td>
 	<td>Parcela</td>
 	<td>Regará</td>
 	<td>Inicio</td>
@@ -190,43 +190,48 @@ LISTADO DE ÓRDENES DEL REPAERTO
 					<td>{{ ob.fecha_establecida.day }}-{{ ob.fecha_establecida.month }}-{{ ob.fecha_establecida.year }}</td>
 					<td><i class="far fa-clock"></i> {{ ob.fecha_inicio.hour }}:{{ ob.fecha_inicio.minute }}</td>
 					<td>{{ob.duracion }} h </td>
-					
-					{% if  ob.estado == 'Solicitada' %}
-						<td><span id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-warning"><i class="fas fa-sign-in-alt"></i>  SOLICITADA</span></td>
-					{% elif ob.estado == 'Rechazada' %}
-						<td><span id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-danger"><i class="fas fa-ban"></i>  RECHAZADA</span></td>
-					{% elif ob.estado == 'Aprobada' %}
-						<td><span  id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-success"><i class="fas fa-check"></i>  APROBADA</span></td>
-					{% elif ob.estado == 'Entregada' %}
-						<td><span  id="sp_{{ob.id_orden_riego}}" class="badge badge-pill badge-secondary"><i class="fas fa-money-bill"></i>  ENTREGADA</span></td>
-					{% else %}
-						<td>{{ob.estado}}</td>
-					{% endif %}
+					<td  id="tdstd{{ob.id_orden_riego}}">
+						{% if  ob.estado == 'Solicitada' %}
+							<span class="badge badge-pill badge-warning"><i class="fas fa-sign-in-alt"></i>  SOLICITADA</span>
+						{% elif ob.estado == 'Rechazada' %}
+							<span class="badge badge-pill badge-danger"><i class="fas fa-ban"></i>  RECHAZADA</span>
+						{% elif ob.estado == 'Pagada' %}
+							<span class="badge badge-pill badge-info"><i class="fas fa-check"></i>  PAGADA</span>
+						{% elif ob.estado == 'Aprobada' %}
+							<span class="badge badge-pill badge-success"><i class="fas fa-check"></i>  APROBADA</span>
+						{% elif ob.estado == 'Entregada' %}
+							<span class="badge badge-pill badge-secondary"><i class="fas fa-money-bill"></i>  ENTREGADA</span>
+						{% else %}
+							Err: {{ob.estado}}
+						{% endif %}
+					</td>
+
 
 
 
 					<td>
-					<div class="btn-group">
+					
 				        <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 				        	<i class="fas fa-cog"></i></button>
 					      <div class="dropdown-menu" >
 					      	<div class="btn-group ml-2">
-								<button class="btn btn-outline-warning btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Solicitada")'>
+								<button class="btn btn-outline-warning btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Solicitada")' title="Solicitar">
 									<i class="fas fa-sign-in-alt"></i></button>
 
-								<button class="btn btn-outline-success btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Aprobada")'>
+								<button class="btn btn-outline-success btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Aprobada")' title="Aprobar">
 									<i class="fas fa-check"></i></button>
 
-								<button class="btn btn-outline-danger btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Rechazada")'>
+								<button class="btn btn-outline-danger btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Rechazada")' title="Rechazar">
 									<i class="fas fa-ban"></i></button>
 
-								<button class="btn btn-outline-secondary btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Entregada")'>
-									<i class="fas fa-money-bill"></i></button>
+								{% if ob.estado == 'Pagada' %}
+									<button class="btn btn-outline-secondary btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Entregada")' title="Entregar">
+										<i class="fas fa-money-bill"></i></button>
+								{% endif %}
 
 								<a class="btn btn-outline-info" href="{% url 'c_orden_hora' %}?id_ord={{ ob.id_orden_riego }}" >
 									<i class="far fa-clock"></i></a>
 							</div>
-				        </div>
 				      </div>
 					</td>
 				</tr>

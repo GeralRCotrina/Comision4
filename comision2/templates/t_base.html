@@ -124,8 +124,7 @@
            <i class="fas fa-clipboard-list"></i>
             <span>ASAMBLEA</span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">            
-            <a class="dropdown-item" href="#"><i class="fas fa-plus"></i> REGISTRAR</a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="#"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
@@ -136,21 +135,23 @@
             <span>REPARTO</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="#"><i class="fas fa-plus"></i>  REGISTRAR</a>
             <a class="dropdown-item" href="{% url 't_lst_repartos' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
       
-        <li class="nav-item dropdown">
+
+
+  {% block limpia_menu %} 
+       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-code-branch"></i>
-            <span>CANAL</span>
+            <i class="fas fa-broom"></i>
+            <span>LIMPIEZA</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="#"><i class="fas fa-plus"></i>  REGISTRAR</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-list-ol"></i> LISTAR</a>
+            <a class="dropdown-item" href="{% url 't_lst_lmps' %}"><i class="fas fa-list-ol"></i>  LISTAR</a>
           </div>
         </li>
+  {% endblock limpia_menu %} 
 
       </ul>
    
@@ -251,7 +252,7 @@
                   </div>
                   <div class="mr-5">MULTA DE LIMPIEZA</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
+                <a class="card-footer text-white clearfix small z-1" href="{% url 't_lst_lmps' %}">
                   <span class="float-left">Registrar..</span>
                   <span class="float-right">
                     <i class="fas fa-angle-right"></i>
@@ -346,8 +347,8 @@
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
 
   <!--  JS -->  
+    <script src="{% static 'js/tesorero.js' %}"></script>    
     <script src="{% static 'js/tableToExcel.js' %}"></script>
-    <script src="{% static 'js/tesorero.js' %}"></script>
 
     {% endblock js %}
 

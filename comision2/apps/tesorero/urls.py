@@ -27,5 +27,20 @@ urlpatterns = [
 	re_path(r'^hj_or_reparto/?/$',login_required(views.HjaOrdReparto.as_view()),name='hj_or_reparto'),
 
 	re_path(r'^mul_or/?/$',login_required(views.MultaOrden.as_view()),name='mul_or'),
+	re_path(r'^t_ord_std/?/$',login_required(views.EstadoOrden.as_view()),name='t_ord_std'),
+
+
+	re_path(r'^t_comp_gen/?/$',login_required(views.CompGenerar.as_view()),name='t_comp_gen'),
+	re_path(r'^t_cmp_lst/?/$',login_required(views.CompListarOrd.as_view()),name='t_cmp_lst'),
+
+
+
+	re_path(r'^t_lst_lmps/?/$',login_required(views.LstLimpiezas.as_view()),name='t_lst_lmps'),
+	re_path(r'^t_lst_dstjs/?/$',login_required(views.LstDestajos.as_view()),name='t_lst_dstjs'),
+	re_path(r'^mul_dest_cre/?/$',login_required(views.CrearMulDstj.as_view()),name='mul_dest_cre'),
+
+
+	
+
 ]
  

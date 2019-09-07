@@ -1,0 +1,47 @@
+{% extends "t_base.html" %}
+{% load static %}
+
+
+{% block txt_not1 %}Lista de comprobantes por reparto.{% endblock txt_not1 %}
+<br><br>
+
+
+{% block p_msj %} 
+{% endblock p_msj %}
+
+
+
+{% block cuerpo %}
+
+
+<div class="container">
+  {% if lst_cmp %}
+   <a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+    <table class="table table-sm table-striped" id="dataTable">
+      <thead>
+        <tr style="background:#C2CAC6; font-weight: bold;">
+          <td>ID</td>
+          <td>USUARIO</td>
+          <td>ID-ORDEN | FECHA</td>
+          <td>MONTO</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lc in lst_cmp %}
+          <tr style="font-style:italic;">
+            <td>CMPORD00{{lc.pk}}</td>
+            <td>{{lc.id_orden.id_parcela.id_auth_user.first_name}}</td>
+            <td>[{{lc.id_orden.pk}}] {{lc.id_orden.fecha_inicio.day}}/{{lc.id_orden.fecha_inicio.month}}/{{lc.id_orden.fecha_inicio.year}}_{{lc.id_orden.fecha_inicio.hour}}:{% if lc.id_orden.fecha_inicio.minute <= 9 %}0{% endif %}{{lc.id_orden.fecha_inicio.minute}}</td>
+            <td>S/. {{lc.id_comprobante.monto}}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+      
+    </table>
+      
+  {% else %}
+    {{msj}}    
+  {% endif %}
+</div>
+
+{% endblock cuerpo %}

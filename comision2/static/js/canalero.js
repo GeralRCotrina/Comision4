@@ -6,35 +6,31 @@ window.onload = function() {
 
 function UrlJS(iOr,iRe,est){
 
+	var idtdstd = "tdstd"+iOr;
+	var tdstd = document.getElementById(idtdstd);
+
+
 	var xhr = new XMLHttpRequest();
 	var cad = "/canalero/c_orden_apr/?id_ord="+iOr+"&&id_rep="+iRe+"&&est="+est;
 
 	xhr.open('GET',cad,true); // sincrono o asincrono
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
-			var sp=document.getElementById("sp_"+iOr);
-			sp.classList.remove("badge-success");
-			sp.classList.remove("badge-danger");
-			sp.classList.remove("badge-warning");
-			if(est == "Rechazada")
-			{
-				sp.classList.add("badge-danger");
-				sp.innerHTML = '<i class="fas fa-ban"></i>  RECHAZADA';
+
+			if(est == "Rechazada"){
+				tdstd.innerHTML = '<span class="badge badge-pill badge-danger"><i class="fas fa-ban"></i>  RECHAZADA</span>';
 			}
-			else if(est == "Aprobada")
-			{
-				sp.classList.add("badge-success");
-				sp.innerHTML = '<i class="fas fa-check"></i> APROBADA';
+			else if(est == "Aprobada"){
+				tdstd.innerHTML = '<span class="badge badge-pill badge-success"><i class="fas fa-check"></i> APROBADA</span>';
 			}
-			else if(est == "Entregada")
-			{
-				sp.classList.add("badge-secondary");
-				sp.innerHTML = '<i class="fas fa-money-bill"></i> ENTREGADA';
+			else if(est == "Entregada"){
+				tdstd.innerHTML = '<span class="badge badge-pill badge-secondary"><i class="fas fa-money-bill"></i>  ENTREGADA</span>';
 			}
-			else if(est == "Solicitada")
-			{
-				sp.classList.add("badge-warning");
-				sp.innerHTML = '<i class="fas fa-sign-in-alt"></i>  SOLICITADA';
+			else if(est == "Solicitada"){
+				tdstd.innerHTML = '<span class="badge badge-pill badge-secondary badge-warning"><i class="fas fa-sign-in-alt"></i>  SOLICITADA</span>';
+			}
+			else{
+				alert("Err: ");
 			}
 		}
 	}
@@ -238,28 +234,20 @@ function PintarModal(){
 
 
 function MrcDestajo(pkd,std){
-	var id_spn= "spn_"+pkd;
-	spn = document.getElementById(id_spn)
-
-	spn.classList.remove("badge-success");
-	spn.classList.remove("badge-primary");
-	spn.classList.remove("badge-warning");
-	spn.classList.remove("badge-danger");
-
-
+	var idtdstd= "tdstd"+pkd;
+	var tdstd = document.getElementById(idtdstd);
+	var rpta="Err";
 	if(std == 1){
-		spn.innerHTML="Revisado"
-		spn.classList.add("badge-primary");
+		rpta='<span class="badge badge-primary">Revisado</span>';
 	}else if(std == 2){
-		spn.innerHTML="Mal Hecho"
-		spn.classList.add("badge-warning");
+		rpta='<span class="badge badge-warning">Mal Hecho</span>';
 	}else if(std == 3){
-		spn.innerHTML="No Hecho"
-		spn.classList.add("badge-danger");
+		rpta='<span class="badge badge-danger">No Hecho</span>';
 	}else{
 		spn.innerHTML="Err"
+		rpta='';
 	}
-
+	tdstd.innerHTML=rpta;
 	CmbStdDetDestajo(pkd,std);
 }
 

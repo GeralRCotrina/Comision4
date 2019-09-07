@@ -195,7 +195,7 @@ class ImpLstOrd1(View):
 
 class ImprimirReparto(View):
 
-	def get(self,request,*args,**kwargs):
+	def get(self,request,*args,**kwargs):		
 		idre = self.request.GET.get('id_repa')
 		env = Environment(loader=FileSystemLoader("pdf", encoding = 'utf-8'))
 		template = env.get_template("imprimir.html")
@@ -996,7 +996,7 @@ class DetLimpEst(View):
 		lista= DetLimpieza.objects.filter(id_limpieza=pkl)
 		hr= datetime.datetime.now()
 		for l in lista:
-			l.estado='0'
+			l.estado='1'
 			l.fecha=hr
 			l.save()
 		print("  >> end")
