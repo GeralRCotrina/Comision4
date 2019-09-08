@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from apps.inicio.models import DatosPersonales, OrdenRiego, Noticia, Parcela, AuthUser, Reparto, AuthUser, Caudal
 from apps.inicio.forms import PersonaForm
 from apps.usuario.forms import OrdenRForm
+from django.http import HttpResponse
 
 
 from django.urls import reverse_lazy
@@ -34,6 +35,91 @@ def usuario(request):
 	dicc['cant_cau']=cant_cau
 	return render(request, 'usuario.html',dicc)
  
+
+
+
+
+class ApiTraerParc(View):
+
+	def get(self, request, *args, **kwargs):
+		userpk = self.request.GET.get('userpk')
+		rpta ="Err"
+		if userpk != "":
+			if Parcela.objects.filter(id_auth_user=userpk).exists():
+				pr=Parcela.objects.filter(id_auth_user=userpk)
+				rpta='{'
+				cont=0
+				for p in pr:
+					if cont == 0:
+						rpta+='"'+str(cont)+'":"'+p.nombre+'"'
+					else:
+						rpta+=',"'+str(cont)+'":"'+p.nombre+'"'
+					cont+=1
+				rpta+='}'			
+		return HttpResponse(rpta)
+
+		
+
+class ApiTraerOrd(View):
+
+	def get(self, request, *args, **kwargs):
+		userpk = self.request.GET.get('userpk')
+		rpta ="Err"
+		print(" --->")
+		print("  >>"+str(userpk))
+		if userpk != "":
+			if OrdenRiego.objects.filter(id_parcela__id_auth_user=userpk).exists():
+			#if Parcela.objects.filter(id_auth_user=userpk).exists():
+				#pr=Parcela.objects.filter(id_auth_user=userpk)
+				print("  >> si tiene órdenes..")
+				pr=OrdenRiego.objects.filter(id_parcela__id_auth_user=userpk).order_by('-fecha_inicio')
+				rpta='{'
+				cont=0
+				for p in pr:
+					if cont == 0:
+						rpta+='"'+str(cont)+('":" F: '+str(p.fecha_inicio.day)+'/'+
+							str(p.fecha_inicio.month)+'/'+
+							str(p.fecha_inicio.year)+' - H: '+
+							str(p.fecha_inicio.hour)+':'+
+							str(p.fecha_inicio.minute)+'_ Est:  '+
+							p.estado+'"')
+					else:
+						rpta+=',"'+str(cont)+('":" F: '+str(p.fecha_inicio.day)+'/'+
+							str(p.fecha_inicio.month)+'/'+
+							str(p.fecha_inicio.year)+' - H: '+
+							str(p.fecha_inicio.hour)+':'+
+							str(p.fecha_inicio.minute)+'_ Est:  '+
+							p.estado+'"')
+					cont+=1
+				rpta+='}'
+			else:
+				print("  >> no tiene órdenes..")		
+		return HttpResponse(rpta)
+
+
+"""
+
+							str(p.fecha_inicio.minute)+'_ Est:  <span class="badge badge-pill badge-light">'+
+							p.estado+'</span>"')
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
 

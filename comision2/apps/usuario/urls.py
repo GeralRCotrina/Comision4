@@ -31,6 +31,12 @@ urlpatterns = [
 	re_path(r'^pruebas/$',login_required(views.Pruebas),name='pruebas'),
 
 
+	re_path(r'^api_parc/?/$',login_required(views.ApiTraerParc.as_view()),name='api_parc'),
+	re_path(r'^api_ord/?/$',login_required(views.ApiTraerOrd.as_view()),name='api_ord'),
+
+
+
+
 ]
 
 
