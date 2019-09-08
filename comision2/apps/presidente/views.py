@@ -334,17 +334,13 @@ class RepCaudal2(View):
 
 class RepCaudal(View):
 
-	def get(self, request, *args, **kwargs):				
-		can=Canal.objects.all()
-		cau=Caudal.objects.all().order_by("-pk")
-		cant_can=can.count()
-		cant_cau=(cau.count()/cant_can)
-		t=datetime.datetime.now()
+	def get(self, request, *args, **kwargs):	
+		cau=Caudal.objects.all().order_by("fecha")
+		cant_cau=cau.count()
+
 		reporte_caudal = {}
 		reporte_caudal['fecha']=datetime.datetime.now()
-		reporte_caudal['canales']=can
-		reporte_caudal['caudal']=cau
-		reporte_caudal['cant_can']=cant_can
+		reporte_caudal['caudales']=cau
 		reporte_caudal['cant_cau']=cant_cau
 		return render(request,'reportes/p_reporte_caudal.html',reporte_caudal)
 
@@ -357,14 +353,15 @@ class CaudalCreate(TemplateView):
 		can = Canal.objects.all()
 		dicc['canales']=can
 		return render(request,'caudal/p_caudal_reg.html',dicc)
-
+ 
 	def post(self, request, *args, **kwargs):
-		can=Canal.objects.all()
-		fecha = self.request.POST.get('fecha')		
-		for ca in can:
-			niv=self.request.POST.get(str(ca.id_canal))
-			cau=Caudal(id_canal=ca,fecha=fecha,nivel=niv,descripcion='Descripción')
-			cau.save()
+		fecha = self.request.POST.get('fecha')
+		niv=self.request.POST.get('volumen')
+		des=self.request.POST.get('descripcion')
+		print("  >> f: "+str(fecha)+"  > v="+str(niv)+"  >> d:"+des)
+		ca=Canal.objects.get(pk=1)
+		cau=Caudal(id_canal=ca,fecha=fecha,nivel=niv,descripcion='Descripción')
+		cau.save()
 		dicc={}
 		dicc['mensaje']='Registro de caudal hecho correctamente'
 		return render(request,'caudal/p_caudal_reg.html',dicc)

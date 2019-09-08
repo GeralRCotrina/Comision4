@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from apps.inicio.models import DatosPersonales, OrdenRiego, Noticia, Parcela, AuthUser, Reparto, AuthUser
+from apps.inicio.models import DatosPersonales, OrdenRiego, Noticia, Parcela, AuthUser, Reparto, AuthUser, Caudal
 from apps.inicio.forms import PersonaForm
 from apps.usuario.forms import OrdenRForm
 
@@ -19,6 +19,23 @@ def Pruebas(request):
 	return render(request,'usuario.html')
 
 
+
+def usuario(request):
+	dicc={}
+
+	#===============noticia===========
+	dicc['lst_noticias']=Noticia.objects.all().order_by('-pk')
+
+	# ===========caudal==============
+	cau=Caudal.objects.all().order_by("fecha")
+	cant_cau=cau.count()
+	dicc['fecha']=datetime.datetime.now()
+	dicc['caudales']=cau
+	dicc['cant_cau']=cant_cau
+	return render(request, 'usuario.html',dicc)
+ 
+
+ 
 
 class FiltrarParcelas(ListView):
     model = Parcela
@@ -175,10 +192,6 @@ class UsuarioList(ListView):
 	template_name='lista_usuarios.html'
 	paginate_by=10
 
-
-def usuario(request):
-	return render(request, 'usuario.html')
- 
 
 
 

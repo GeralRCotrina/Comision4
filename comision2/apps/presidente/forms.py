@@ -37,9 +37,10 @@ class NoticiaForm(forms.ModelForm):
 	class Meta:
 		model = Noticia
 
-		fields = ['id_noticia','titular','descripcion','fecha','foto',]	
+		fields = ['id_noticia','titular','titulo','descripcion','fecha','foto',]	
 		labels = {
 			'titular':'Titular',
+			'titulo':'Titulo',
 			'descripcion':'Descripción',
 			'fecha':'Fecha',
 			'foto':'foto',
@@ -47,8 +48,9 @@ class NoticiaForm(forms.ModelForm):
 
 		widgets={
 		    'titular':forms.TextInput(attrs={'class':'form-control'}),
+		    'titulo':forms.TextInput(attrs={'class':'form-control'}),
 		    'descripcion':forms.Textarea(attrs={'class':'form-control'}),
-		    'fecha':forms.DateInput(attrs={'class':'form-control','type':'date',}),
+		    'fecha':forms.DateTimeInput(attrs={'class':'form-control','type':'date',}),
 		    'foto':forms.FileInput(attrs={'class':'btn-block'}),
 		    }
 

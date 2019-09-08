@@ -490,6 +490,7 @@ class MultaOrden(models.Model):
 class Noticia(models.Model):
     id_noticia = models.AutoField(primary_key=True)
     titular = models.CharField(max_length=45, blank=True, null=True)
+    titulo = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.CharField(max_length=400, blank=True, null=True)
     fecha = models.DateTimeField(default=get_date_now)
     foto = models.ImageField(upload_to='photos')
