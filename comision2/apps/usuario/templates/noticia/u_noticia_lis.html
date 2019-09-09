@@ -1,4 +1,5 @@
 {% extends "u_base.html" %}
+{% load static %}
 
 
 {% block txt_cabecera %}
@@ -6,63 +7,83 @@
 {% endblock txt_cabecera %}
 
 
-{% block noticias %}
+{% block cuerpo %}
 
-{% endblock noticias %}
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			
+			
+{% if object_list %}
+        	{% for n in object_list %}        	   	   
+		        <!-- Blog Post -->
 
+					        
+		        	
+				       
 
-{% block noticias1 %}
-
-{% endblock noticias1 %}
- 
-
-
-{% block titulo_tabla %}Listado de Noticias{% endblock titulo_tabla %}
-
-{% block td1_tabla %}
-	<td>Titular</td>
-	<td>Descripción</td>
-	<td>Fecha</td>
-	<td>imagen</td>
-{% endblock td1_tabla %}
-
-{% block td2_tabla %}
-	<td>Titular</td>
-	<td>Descripción</td>
-	<td>Fecha</td>
-	<td>imagen</td>
-{% endblock td2_tabla %}
-
-
-{% block body_tabla %}
-	{% csrf_token %}
-
-	{% if object_list %}
-		{% for ob in object_list %}
-
-		<tr > 
-			<td>[{{ob.id_noticia}}] {{ ob.titular }}</td>
-			<td>{{ ob.descripcion }}</td>
-			<td>{{ ob.fecha }}</td>
-			<td><img src="/media/{{ ob.foto }}" style="height: 100px; width: 65px;"></td>			
-		</tr>
-
-		{% endfor %}				
-	{% else %}
-		<h1>NO HAY NOTICIAS</h1>
-	{% endif %}
-
-{% endblock body_tabla %}
+		        <div class="card mb-4" style="background:rgba(195,195,195,0.27);">
+		        	<div class="row">
+		        		<div class="col-7 pt-4 pr-3 ml-3">
+		        			<h2><span class="float-left"><img src='{% static "img/003-noticia.gif" %}' alt="" height="50px"></span> 
+					        	{{n.titular}}   <small class="font-italic">{{n.titulo}}</small></h2><br>
+		        			
+					        <p style="font-style:italic; font-size:1.0em; line-height:0.9em;">{{n.descripcion}}</p>
+					            
+					        <span class="ml-2 mb-1 badge badge-pill badge-light text-muted font-italic">{{ n.fecha }}
+					           		</span>
+					        <span class="mb-1 badge badge-pill badge-light">
+					            	<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">leer más..</a>
+					            </span>
+					        <span class="mb-1 badge badge-pill badge-light">
+						            <a href="#" style="font-style:italic; color:#4985FF;" onclick="alert('lo haré despues, no te apures.')">comentar..</a>
+						        </span>
+		        		</div>
+		        		<div class="col-4">
+		        			<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
+					          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" height="250px" width="300px">
+					          	</a>
+		        		</div>
+		        	</div>
+		          	
+					          
+					          
 
 
-{% block btn_nuevo %}	
-{% endblock btn_nuevo %}
+<!-- Modal -->
+<div class="modal fade" id="notmdl{{n.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{n.titular}} <br> <small>{{n.titulo}}</small></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" >
+      </div>
+      <div class="modal-footer pt-1 pr-2 pb-0 pl-2">
+      	<p class="text-justify font-italic pt-0 pr-0 pb-0 pl-0">{{n.descripcion}}</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
+		        </div>
+		       
+		        <hr>
+		
+        	 {% endfor %}
+	     {% else %}
+        	Err al traer las noticias, contacte al administrador del sistema.
+        {% endif %}
+		</div>
+	</div>
+</div>
 
+{% endblock cuerpo %}
 
-
-{% block graficos %}
 	
-{% endblock graficos %}

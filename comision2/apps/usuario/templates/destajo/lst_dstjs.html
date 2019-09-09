@@ -1,0 +1,64 @@
+{% extends "u_base.html" %}
+
+
+{% block txt_cabecera %}
+	ÓRDENES DE RIEGO
+{% endblock txt_cabecera %}
+
+
+
+
+{% block cuerpo %}
+	
+<div class="container">
+	
+<div class="row">
+	<div class="col-12 text-center">
+		<h1>Mis Destajos</h1>
+	</div>
+</div>
+
+
+	{% if lst_dstjs %}
+	<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+		 <table class="table table-sm table-striped text-center" id="dataTable">
+	      <thead>
+	       	<tr style="background:#2DA544; color:white; font-weight: bold;">
+	          	<td>ID</td>
+	          	<td>PARCELA</td>
+	          	<td>CANAL</td>
+	          	<td>N° ORDEN</td>
+	          	<td>DESCRIPCIÓN</td>
+	          	<td>TAMANO</td>
+          		<td>ESTADO</td>
+	        </tr>
+	      </thead>
+	      <tbody>
+			{% for ld in lst_dstjs %}
+				<tr style="font-style:italic; font-size:1.0em;">
+					<td>{{ld.pk}}</td>
+					<td>{{ld.id_parcela.nombre}}</td>
+					<td>{{ld.id_canal.nombre}}</td>
+					<td>{{ld.num_orden}}°</td>
+					<td>{{ld.descripcion}}</td>
+					<td>{{ld.tamano}} m</td>
+					<td>{% if ld.estado == "0" %}<span class="badge badge-pill badge-warning">Registrado</span>
+						{% elif ld.estado == "1" %}<span class="badge badge-pill badge-success">Habilitado</span>
+						{% elif ld.estado == "2" %}<span class="badge badge-pill badge-success">En Limpia</span>
+						{% elif ld.estado == "3" %}<span class="badge badge-pill badge-danger">Multado</span>
+						{% else %}Err{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		  </tbody>
+		</table>
+	{% else %}
+		no llegó
+	{% endif %}
+
+</div>
+
+
+{% endblock cuerpo %}
+

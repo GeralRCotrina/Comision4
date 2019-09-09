@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from apps.inicio.models import DatosPersonales, OrdenRiego, Noticia, Parcela, AuthUser, Reparto, AuthUser, Caudal
+from apps.inicio.models import DatosPersonales, OrdenRiego, Noticia, Parcela, AuthUser, Reparto, AuthUser, Caudal, Destajo
+from apps.inicio.models import *
 from apps.inicio.forms import PersonaForm
 from apps.usuario.forms import OrdenRForm
 from django.http import HttpResponse
@@ -8,7 +9,7 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView,UpdateView,DeleteView, TemplateView, View
 
-
+ 
 import datetime
 import time
 
@@ -65,13 +66,8 @@ class ApiTraerOrd(View):
 	def get(self, request, *args, **kwargs):
 		userpk = self.request.GET.get('userpk')
 		rpta ="Err"
-		print(" --->")
-		print("  >>"+str(userpk))
 		if userpk != "":
 			if OrdenRiego.objects.filter(id_parcela__id_auth_user=userpk).exists():
-			#if Parcela.objects.filter(id_auth_user=userpk).exists():
-				#pr=Parcela.objects.filter(id_auth_user=userpk)
-				print("  >> si tiene órdenes..")
 				pr=OrdenRiego.objects.filter(id_parcela__id_auth_user=userpk).order_by('-fecha_inicio')
 				rpta='{'
 				cont=0
@@ -97,12 +93,48 @@ class ApiTraerOrd(View):
 		return HttpResponse(rpta)
 
 
-"""
 
-							str(p.fecha_inicio.minute)+'_ Est:  <span class="badge badge-pill badge-light">'+
-							p.estado+'</span>"')
-"""
+class ApiTraerMul(View):
 
+	def get(self, request, *args, **kwargs):
+		print("  >>Llegó pet")
+		userpk = self.request.GET.get('userpk')
+		rpta ='{"cant":'
+		cant=0
+		if MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk).exists():
+			lmo=MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk)
+			print("  >> si tiene multas de orden")
+			cant+=lmo.count()
+			for m in lmo:
+				print("   -> lmo: "+str(m))	
+		else:
+			print("  >> no tiene multas de orden")
+
+
+		if MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk).exists():
+			lma=MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk)
+			print("  >> si tiene multas de asistencia")
+			cant+=lma.count()
+			for m in lma:
+				print("   -> lma: "+str(m))	
+		else:
+			print("  >> no tiene multas de asistencia")
+
+
+		if MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk).exists():
+			lmd=MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk)
+			print("  >> si tiene multas de destajo")
+			cant+=lmd.count()
+			for m in lmd:
+				print("   -> lmd: "+str(m))	
+		else:
+			print("  >> no tiene multas de destajo")
+
+		rpta+=str(cant)+'}'
+
+
+		
+		return HttpResponse(rpta)
 
 
 
@@ -280,131 +312,18 @@ class UsuarioList(ListView):
 
 
 
-
-"""
-
-class UsuarioList(ListView):
-	model=Persona
-	template_name='lista_usuarios.html'
+## ======================= 	LstDestajos ============================
 
 
-
-def edirtar_usuario(request,id_usuario):
-	usuario=Usuario.objects.get(id=id_usuario)
-	if request.method == "GET":
-		form=PersonaForm(instance=usuario)
-	else:
-		form = PersonaForm(request.POST,instance=usuario)
-		if form.is_valid():
-			form.save()
-			return redirect('UsuarioList')
-	return render(request,'crear_usuario.html', {'form':form})
-
-
-
-def registrar_usuario(request):	
-	if request.method == 'POST':
-		form = UsuarioForm(request.POST)
-		if form.is_valid():
-			form.save() 
-		return redirect('lista_usuarios')
-
-	else:
-		form=UsuarioForm()
-	return render(request,'registrar_usuario.html',{'form':form})
-
-
-
-def edirtar_usuario(request,id_usuario):
-	usuario=Usuario.objects.get(id=id_usuario)
-	if request.method == "GET":
-		form=UsuarioForm(instance=usuario)
-	else:
-		form = UsuarioForm(request.POST,instance=usuario)
-		if form.is_valid():
-			form.save()
-			return redirect('lista_usuarios')
-	return render(request,'registrar_usuario.html', {'form':form})
-
-
-def eliminar_usuario(request,id_usuario):
-	usuario=Usuario.objects.get(id=id_usuario)
-	if request.method == "POST":
-		usuario.delete()
-		return redirect('lista_usuarios')
-	return render(request,'eliminar_usuario.html', {'usuario':usuario})
-
-
-
-class OrdenList(ListView):
-	model=Orden
-	template_name='listar_ordenes.html'
-
-
-
-class OrdenCreate(CreateView):
-	model = Orden
-	form_class=OrdenForm
-	template_name='crear_orden.html'
-	success_url=reverse_lazy('OrdenList')
-
-
-
-class UsuarioCreate(CreateView):
-	model = Usuario
-	form_class = UsuarioForm
-	template_name='registrar_usuario.html'
-	success_url =  reverse_lazy('lista_usuarios')
-
-
-class UsuarioUpdate(UpdateView):
-	model = Usuario
-	form_class = UsuarioForm
-	template_name='registrar_usuario.html'
-	success_url =  reverse_lazy('lista_usuarios')
-
-class UsuarioDelete(DeleteView):
-	model=Usuario 
-	template_name='eliminar_usuario.html'
-	success_url =  reverse_lazy('lista_usuarios')
-
-"""
-
-
-
-"""
-class ListadoCompleto(ListView):
-    model = Parcela
-    template_name = "usuario_parcela.html"
-
-class RegistroCompleto(CreateView):
-    model = Percela
-    template_name = "usuario_parcela.html"
-    form_class= ParcelaForm
-    second_form_class=UsuarioForm
-    success_url=reverse_lazy('usuario_parcela.html')
-
-	def get_context_data(self, **kwargs):
-	    context = super(RegistroCompleto, self).get_context_data(**kwargs)
-	    if 'form' not in context:
-	    	context['form']=self.form_class(self.request.GET)
-	    if 'form2' not in context:
-	    	context['form2']=self.second_form_class(self.request.GET)
-	    return context
-
-	 def post(self, request, *args, **kwargs):
-	 	self.objects=self.get_object
-	 	form = sel.form_class(request.POST)
-	 	form2 = sel.second_form_class(request.POST)
-	 	if form is_valid() and form2 is_valid():
-	 		parcela=form.save(commit=False)
-	 		parcela.Usuario=form2.save()
-	 		parcela.save()
-	 		return HttpResponseRedirect(self.get_success_url())
-
-
-"""
-
-
+class LstDestajos(View):
+	def get(self,request,*args,**kwargs):
+		print(">>llegó")
+		userpk=self.request.GET.get("userpk")
+		dicc={}
+		if Destajo.objects.filter(id_parcela__id_auth_user=userpk).exists():
+			dicc['lst_dstjs']=Destajo.objects.filter(id_parcela__id_auth_user=userpk).order_by('id_canal','num_orden')
+			
+		return render(request,"destajo/lst_dstjs.html",dicc)
+ 
 
 

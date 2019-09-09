@@ -37,71 +37,6 @@
 
 
 
-<div class="row mt-2">
-	<div class="col-12">
-		
-<div id="container1" class="border w-100" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-
-
-		<script type="text/javascript">
-
-Highcharts.chart('container1', {
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: '{{fecha}}'
-    },
-    subtitle: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for c in caudales %}
-                '{{c.fecha.day}}/{{c.fecha.month}}/{{c.fecha.year}}',
-            {% endfor %}]
-    },
-    yAxis: {
-        title: {
-            text: '0 = sin agua, 10 = Canal lleno.'
-        }
-    },
-    plotOptions: {
-        line: {
-            dataLabels: {
-                enabled: true
-            },
-            enableMouseTracking: false
-        }
-    },
-    series: [{name: 'Nivel',
-        data: [{% for c in caudales %}
-                {{c.nivel}},
-            {% endfor %}],
-        stack: 'male'
-    }]
-});
-		</script>
-	</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div class="row mt-2">
@@ -207,6 +142,7 @@ Highcharts.chart('container', {
         {% if lst_noticias %}
         	{% for n in lst_noticias %}        	   	   
 		        <!-- Blog Post -->
+
 		        <div class="card mb-4" style="background:rgba(195,195,195,0.27);">
 		          	<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
 		          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" width="750" height="300" >
@@ -249,19 +185,91 @@ Highcharts.chart('container', {
 	     {% else %}
         	Err al traer las noticias, contacte al administrador del sistema.
         {% endif %}
+		
+
+
+
+
+
+
+
+
+
+<div class="row mt-2">
+  <div class="col-12">
+    
+<div id="container1" class="border w-100" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+
+    <script type="text/javascript">
+
+Highcharts.chart('container1', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: '{{fecha}}'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: [{% for c in caudales %}
+                '{{c.fecha.day}}/{{c.fecha.month}}/{{c.fecha.year}}',
+            {% endfor %}]
+    },
+    yAxis: {
+        title: {
+            text: '0 = sin agua, 10 = Canal lleno.'
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{name: 'Nivel',
+        data: [{% for c in caudales %}
+                {{c.nivel}},
+            {% endfor %}],
+        stack: 'male'
+    }]
+});
+    </script>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">
           <li class="page-item">
-            <a class="page-link" href="#">← Older</a>
+            <a class="page-link" href="#">← Anterior</a>
           </li>
           <li class="page-item disabled">
-            <a class="page-link" href="#">Newer →</a>
+            <a class="page-link" href="#">Siguiente →</a>
           </li>
         </ul>
 
       </div>
+
+
+
+
+
 
 
 
@@ -277,29 +285,36 @@ Highcharts.chart('container', {
 
       	<input id="userpk" type="text" value="{{request.user.pk}}" hidden>
       	
-      	<!--a href="#" onclick="CargarParcelas()">Traer parcelas</a>
-      	<a href="#" onclick="CargarOrdenes()">Traer ordenes</a-->
+      	<a href="#" onclick="CargarParcelas()">CargarParcelas()</a>
+      	<a href="#" onclick="CargarOrdenes()">CargarOrdenes()</a>
+        <a href="#" onclick="CargarMultas()">CargarMultas()</a>
+     
+
+
+      	<div class="row">
+      		<div class="col-12 text-center font-italic pt-2" style="background: #E4E5E4;">
+      			<h6>Mi área</h6>
+      		</div>
+      	</div>
 
 
         <!-- Search Widget -->
         <div class="card my-1 border ml-0" style="">
-
-    		<p style="letter-spacing:-0.8em; background: #F2F3F2;" class="mt-2 mb-1"><i class="fas fa-bell fa-fw"></i>
-    			<span class="badge badge-danger" style="font-size:0.6em; letter-spacing: 0.0em;">+1</span>
-    			<i style="letter-spacing:0.3em; color:white;">_</i>
-    			<strong style="font-size:1.0em; font-style:italic; letter-spacing:0.0em;">Nuevo</strong>
-    		</p>
-    		<div style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
-    			<i><i class="fas fa-file-invoice"></i>   Las nuevas noticias se mostraran aquí.</i>
-    		</div>
+      		<p style="letter-spacing:-0.8em; background: #E4E5E4;" class="mt-2 mb-1"><i class="fas fa-bell fa-fw"></i>
+      			<span id="alr_mul" class="badge badge-danger" style="font-size:0.6em; letter-spacing: 0.0em;">+1</span>
+      			<i style="letter-spacing:0.3em; color:white;">_</i>
+      			<strong style="font-size:1.0em; font-style:italic; letter-spacing:0.0em;">Multas</strong>
+      		</p>
+      		<div id="div_mul" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+      			<i><i class="fas fa-file-invoice"></i>   cargando..</i>
+      		</div>
         </div>
 
 
  
         <!-- Search Widget -->
         <div class="card my-3 border ml-0" style="">
-
-    		<p style="background: #F2F3F2;" class="pl-2 mt-2 mb-1"><i class="fas fa-map-marked-alt"></i>
+    		<p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-map-marked-alt"></i>
     			<strong style="font-size:1.0em; font-style:italic;">Parcelas</strong>
     		</p>
     		<div id="div_parc" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
@@ -309,13 +324,31 @@ Highcharts.chart('container', {
  
         <!-- Search Widget -->
         <div class="card my-3 border ml-0" style="">
+    		<p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-money-check-alt"></i>
+    			<strong style="font-size:1.0em; font-style:italic;">Órdenes</strong>
+    		</p>
+    		<div id="div_ord" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+    			<i><i class="fas fa-money-check-alt"></i> cargando..</i><br>
+    		</div> 
+        </div>
 
-        		<p style="background: #F2F3F2;" class="pl-2 mt-2 mb-1"><i class="fas fa-money-check-alt"></i>
-        			<strong style="font-size:1.0em; font-style:italic;">Órdenes</strong>
-        		</p>
-        		<div id="div_ord" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
-        			<i><i class="fas fa-money-check-alt"></i> cargando..</i><br>
-        		</div>     
+
+        <!-- Search Widget -->
+        <div class="card my-3 border ml-0" style="">
+          <img src='{% static "img/004-pajaritos.gif" %}' alt="" height="80" class="mt-0">
+        </div>
+
+
+ 
+        <!-- Search Widget -->
+        <div class="card my-3 border ml-0" style="">
+          <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="far fa-comments"></i>
+            <strong style="font-size:1.0em; font-style:italic;">Comentarios</strong>
+          </p>
+          <div id="div_ord" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+            <i><i class="fas fa-comments"></i> cargando..</i><br>
+            <i><i class="fas fa-user-alt"></i> cargando..</i><br>
+          </div> 
         </div>
 
 

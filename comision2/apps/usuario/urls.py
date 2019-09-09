@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from apps.usuario import views 
 from django.contrib.auth.decorators import login_required
 
-
+ 
 urlpatterns = [
 	re_path(r'^$', login_required(views.usuario),name='usuario'), 
 
@@ -14,8 +14,6 @@ urlpatterns = [
 
 	re_path(r'^u_orden_lis/$',login_required(views.OrdenList.as_view()),name='u_orden_lis'),
 	re_path(r'^u_orden_reg/$',login_required(views.OrdenCreate.as_view()),name='u_orden_reg'),
-#	re_path(r'^u_orden_edi/(?P<pk>\d+)/$',login_required(views.OrdenUpdate.as_view()),name='u_orden_edi'),
-#	re_path(r'^u_orden_eli/(?P<pk>\d+)/$',login_required(views.OrdenDelete.as_view()),name='u_orden_eli'),
 
 	re_path(r'^u_noticia_lis/$',login_required(views.NoticiaList.as_view()),name='u_noticia_lis'),
 
@@ -33,6 +31,11 @@ urlpatterns = [
 
 	re_path(r'^api_parc/?/$',login_required(views.ApiTraerParc.as_view()),name='api_parc'),
 	re_path(r'^api_ord/?/$',login_required(views.ApiTraerOrd.as_view()),name='api_ord'),
+	re_path(r'^api_mul/?/$',login_required(views.ApiTraerMul.as_view()),name='api_mul'),
+
+
+
+	re_path(r'^lst_dtjs/?/$',login_required(views.LstDestajos.as_view()),name='lst_dtjs'),
 
 
 

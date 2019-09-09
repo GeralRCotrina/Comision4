@@ -37,13 +37,7 @@ urlpatterns = [
 
 	re_path(r'^c_ordlis/?/$',login_required(views.ImpLstOrd.as_view()),name='c_ordlis'),
 
-	#re_path(r'^c_ordlis/',login_required(views.ImpLstOrd.as_view()),name='c_ordlis'),
-
-
-	re_path(r'^c_multa_reg/$',login_required(views.MultaCreate.as_view()),name='c_multa_reg'),
 	re_path(r'^c_multa_lis/$',login_required(views.MultaList.as_view()),name='c_multa_lis'),
-	re_path(r'^c_multa_edi/(?P<pk>\d+)/$',login_required(views.MultaUpdate.as_view()),name='c_multa_edi'),
-	re_path(r'^c_multa_eli/(?P<pk>\d+)/$',login_required(views.MultaDelete.as_view()),name='c_multa_eli'),
 
 	re_path(r'^c_usuario_reg/$',login_required(views.UsuarioCreate.as_view()),name='c_usuario_reg'),
 	re_path(r'^c_usuario_lis/$',login_required(views.UsuarioList.as_view()),name='c_usuario_lis'),

@@ -680,20 +680,14 @@ class DestajoDelete(DeleteView):
 class MultaList(ListView):
 	model=Multa
 	template_name='multa/c_multa_lis.html'
-	paginate_by=10
 
-class MultaUpdate(UpdateView):
-	model=Multa
-	form_class=MultaForm
-	template_name='multa/c_multa_reg.html'
-	success_url=reverse_lazy('c_multa_lis') 
-
-class MultaDelete(DeleteView):
-	model=Multa
-	form_class=MultaForm
-	template_name='multa/c_multa_eli.html'
-	success_url=reverse_lazy('c_multa_lis')
-
+	def get(self, request, *args, **kwargs):
+		print("  > > GET de ListView")
+		dicc = {}
+		dicc['lst_ord']=MultaOrden.objects.all()
+		dicc['lst_asi']=MultaAsistencia.objects.all()
+		dicc['lst_des']=MultaLimpia.objects.all()
+		return render(request, self.template_name,dicc)
 
 
 

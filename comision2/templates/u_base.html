@@ -40,7 +40,7 @@
 
     <nav class="navbar navbar-expand  static-top" style="background: #317631">
 
-      <a class="navbar-brand mr-1 text-white" href="{% url 'usuario' %}">{{ request.user.first_name}}</a>
+      <a class="navbar-brand mr-1 text-white" href="{% url 'usuario' %}">USUARIO CrNH</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
@@ -69,7 +69,7 @@
                 <img src="{% static 'img/perfil.png' %}" class="w-100 img-thumbnail" style="height: 150px; width: 150px;">
 
                 <div class="card-body">
-                  <h5 class="h5">{{ request.user.get_full_name }}</h5>
+                  <h6 class="h6">{{ request.user.last_name }}</h6>
                       <div class="btn-group btn-block">
                         <a href="{% url 'mylogin' %}" class="btn btn-success form-control"><i class="fas fa-lock-open"></i></a>
                         <a href="{% url 'logout' %}" class="btn btn-danger form-control"><i class="fas fa-lock"></i></a>                          
@@ -157,7 +157,7 @@
             <span>DESTAJOS</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="#">Ver mis destajos</a>
+            <a class="dropdown-item" href="{% url 'lst_dtjs' %}?userpk={{user.id}}">Ver mis destajos</a>
           </div>
         </li>
 
@@ -177,7 +177,7 @@
         <li class="nav-item">
           <a class="nav-link" style="color: #F1FC43; font-size: 2.1em;" href="mk:@MSITStore:C:\Desarrollo\ev1\comision2\static\helpdesk2\helpdesk2.chm::/e_usuario.html">
             <i class="fas fa-question-circle  animated infinite flip"></i>
-            <span>Ayuda  <i style="font-size: 2.1em;" class="animated infinite fadeOut"> F2</i></span>
+            <span>Ayuda  <i style="font-size: 2.1em;" class=""> F2</i></span>
           </a>
         </li>
 
