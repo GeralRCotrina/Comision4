@@ -1,84 +1,62 @@
 {% extends "u_base.html" %}
+{% load static %}
+
+{% block cuerpo %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-12 my-2 text-center">
+			<h2>Todas mis órdenes</h2>
+		</div>
 
 
-{% block txt_cabecera %}
-	ÓRDENES DE RIEGO
-{% endblock txt_cabecera %}
+		<div class="col-12 my-2">
+			{% if object_list %}
+			<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+				<table class="table table-sm table-striped text-center" id="dataTable">
+			      <thead>
+			      	<tr style="background:#2DA544; color:white; font-weight: bold;">
+			          	<td>REPARTsO</td>
+						<td>PARCELA</td>
+						<td>FECHA INICIO</td>
+						<td>REGADADO</td>
+						<td>S/.</td>
+						<td>ESTADO</td>
+						<td><i class="fas fa-box-open"></i></td>
+			        </tr>
+			      </thead>
+			      <tbody>
+			        {% for ob in object_list %}
+			          	<tr style="font-style:italic; font-size:1.0em;">
+			          		<td>{{ob.id_reparto.tipo}}- {{ ob.id_reparto.fecha_reparto.day }}</td>
+							<td>{{ ob.id_parcela.nombre }}</td>
+							<td>{{ ob.fecha_establecida.day }}-{{ ob.fecha_establecida.month }}-{{ ob.fecha_establecida.year }}</td>
+							<td>{{ ob.cantidad_has }}</td>
+							<td>{{ ob.importe }}</td>
+							<td>{{ ob.estado }}</td>
+							
+							{% if  ob.estado == 'Solicitada' %}
+								<td><a class="btn btn-sm btn-outline-danger" href="{% url 'u_orden_eli' ob.pk %}" ><i class="fas fa-trash-alt"></i></a></td>				
+							{% else %}
+								<td><span class="badge badge-pill badge-secondary"><i class="fas fa-lock"></i>   {{ ob.estado }}</span></td>
+							{% endif %}
+							
+						</tr>
 
+					{% endfor %}
+					</tbody>
+				</table>				
+				{% else %}
+					<h1>NO TIENE ÓRDDENES DE RIEGO</h1>
+				{% endif %}
+		</div>
+	</div>
+</div>
 
-{% block noticias %}
-
-{% endblock noticias %}
-
-
-{% block noticias1 %}
-
-{% endblock noticias1 %}
- 
-
-
-{% block titulo_tabla %}Todas mis órdenes{% endblock titulo_tabla %}
-
-{% block td1_tabla %}
-	<td>REPARTO</td>
-	<td>PARCELA</td>
-	<td>FECHA INICIO</td>
-	<td>REGADADO</td>
-	<td>S/.</td>
-	<td>ESTADO</td>
-	<td></td>
-{% endblock td1_tabla %}
-
-{% block td2_tabla %}
-	<td>REPARTO</td>
-	<td>PARCELA</td>
-	<td>FECHA INICIO</td>
-	<td>REGADO</td>
-	<td>S/.</td>
-	<td>ESTADO</td>
-	<td></td>
-{% endblock td2_tabla %}
-
-
-{% block body_tabla %}
-	{% csrf_token %}
-
-	{% if object_list %}
-		{% for ob in object_list %}
-
-		<tr >
-			<td>{{ob.id_reparto.tipo}}- {{ ob.id_reparto.fecha_reparto.day }}</td>
-			<td>{{ ob.id_parcela.nombre }}</td>
-			<td>{{ ob.fecha_establecida.day }}-{{ ob.fecha_establecida.month }}-{{ ob.fecha_establecida.year }}</td>
-			<td>{{ ob.cantidad_has }}</td>
-			<td>{{ ob.importe }}</td>
-			<td>{{ ob.estado }}</td>
-			
-			{% if  ob.estado == 'Solicitada' %}
-				<td><a class="btn btn-outline-danger" href="{% url 'u_orden_eli' ob.pk %}" ><i class="fas fa-trash-alt"></i></a></td>				
-			{% else %}
-				<td><span class="badge badge-pill badge-secondary"><i class="fas fa-lock"></i>   {{ ob.estado }}</span></td>
-			{% endif %}
-			
-		</tr>
-
-		{% endfor %}				
-	{% else %}
-		<h1>NO TIENE ÓRDDENES DE RIEGO</h1>
-	{% endif %}
-
-{% endblock body_tabla %}
-
-
-{% block btn_nuevo %}	
-{% endblock btn_nuevo %}
+{% endblock cuerpo %}
 
 
 
 
-
-
-{% block graficos %}
-	
-{% endblock graficos %}
 

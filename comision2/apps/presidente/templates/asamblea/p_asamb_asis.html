@@ -27,28 +27,17 @@
 			{% csrf_token %}
 			<div class="row w-100 m-2 border p-1">
 				<div class="col-12">
-					<h3 class="text-muted" id="txt_tit">Buscar usuario (Auth User) ... {{ msj }}  </h3>
+					<h3 class="text-muted" id="txt_tit">Buscar usuario {{ msj }}  </h3>
 				</div>
 				<div class="col-12 btn-group">
 					<input type="text" placeholder="Buscar.." maxlength="8" class="w-100 form-control" id="valor1" onkeyup="alEscribeJS1()">			
 					<button class="btn btn-outline-secondary" disabled="true">
 						<i class="fas fa-search"></i>
 					</button>
-				</div><br>
-				<!--button class="btn btn-outline-success form-control" onclick="Mostar()">#-#-#</button-->
+				</div>
 			</div>	
 		</form>
 	</div>
-
-	<!--div class="col-5 border">
-		<input type="text" id="ast" value="3"/>
-		<input type="text" id="fal" value="2"/>
-		<input type="text" id="tar" value="1"/>
-		<button type="button" onclick="Pintar()">pintar</button>
-	</div-->
-
-	<!--div id="ccc" class="col-5 border mt-1"></div
-	<input id="ur" type="text" value="#">-->
 
 
 
@@ -66,28 +55,7 @@
 
 
 <script type="text/javascript">
-/*
-function Pintar() {
-	var ast = document.getElementById("ast").value;
-	var fal = document.getElementById("fal").value;
-	var tar = document.getElementById("tar").value;
-	var ur = document.getElementById("ur");
 
-	var cc = document.getElementById("ccc");
-
-	console.log(" >>"+ast);
-	console.log(" >>"+fal);
-	console.log(" >>"+tar);
-
-	
-	cc.load("<p>La vida es </p>");
-
-	console.log("t");
-
-
-
-}
-*/
 
 	
 Highcharts.chart('container', {
@@ -148,9 +116,9 @@ Highcharts.chart('container', {
 
 <div class="row border m-2 p-1"  style ="width: 100%; height:500px; overflow-x: scroll; ">
 	<div class="col-12">
-		<table class="table table-responsive-lg h-100" id="dataTable1" cellspacing="0">
+		<table class="table table-sm table-striped table-responsive-lg" id="dataTable1" cellspacing="0">
 			<thead>
-				<tr style="background: #95FFAB;">
+			    <tr style="background:#2DA544; color:white; font-weight: bold;">
 					<td>Id</td>
 					<td>ASAMBLEA</td>
 					<td>USUARIO</td>
@@ -163,7 +131,7 @@ Highcharts.chart('container', {
 			<tbody  id="cuerpo1">
 				{% if lstHAsis %}
 					{% for ob in lstHAsis %}
-					<tr>
+					<tr style="font-size: 0.8em;">
 						<td>{{ob.pk}}</td>
 						<td>{{ ob.id_asamblea.tipo }}</td>
 						<td>{{ ob.id_auth_user.first_name }}</td>

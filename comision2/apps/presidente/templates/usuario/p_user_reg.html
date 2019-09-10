@@ -7,7 +7,7 @@
 
 {% block noticias %}
 	
-	<div class="row">
+	<div class="row mx-2 my-2">
 		<div class="container border p-2">
 			{% if form.errors %}
 				<p class="alert alert-danger">{{ form.errors }}</p>
@@ -19,7 +19,7 @@
 			<form method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				{{form.as_p}}
-				<button type="submit" class="btn btn-primary btn-block"><i class="far fa-save"></i>    GUARDAR</button><br><br><br><br>						
+				<button type="submit" class="btn btn-primary btn-block"><i class="far fa-save"></i>    GUARDAR</button>					
 			</form>
 		</div>
 	</div>

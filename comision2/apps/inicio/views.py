@@ -16,7 +16,7 @@ import time
 
 
 
-
+ 
 
 
 
@@ -68,3 +68,21 @@ def mylogin(request):
             messages.error(request, 'Document deleted.')
 
 """
+def CambioTodosUsers(request):
+    usr=AuthUser.objects.all()
+    for u in usr:
+        print("  >::> "+CambUser(u.pk))
+    return HttpResponse("Ok")
+
+
+
+def CambUser(pku):
+
+    from django.contrib.auth.models import User
+    if AuthUser.objects.filter(pk=pku).exists():
+        u=User.objects.get(pk=pku)
+        u.username=AuthUser.objects.get(pk=pku).dni
+        u.save()
+        return str(AuthUser.objects.get(pk=pku).dni)
+        
+        

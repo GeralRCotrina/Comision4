@@ -3,34 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from apps.inicio.models import Parcela, Canal, Noticia, Caudal, AuthUser, Asamblea
 
-"""		fields = '__all__'
-		exclude = ['id']
-"""
 
-
-"""
-class AsambleaForm(forms.ModelForm):
-
-	class Meta:
-		model = Asamblea
-
-		fields = ['tipo','descripcion','fecha_asamblea','estado']	
-		labels = {
-			'tipo':'TIPO DE ASAMBLEA',
-			'descripcion':'Descripción',
-			'fecha_registro':'fecha_registro',
-			'fecha_asamblea':'fecha_asamblea',
-			'estado':'Estado',
-		}
-
-		widgets={
-		    'tipo':forms.Select(attrs={'class':'form-control'}),
-		    'descripcion':forms.Textarea(attrs={'class':'form-control'}),
-		    'fecha_registro':forms.DateInput(attrs={'class':'form-control','type':'date'}),
-		    'fecha_asamblea':forms.DateInput(attrs={'class':'form-control','type':'date'}),
-			'estado':forms.TextInput(attrs={'class':'form-control','value':'REGISTRADA','disabled':'true',}),
-		    }
-"""
 
 class NoticiaForm(forms.ModelForm):
 
@@ -155,7 +128,8 @@ class AuthForm(forms.ModelForm):
 	class Meta:
 		model = AuthUser
 
-		fields = ['username','first_name','last_name','email','dni']
+		fields = ['username','first_name','last_name','email','dni','sexo',
+		    'alias','fecha_nacimiento','telefono','celular']
 
 		labels = {
 			'first_name':'Nombres',
@@ -163,6 +137,11 @@ class AuthForm(forms.ModelForm):
 			'username':'Nombre de acceso',
 			'dni':'N° de DNI',
 			'email':'Correo @',
+			'alias':'alias',
+			'sexo':'Sexo',
+			'fecha_nacimiento':'fecha nacimiento',
+			'telefono':'telefono',
+			'celular':'Movil',
 			}
 
 		widgets={	
@@ -170,6 +149,10 @@ class AuthForm(forms.ModelForm):
 			    'first_name':forms.TextInput(attrs={'class':'form-control'}),
 			    'last_name':forms.TextInput(attrs={'class':'form-control'}),
 			    'email':forms.TextInput(attrs={'class':'form-control'}),
-			    'dni':forms.TextInput(attrs={'class':'form-control','type':'number','min':'00000000','max':'99999999'}),
+			    'dni':forms.TextInput(attrs={'class':'form-control','type':'number','min':'8','max':'8'}),
+			    'alias':forms.TextInput(attrs={'class':'form-control'}),
+				'sexo':forms.Select(attrs={'class':'form-control'}),
+				'fecha_nacimiento':forms.DateInput(attrs={'class':'form-control','type':'date'}),
+				'telefono':forms.TextInput(attrs={'class':'form-control'}),
+				'celular':forms.TextInput(attrs={'class':'form-control'}),
 		    }
-

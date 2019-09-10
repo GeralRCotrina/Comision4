@@ -100,6 +100,10 @@ class AuthPermission(models.Model):
 
  
 class AuthUser(models.Model):
+    SEXO = (
+        ('M', 'MASCULINO'),
+        ('F', 'FEMENINO'),
+    )
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField(default=0)
@@ -113,6 +117,11 @@ class AuthUser(models.Model):
     dni = models.CharField(max_length=8)
     foto = models.ImageField(upload_to='photos')
 
+    sexo = models.CharField(max_length=1, blank=True, null=True, choices=SEXO)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    telefono = models.CharField(max_length=11, blank=True, null=True)
+    celular = models.CharField(max_length=11, blank=True, null=True)
+    alias = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -270,8 +279,6 @@ class Destajo(models.Model):
     class Meta:
         managed = False
         db_table = 'destajo'
-
-
 
 
 class DetAsambCanal(models.Model):

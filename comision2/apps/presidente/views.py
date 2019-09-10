@@ -9,10 +9,6 @@ from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required, permission_required
 
-# -*- coding: utf-8 -*-
-
-
-
 
 
 import time
@@ -60,28 +56,35 @@ class UsuarioDelete(DeleteView):
 class ActUsuario(View):
 
 	def get(self, request, *args, **kwargs):
-		dicc={}
-		dicc['userr']= 'bacío'
-		return render(request,'usuario/p_act_usu.html',dicc)
+		return render(request,'usuario/p_act_usu.html')
 
 	def post(self, request, *args, **kwargs):
 		dicc={}
 		usuario = self.request.POST.get('usuario')
 		dicc['userr']= usuario
 		if AuthUser.objects.filter(username__exact=usuario).exists():
-			print('__________No hay nueva contraseña aún..')
+			print(" >> por user")
 			u=AuthUser.objects.get(username__exact=usuario)
 			dicc['passs']= u.password
 			dicc['usuario']= usuario
+			dicc['nombres']= u.first_name+" "+u.last_name
+			dicc['msj']= 'nda'
+		elif AuthUser.objects.filter(dni__exact=usuario).exists():
+			print("  >> por dni")
+			u=AuthUser.objects.get(dni__exact=usuario)
+			dicc['passs']= u.password
+			dicc['usuario']= u.username
+			dicc['nombres']= u.first_name+" "+u.last_name
 			dicc['msj']= 'nda'
 		else:
 			dicc['msj']= 'nusr'
 		return render(request,'usuario/p_act_usu.html',dicc)
 
-
+ 
 class CambioUSER(View):
 
 	def post(self, request, *args, **kwargs):
+		print("  >> CambioUSER")
 		dicc={}
 		usuario = self.request.POST.get('usuario')
 		nuevo_usuario=self.request.POST.get('nuevo_usuario')
@@ -444,7 +447,6 @@ class CanalCreate(CreateView):
 class CanalList(ListView):
 	model=Canal
 	template_name='canal/p_canal_lis.html'
-	paginate_by=9
 
 class CanalUpdate(UpdateView):
 	model=Canal
@@ -490,7 +492,9 @@ class DatosList(ListView):
 class AuthList(ListView):
 	model=AuthUser
 	template_name='usuario/p_auth_lis.html'
-	paginate_by=50
+
+
+#paginate_by=50
 
 
 

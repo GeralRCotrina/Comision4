@@ -7,12 +7,16 @@
 
 {% block noticias %}
 	
-	<div class="row">
-		<div class="container border">
+	<div class="row mx-2 my-2">
+		<div class="col-12 my-3 text-center">
+			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Registrar canal</h3>
+		</div>
+
+		<div class="col-12 border py-2">
 			<form method="post">
 				{% csrf_token %}
 				{{form.as_p}}
-				<button type="submit" class="btn btn-primary">GUARDAR</button><br><br><br><br>
+				<button type="submit" class="btn btn-primary form-control">GUARDAR</button>
 			</form>
 
 		</div>

@@ -148,18 +148,14 @@ class ApiTraerPerf(View):
 class ApiContra(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> Api _ cambCom")
 		userpk = self.request.GET.get('userpk')
 		ncon = self.request.GET.get('ncon')
 		rpta="Err"
-		print("  >> "+userpk+"  >> "+ncon)
 		from django.contrib.auth.models import User
 		if AuthUser.objects.filter(pk=userpk).exists():
-			print("  >> siiii")
 			u = User.objects.get(pk=userpk)
 			u.set_password(ncon)
 			u.save()
-			print(' _______Se cambió la PASS de ')
 			rpta="Ok"	
 		return HttpResponse(rpta)
 		

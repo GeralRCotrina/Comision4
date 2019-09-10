@@ -127,8 +127,8 @@
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">            
             <!--a class="dropdown-item" href="{% url 'RegistrarUsuario' %}">Registrar User</a-->
             <a class="dropdown-item" href="{% url 'p_usuario1_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a>
-            <a class="dropdown-item" href="{% url 'p_usuario_reg' %}"><i class="fas fa-plus"></i> DATOS</a>
-            <!--a class="dropdown-item" href="{% url 'p_usuario_lis' %}">Listar Datos</a-->
+            <!--a class="dropdown-item" href="{% url 'p_usuario_reg' %}"><i class="fas fa-plus"></i> DATOS</a>
+            <a class="dropdown-item" href="{% url 'p_usuario_lis' %}">Listar Datos</a-->
             <a class="dropdown-item" href="{% url 'p_auth_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
             <a class="dropdown-item" href="{% url 'p_act_usu' %}"><i class="fas fa-key"></i> CONTRASEÑA</a>
           </div>
@@ -173,10 +173,20 @@
             <span>CANAL</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'p_canal_reg' %}">Registrar</a>
-            <a class="dropdown-item" href="{% url 'p_canal_lis' %}">Listar</a>
-            <a class="dropdown-item" href="{% url 'p_caudal_reg' %}">Registrar Caudal</a>
-            <a class="dropdown-item" href="{% url 'p_caudal_lis' %}">Lista Caudal</a>
+            <a class="dropdown-item" href="{% url 'p_canal_reg' %}"><i class="fas fa-plus"></i>  REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'p_canal_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
+          </div>
+        </li>
+
+      
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-sort-amount-up"></i>
+            <span>CAUDAL</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="{% url 'p_caudal_reg' %}"><i class="fas fa-plus"></i>  REGISTRAR</a>
+            <a class="dropdown-item" href="{% url 'p_caudal_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
 
@@ -326,7 +336,7 @@
 
 
 
-         {% block tabla %}
+         {% block tabla %} 
 
             <div class="card mb-3">
               <div class="card-header"> {% block titulo_tabla %} listado {% endblock titulo_tabla %}

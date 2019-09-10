@@ -113,7 +113,7 @@
           </div>
         </li>
 
-
+<!--
 {% block usuario_menu %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -140,9 +140,8 @@
           </div>
         </li>
 {% endblock noticia_menu %}
-
-
-{% block reparto_menu %}      
+-->
+  
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-list-ol"></i>
@@ -153,10 +152,7 @@
             <a class="dropdown-item" href="{% url 'c_reparto_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
-{% endblock reparto_menu %} 
 
-
-{% block canal_menu %} 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-code-branch"></i>
@@ -167,11 +163,10 @@
             <a class="dropdown-item" href="{% url 'c_canal_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
-{% endblock canal_menu %} 
 
 
 
-{% block parcela_menu %}
+
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-map-marked-alt"></i>
@@ -182,10 +177,11 @@
             <a class="dropdown-item" href="#"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
-{% endblock parcela_menu %}
 
 
-{% block limpia_menu %} 
+
+
+
        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-broom"></i>
@@ -196,9 +192,9 @@
             <a class="dropdown-item" href="{% url 'c_limpia_lis' %}"><i class="fas fa-list-ol"></i>  LISTAR</a>
           </div>
         </li>
-{% endblock limpia_menu %} 
 
-{% block destajo_menu %} 
+
+
        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-draw-polygon"></i>
@@ -209,10 +205,10 @@
             <a class="dropdown-item" href="{% url 'c_destajo_lis' %}"><i class="fas fa-list-ol"></i>  LISTAR</a>
           </div>
         </li>
-{% endblock destajo_menu %} 
 
 
-{% block multas_menu %} 
+
+ 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-money-check-alt"></i>
@@ -222,10 +218,9 @@
             <a class="dropdown-item" href="{% url 'c_multa_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
-{% endblock multas_menu %} 
 
 
-{% block graficos_menu %} 
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-chart-area"></i>
@@ -238,10 +233,9 @@
             <a class="dropdown-item" href="{% url 'c_rep_reparto' %}"><i class="text-success"> % </i> Órdenes  <i class="far fa-hand-point-right text-success"></i> Canal</a>
           </div>
         </li>
-{% endblock graficos_menu %} 
 
 
-{% block pdfs_menu %} 
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-file-pdf"></i>
@@ -254,7 +248,7 @@
             <a class="dropdown-item" href="#">Pdf 4</a>
           </div>
         </li>
-{% endblock pdfs_menu %} 
+        
 
       </ul>
    

@@ -12,11 +12,9 @@ urlpatterns = [
 	re_path(r'^accounts/login/$', views.index,name='index'),
 	re_path(r'^registrar-usuario/$',views.RegistrarUsuario.as_view(),name='RegistrarUsuario'),	
 
-
-
-		
-	
 ]
+
+#re_path(r'^cambiar_user$', views.CambioTodosUsers,name='cambiar_user'),
 #re_path(r'^crear_users/$',views.CrearLosUsuarios.as_view(),name='CrearUsuarios'),
 #re_path(r'^reporte2_pdf/$',views.Reporte2, name="reporte2_pdf"),
 #re_path(r'^pdf_001/$',views.PDF_001.as_view(),name='pdf_001'),
