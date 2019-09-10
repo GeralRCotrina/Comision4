@@ -1,5 +1,8 @@
 window.onload = function() {
-	
+	CargarParcelas();
+	CargarOrdenes();
+	CargarMultas();
+	CargarPerfil();
 };
 
 
@@ -74,4 +77,53 @@ function CargarMultas(){
 		}
 	}
 	xhr.send();
+}
+
+
+function  CargarPerfil(){
+	var userpk=document.getElementById('userpk').value;
+	var divprf = document.getElementById('idperfil');
+	var img = '<img src="/static/img/perfil.png" class="w-100 h-100 img-thumbnail rounded-circle">';
+	var xhr = new XMLHttpRequest();
+	var cad = "/usuario/api_perf/?userpk="+userpk;
+	xhr.open('GET',cad,true); 
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			var rpta = xhr.response;
+			if (rpta=="Err") {
+				alert("Algo salió mal en el servidor, intente nuevamente o verifique al administrador.");
+			}else if (rpta=="Inv"){
+				console.log("rpta: Inv -> No tiene foto.")
+			}
+			else{
+				divprf.innerHTML='<img src="/media/'+rpta+'" class="w-100 h-100 img-thumbnail rounded-circle">';
+			}
+		}
+	}
+	xhr.send();
+}
+
+
+function CambContra(){
+	var userpk = document.getElementById('userpk').value;
+	var ncon = document.getElementById('ncon').value;
+	var rncon = document.getElementById('rncon').value;
+	if(ncon == rncon){
+		var xhr = new XMLHttpRequest();
+		var cad = "/usuario/api_cont/?userpk="+userpk+"&ncon="+ncon;
+		xhr.open('GET',cad,true); 
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				var rpta = xhr.response;
+				if (rpta=="Ok") {
+					alert("Se cambió su contraseña.");
+				}else{
+					alert("Error, consultar al administrador del sistema.");
+				}
+			}
+		}
+		xhr.send();
+	}else{
+		alert("> Deben coincidir las contraseñas");
+	}
 }

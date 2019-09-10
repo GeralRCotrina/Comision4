@@ -2,26 +2,25 @@ from django.shortcuts import render, redirect
 from apps.inicio.models import DatosPersonales, OrdenRiego, Noticia, Parcela, AuthUser, Reparto, AuthUser, Caudal, Destajo
 from apps.inicio.models import *
 from apps.inicio.forms import PersonaForm
-from apps.usuario.forms import OrdenRForm
+from apps.usuario.forms import OrdenRForm, AuthUserForm
 from django.http import HttpResponse
-
 
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView,UpdateView,DeleteView, TemplateView, View
-
  
 import datetime
 import time
 
-
 from django.contrib.auth.models import User
+
+from django.core.files.storage import FileSystemStorage
 
 def Pruebas(request):
 	print('--------------------------->>    ',time.strftime("%A"),'/',time.strftime("%B"))
 	return render(request,'usuario.html')
 
 
-
+ 
 def usuario(request):
 	dicc={}
 
@@ -37,6 +36,14 @@ def usuario(request):
 	return render(request, 'usuario.html',dicc)
  
 
+
+
+
+class PerfilEditar(UpdateView):
+	model=AuthUser
+	form_class=AuthUserForm
+	template_name='usuario/perfil_editar.html'
+	success_url=reverse_lazy('usuario')
 
 
 
@@ -97,49 +104,65 @@ class ApiTraerOrd(View):
 class ApiTraerMul(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >>Llegó pet")
 		userpk = self.request.GET.get('userpk')
 		rpta ='{"cant":'
 		cant=0
 		if MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk).exists():
 			lmo=MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk)
-			print("  >> si tiene multas de orden")
 			cant+=lmo.count()
-			for m in lmo:
-				print("   -> lmo: "+str(m))	
 		else:
 			print("  >> no tiene multas de orden")
 
-
 		if MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk).exists():
 			lma=MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk)
-			print("  >> si tiene multas de asistencia")
 			cant+=lma.count()
-			for m in lma:
-				print("   -> lma: "+str(m))	
 		else:
 			print("  >> no tiene multas de asistencia")
 
-
 		if MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk).exists():
 			lmd=MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk)
-			print("  >> si tiene multas de destajo")
 			cant+=lmd.count()
-			for m in lmd:
-				print("   -> lmd: "+str(m))	
 		else:
 			print("  >> no tiene multas de destajo")
 
 		rpta+=str(cant)+'}'
 
-
-		
 		return HttpResponse(rpta)
 
 
+class ApiTraerPerf(View):
 
+	def get(self, request, *args, **kwargs):
+		userpk = self.request.GET.get('userpk')
+		rpta ="Err"
+		if userpk != "":
+			if AuthUser.objects.get(pk=userpk).foto:
+				print("  >> Si tiene foto: ["+str(AuthUser.objects.get(pk=userpk).foto)+"]")
+				rpta=str(AuthUser.objects.get(pk=userpk).foto)
+			else:
+				rpta="Inv"
+				print("  >> No tiene foto")		
+		return HttpResponse(rpta)
+		
 
+class ApiContra(View):
 
+	def get(self, request, *args, **kwargs):
+		print("  >> Api _ cambCom")
+		userpk = self.request.GET.get('userpk')
+		ncon = self.request.GET.get('ncon')
+		rpta="Err"
+		print("  >> "+userpk+"  >> "+ncon)
+		from django.contrib.auth.models import User
+		if AuthUser.objects.filter(pk=userpk).exists():
+			print("  >> siiii")
+			u = User.objects.get(pk=userpk)
+			u.set_password(ncon)
+			u.save()
+			print(' _______Se cambió la PASS de ')
+			rpta="Ok"	
+		return HttpResponse(rpta)
+		
 
 
 
@@ -290,24 +313,24 @@ class OrdenList(ListView):
 class UsuarioDelete(DeleteView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='borrar_usuario.html'
+	template_name='usuario/borrar_usuario.html'
 	success_url=reverse_lazy('listar')
 
 class UsuarioUpdate(UpdateView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='crear_usuario.html'
+	template_name='usuario/crear_usuario.html'
 	success_url=reverse_lazy('listar') 
 
 class UsuarioCreate(CreateView):
 	model=DatosPersonales
 	form_class=PersonaForm
-	template_name='crear_usuario.html'
+	template_name='usuario/crear_usuario.html'
 	success_url=reverse_lazy('listar')
 
 class UsuarioList(ListView):
 	model=DatosPersonales
-	template_name='lista_usuarios.html'
+	template_name='usuario/lista_usuarios.html'
 	paginate_by=10
 
 
@@ -327,3 +350,41 @@ class LstDestajos(View):
  
 
 
+
+class LstMultas1(View):
+
+	def get(self,request,*args,**kwargs):
+		print(">>llegó")
+		userpk=self.request.GET.get("userpk")
+
+		print(">>llegó pk:"+str(userpk))
+		dicc={}
+		dicc['mul_lst']="ok"
+			
+		return render(request,"multa/mul_lst.html",dicc)
+
+
+
+
+class LstMultas(View):
+
+	def get(self, request, *args, **kwargs):
+		print("  >>Llegó pet --------->->->")
+		userpk = self.request.GET.get('userpk')
+		dicc={}		
+		if MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk).exists():
+			dicc['lst_ord']=MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk)
+		else:
+			print("  >> no tiene multas de orden")
+
+		if MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk).exists():
+			dicc['lst_asi']=MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk)
+		else:
+			print("  >> no tiene multas de asistencia")
+
+		if MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk).exists():
+			dicc['lst_des']=MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk)
+		else:
+			print("  >> no tiene multas de destajo")
+
+		return render(request,"multa/mul_lst.html",dicc)

@@ -1,5 +1,32 @@
 from django import forms
-from apps.inicio.models import OrdenRiego
+from apps.inicio.models import OrdenRiego, AuthUser
+
+
+class AuthUserForm(forms.ModelForm):
+
+	class Meta:
+		model = AuthUser
+
+		fields = ['username','first_name','last_name','email','dni','foto',]	
+		labels = {
+			'username':'username',
+			'first_name':'first_name',
+			'last_name':'last_name',
+			'email':'correo',
+			'foto':'foto',
+		}
+
+		widgets={
+		    'username':forms.TextInput(attrs={'class':'form-control'}),
+		    'first_name':forms.TextInput(attrs={'class':'form-control'}),
+		    'last_name':forms.TextInput(attrs={'class':'form-control'}),
+		    'email':forms.EmailInput(attrs={'class':'form-control'}),
+		    'dni':forms.TextInput(attrs={'class':'form-control'}),
+		    'foto':forms.FileInput(attrs={'class':'form-control'}),
+		    }
+
+
+
 
 class OrdenRForm(forms.ModelForm):
 

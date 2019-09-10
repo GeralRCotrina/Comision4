@@ -111,6 +111,7 @@ class AuthUser(models.Model):
     is_active = models.IntegerField(default=1)
     date_joined = models.DateTimeField(default="2000-01-01 10:00:01")
     dni = models.CharField(max_length=8)
+    foto = models.ImageField(upload_to='photos')
 
 
     class Meta:

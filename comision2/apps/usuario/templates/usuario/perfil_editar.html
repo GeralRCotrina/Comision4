@@ -1,0 +1,173 @@
+{% extends "u_base.html" %}
+{% load static %}
+
+{% block inicio_menu %}
+{% endblock inicio_menu %}
+
+{% block tabla %}	
+{% endblock tabla %}
+
+
+
+{% block graficos %}	
+{% endblock graficos %}
+
+
+{% block cuerpo %}	
+<div class="container">
+
+
+
+	
+<div class="row">
+	<div class="col-12 text-center">
+		<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Editar perfil</h3>
+	</div>
+	{% if msj %}
+	<div class="col-12">
+		<p class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>FELICIDADES</strong> {{msj}}
+		</p>
+	</div>
+	{% endif %}
+</div>	
+
+<div class="row container">
+	
+
+
+	<div class="col-12 col-lg-4 my-1">
+		{% csrf_token %}
+		{% if form.foto.value == null %}
+			<img src="/static/img/perfil.png" class="img-thumbnail" style="height:auto; width:100%;">
+		{% else %}
+			<img src="/media/{{form.foto.value}}" class="img-thumbnail" style="height:auto; width:100%;">
+		{% endif %}
+	</div>
+
+
+
+
+	<div class="col-12 col-lg-8 border my-1 py-2">
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<table class="table table-sm w-100">
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">User</strong>
+					</td>
+					<td>
+						<input type="text" name="username" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.username.value}}" maxlength="150" required="" id="id_username">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Nombres</strong>
+					</td>
+					<td>
+						<input type="text"  name="first_name" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.first_name.value}}" maxlength="30" required="" id="id_first_name">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Apellidos</strong>
+					</td>
+					<td>
+						<input type="text" name="last_name" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;" value="{{form.last_name.value}}" maxlength="150" required="" id="id_last_name">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">C@rreo</strong>
+					</td>
+					<td>
+						<input type="email" name="email" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.email.value}}" maxlength="254" required="" id="id_email">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Dni</strong>
+					</td>
+					<td>
+						<input type="number"  name="dni" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.dni.value}}" maxlength="8" required="" id="id_dni">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Foto</strong>
+					</td>
+					<td>
+						<input type="file" name="foto" class="form-control" style="font-size:0.8em; color: #6FB26C; font-weight: bold;"  accept="image/*"id="id_foto">
+					</td>
+				</tr>
+			</table>
+		<button type="submit" class="btn btn-outline-success btn-block">ACTUALIZAR DATOS</button>
+		<input type="text" value="{{request.user.pk}}" name="userpk" hidden>
+	</form>
+	</div>
+
+
+
+
+
+
+
+<div class="col-12 my-4">
+
+
+	<button type="button" class="btn btn-outline-success form-control" data-toggle="modal" data-target="#mimodal">CAMBIAR CONTRASEÑA</button>
+
+	<!-- EL MODAL -->
+
+	<div class="modal fade" id="mimodal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header"><!--cabecera-->
+					<h4 class="modal-title">Cambiar su contraseña..</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				
+				<div class="modal-body font-italic"><!--BODY-->
+					Al cambiar su contraseña, no podrá usar la anterior. <br>
+					Se recomienda anotarla.
+				</div>
+				<table class="table text-center">
+					<tr>
+						<td>Nueva contraseña</td>
+						<td><input id="ncon" type="password" class="form-control text-center"></td>
+					</tr>
+					<tr>
+						<td>Repita contraseña</td>
+						<td><input id="rncon" type="password" class="form-control text-center"></td>
+					</tr>
+				</table>
+				
+				<div class="modal-footer"><!--FOOTER-->
+					<button type="button" class="btn btn-success" onclick="CambContra()" data-dismiss="modal">CAMBIAR CONTRASEÑA</button>
+				</div>		
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+{% endblock cuerpo %}

@@ -12,6 +12,10 @@ urlpatterns = [
 	re_path(r'^editar/(?P<pk>\d+)/$',login_required(views.UsuarioUpdate.as_view()),name='editar'),
 	re_path(r'^eliminar/(?P<pk>\d+)/$',login_required(views.UsuarioDelete.as_view()),name='eliminar'),
 
+
+
+	re_path(r'^prf_edi/(?P<pk>\d+)/$',login_required(views.PerfilEditar.as_view()),name='prf_edi'),
+
 	re_path(r'^u_orden_lis/$',login_required(views.OrdenList.as_view()),name='u_orden_lis'),
 	re_path(r'^u_orden_reg/$',login_required(views.OrdenCreate.as_view()),name='u_orden_reg'),
 
@@ -32,10 +36,18 @@ urlpatterns = [
 	re_path(r'^api_parc/?/$',login_required(views.ApiTraerParc.as_view()),name='api_parc'),
 	re_path(r'^api_ord/?/$',login_required(views.ApiTraerOrd.as_view()),name='api_ord'),
 	re_path(r'^api_mul/?/$',login_required(views.ApiTraerMul.as_view()),name='api_mul'),
+	re_path(r'^api_perf/?/$',login_required(views.ApiTraerPerf.as_view()),name='api_perf'),
+	re_path(r'^api_cont/?/$',login_required(views.ApiContra.as_view()),name='api_cont'),
+
+
 
 
 
 	re_path(r'^lst_dtjs/?/$',login_required(views.LstDestajos.as_view()),name='lst_dtjs'),
+
+	re_path(r'^mul_lst/?/$',login_required(views.LstMultas.as_view()),name='mul_lst'),
+
+	
 
 
 

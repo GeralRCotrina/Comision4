@@ -52,31 +52,28 @@
       </form>
 
       <!-- Navbar -->
-      <ul class="navbar-nav ml-auto ml-md-0">
+    <ul class="navbar-nav ml-auto ml-md-0">
         
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown" >
             {% block card_login %}
-              
-            
-            <div class="card" style="height: 310px; width: 200px; margin: 3px;">
-                <div>
-                  <p><strong>USUARIO ({{ request.user }})</strong></p>
-                </div>
-                <img src="{% static 'img/perfil.png' %}" class="w-100 img-thumbnail" style="height: 150px; width: 150px;">
+              <div class="" style="height: auto; width: 200px; margin: 3px;">
+                <p class="text-center text-muted mb-0"><strong> USUARIO</strong></p>
+                <p class="text-light mb-0 mt-0" style="background:#BCBCBC;"><strong>{{ request.user }}</strong></p>
+                <h6 class="h6 mt-1" style="text-transform: uppercase;">{{ request.user.last_name }},</h6>
+                <h6 class="h6 mt-0" >{{ request.user.first_name }}</h6>
 
-                <div class="card-body">
-                  <h6 class="h6">{{ request.user.last_name }}</h6>
-                      <div class="btn-group btn-block">
-                        <a href="{% url 'mylogin' %}" class="btn btn-success form-control"><i class="fas fa-lock-open"></i></a>
-                        <a href="{% url 'logout' %}" class="btn btn-danger form-control"><i class="fas fa-lock"></i></a>                          
-                      </div> 
-                </div>
-            </div>
+                <a href="{% url 'prf_edi' request.user.pk %}"><span class="badge font-italic text-light mt-0" style="background:#8BCD6B;">Editar perfil <i class="fas fa-cog"></i></span></a>
+                <div class="btn-group btn-block mb-0">
+                  <a href="{% url 'mylogin' %}" class="btn btn-outline-success form-control"><i class="fas fa-lock-open"></i></a>
+                  <a href="{% url 'logout' %}" class="btn btn-outline-danger form-control"><i class="fas fa-lock"></i></a>
+                </div> 
+               </div>
             {% endblock card_login %}
+          </div>
         </li>
       </ul>
 
@@ -91,17 +88,17 @@
       <!-- Sidebar -->
     <div id="wrapper">
       <ul class="sidebar navbar-nav text-black" style="background: #4B8549;">
-
+        <input id="userpk" type="text" value="{{request.user.pk}}" hidden>
         <li class="nav-item">
           <a class="nav-link text-white" href="{% url 'usuario' %}">
-            <div class="w-100 m-1" style="height:130px; border-radius: 5px;">
+            <div id="idperfil" class="w-100" style="height:auto; border-radius: 5px;">
               <img src="{% static 'img/logo1.png' %}" class="w-100 h-100 img-thumbnail">
             </div>
           </a>
         </li>
 
 
-
+   
         {% block inicio_menu %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -124,8 +121,7 @@
             <span>NOTICIA</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'u_noticia_lis' %}">Listar</a>
-            <a class="dropdown-item" href="#">sol ord</a>
+            <a class="dropdown-item" href="{% url 'u_noticia_lis' %}"><i class="far fa-newspaper"></i>   Listar</a>
           </div>
         </li>
 
@@ -135,7 +131,7 @@
             <span>MIS PARCELAS</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'u_misparcelas_lis' %}?id_auth={{user.id}}">Mis parcelas</a>
+            <a class="dropdown-item" href="{% url 'u_misparcelas_lis' %}?id_auth={{user.id}}"><i class="far fa-map"></i>  Mis parcelas</a>
           </div>
         </li>
       
@@ -145,8 +141,8 @@
             <span>REPARTO</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'u_reparto_lis' %}">Solicitar</a>
-            <a class="dropdown-item" href="{% url 'u_mis_orden_lis' %}?id_auth={{user.id}}">Ver mis ordenes</a>
+            <a class="dropdown-item" href="{% url 'u_reparto_lis' %}"><i class="fas fa-file-signature"></i>  Solicitar</a>
+            <a class="dropdown-item" href="{% url 'u_mis_orden_lis' %}?id_auth={{user.id}}"><i class="fas fa-ticket-alt"></i>  Mis órdenes</a>
           </div>
         </li>
 
@@ -157,7 +153,7 @@
             <span>DESTAJOS</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'lst_dtjs' %}?userpk={{user.id}}">Ver mis destajos</a>
+            <a class="dropdown-item" href="{% url 'lst_dtjs' %}?userpk={{user.id}}"><i class="fas fa-draw-polygon"></i>  Mis destajos</a>
           </div>
         </li>
 
@@ -168,8 +164,7 @@
             <span>MULTAS</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="#">Mis multas</a>
-            <a class="dropdown-item" href="#">Historial completo</a>
+            <a class="dropdown-item" href="{% url 'mul_lst' %}?userpk={{user.pk}}"><i class="fas fa-dollar-sign"></i>   Mis multas</a>
           </div>
         </li>
 
