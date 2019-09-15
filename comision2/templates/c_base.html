@@ -99,7 +99,6 @@
         </li>
 
 
-      
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -107,8 +106,9 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 'usuario' %}"><i class="fas fa-user"></i></i> Usuario</a>
-            <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
             <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>
+            <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
+            <a class="dropdown-item" href="{% url 'tesorero' %}"><i class="fas fa-funnel-dollar"></i> Tesorero</a>
             <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>
           </div>
         </li>
@@ -159,7 +159,7 @@
             <span>CANAL</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'c_canal_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a>
+            <!--a class="dropdown-item" href="{% url 'c_canal_reg' %}"><i class="fas fa-plus"></i> REGISTRAR</a-->
             <a class="dropdown-item" href="{% url 'c_canal_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
@@ -173,8 +173,7 @@
             <span>PARCELA</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="#"><i class="fas fa-plus"></i>  REGISTRAR</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-list-ol"></i> LISTAR</a>
+            <a class="dropdown-item" href="{% url 'c_parcela_lis' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
           </div>
         </li>
 

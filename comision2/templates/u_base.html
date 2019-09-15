@@ -62,7 +62,7 @@
             {% block card_login %}
               <div class="" style="height: auto; width: 200px; margin: 3px;">
                 <p class="text-center text-muted mb-0"><strong> USUARIO</strong></p>
-                <p class="text-light mb-0 mt-0 pl-2" style="background:#BCBCBC;"><strong>{{ request.user }}</strong></p>
+                <p class="text-light mb-0 mt-0 pl-2" style="background:#BCBCBC;"><strong>{{ request.user.pk }}:{{ request.user }}</strong></p>
                 <h6 class="h6 mt-1" style="text-transform: uppercase;">{{ request.user.last_name }},</h6>
                 <h6 class="h6 mt-0" >{{ request.user.first_name }}</h6>
 
@@ -107,10 +107,11 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 'usuario' %}"><i class="fas fa-user"></i></i> Usuario</a>
-            <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
             <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>
-            <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal1</a>
-          </div> 
+            <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
+            <a class="dropdown-item" href="{% url 'tesorero' %}"><i class="fas fa-funnel-dollar"></i> Tesorero</a>
+            <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>
+          </div>
         </li>
         {% endblock inicio_menu %}
 

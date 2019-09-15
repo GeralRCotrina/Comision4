@@ -1,11 +1,94 @@
 {% extends "c_base.html" %}
 
 
+{% block cuerpo %}
+
+<div class="container">
+	<div class="row">
+
+		<div class="col-12 my-3 text-center">
+			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Listado de parcelas</h3>
+		</div>
+
+		<div class="col-12 ">
+			<span class="float-right form-inline">
+			 	{% if page_obj.has_previous %}
+			      <ul class="pagination pagination-sm" >
+			        <li class="page-item"><a class="page-link" href="?page=1">&laquo; primera</a></li>
+			      </ul> 
+			    {% endif %}
+
+			      <ul class="pagination pagination-sm mx-1" >
+			        {% if page_obj.has_previous %}
+			          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; previo</a></li>
+			        {% endif %}
+			        <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+			        {% if page_obj.has_next %}
+			          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">siguiente &raquo;</a></li>  
+			        {% endif %} 
+			      </ul>
+
+			      {% if page_obj.has_next %}
+			        <ul class="pagination pagination-sm" >
+			          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a></li>
+			        </ul> 
+			      {% endif %}
+			 </span>
+
+			{% if object_list %}
+			<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+				<table class="table table-sm table-striped text-center" id="dataTable">
+			      <thead>
+			      	<tr style="background:#2DA544; color:white; font-weight: bold;">
+			          	<td>CANAL</td>
+						<td>NOMBRE</td>
+						<td>TOMA</td>
+						<TD>Has Sembradas</TD>
+						<td>Descripción</td>
+						<td>Estado</td>
+						<!--td><i class="fas fa-box-open"></i></td-->
+			        </tr>
+			      </thead>
+			      <tbody id="cuerpo">
+				{% for ob in object_list %}
+					<tr style="font-size: 0.8em;">
+						<td>{{ ob.id_canal }}</td>
+						<td>{{ ob.nombre }}</td>					
+						<td>{{ ob.num_toma }}</td>
+						<td>{{ ob.has_sembradas }}</td>
+						<td>{{ ob.descripcion }}</td>
+						<td>{% if ob.estado == "1" %}<span class="badge badge-success">Activa</span>{% else %}{{ ob.estado }}{% endif %}</td>
+						<!--td>
+							<div class="btn-group">
+							<a class="btn btn-sm btn-outline-success" href="#"><i class="far fa-edit"></i></a>		
+							<a class="btn btn-sm btn-outline-danger" href="#" ><i class="fas fa-trash-alt"></i></a>
+							</div>
+						</td-->
+					</tr>
+				{% endfor %}
+					</tbody>
+				</table>				
+				{% else %}
+					<h1>Error en el servidor</h1>
+				{% endif %}
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock cuerpo %}
+
+
+
+
+<!--
 {% block txt_cabecera %}
 	LISTA DE PARCELAS
 {% endblock txt_cabecera %}
 
-
+ 
 
 	
 
@@ -92,3 +175,4 @@
 {% block graficos %}
 	
 {% endblock graficos %}
+-->

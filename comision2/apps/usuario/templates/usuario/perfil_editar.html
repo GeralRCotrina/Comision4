@@ -44,19 +44,31 @@
 		{% else %}
 			<img src="/media/{{form.foto.value}}" class="img-thumbnail" style="height:auto; width:100%;">
 		{% endif %}
+		<div class="row">
+			<div class="col-12 ">
+				<a href="#" class="btn btn-sm btn-outline-warning form-control my-3" data-toggle="modal" data-target="#MdlEdiFecha"> FECHA DE NACIMIENTO</a>
+				<button type="button" class="btn btn-sm btn-outline-warning form-control" data-toggle="modal" data-target="#mimodal">CAMBIAR CONTRASEÑA</button>
+			</div>
+		</div>
 	</div>
 
 
 
 
 	<div class="col-12 col-lg-8 border my-1 py-2">
-		<form method="post" enctype="multipart/form-data">
+		<form method="post"  enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}
+				<button type="submit" class="btn btn-outline-success form-control">GUARDAR</button><br>
+			</form>
+
+		<!--form method="post"  enctype="multipart/form-data">
 			{% csrf_token %}
 
 			<table class="table table-sm w-100">
 				<tr>
 					<td>
-						<strong style="font-size:1.5em; color: #8AC887;">User</strong>
+						<strong style="font-size:1.5em; color: #8AC887;">User  [{{request.user.pk}}]</strong>
 					</td>
 					<td>
 						<input type="text" name="username" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.username.value}}" maxlength="150" required="" id="id_username">
@@ -83,15 +95,16 @@
 						<strong style="font-size:1.5em; color: #8AC887;">C@rreo</strong>
 					</td>
 					<td>
-						<input type="email" name="email" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.email.value}}" maxlength="254" required="" id="id_email">
+						<input type="text" name="email" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{% if form.email.value == 'null' %}{% else %}{{form.email.value}}{% endif %}" maxlength="254" id="id_email">
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<strong style="font-size:1.5em; color: #8AC887;">Dni</strong>
+						<strong style="font-size:1.5em; color: #8AC887;">Dni[{{form.dni.value}}]</strong>
 					</td>
 					<td>
-						<input type="number"  name="dni" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.dni.value}}" maxlength="8" required="" id="id_dni">
+						<input type="number"  name="dni1" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.dni.value}}" maxlength="8" disabled required="" id="id_dni">
+						<input type="text" name="dni" value="{{form.dni.value}}">
 					</td>
 				</tr>
 				<tr>
@@ -102,10 +115,68 @@
 						<input type="file" name="foto" class="form-control" style="font-size:0.8em; color: #6FB26C; font-weight: bold;"  accept="image/*"id="id_foto">
 					</td>
 				</tr>
+
+
+
+
+
+
+
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Alias</strong>
+					</td>
+					<td>
+						<input type="text" name="alias" value="{{form.alias.value}}" class="form-control" maxlength="30" id="id_alias" style="font-size:1.5em; color: #6FB26C; font-weight: bold;">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Sexo</strong>
+					</td>
+					<td>
+						<div class="btn-group btn-block">
+							<input id="id_sxv" type="text" class="form-control" disabled style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.sexo.value}}">
+							<a href="#" class="btn border btn-outline-success"  title="Editar sexo"  data-toggle="modal" data-target="#MdlEdiSexo"> <i class="far fa-edit"></i></a>
+						</div>
+						<select name="sexo" id="id_sexo">
+							<option value="{{form.sexo.value}}">Def: {{form.sexo.value}}</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">F. Nacimiento</strong>
+					</td>
+					<td>
+						<div class="btn-group btn-block">
+							<input id="id_fnv" type="text" class="form-control" disabled style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.fecha_nacimiento.value}}">
+							<a href="#" class="btn border btn-outline-success"  title="Editar su fecha de nacimiento"   data-toggle="modal" data-target="#MdlEdiFecha"> <i class="far fa-edit"></i></a>
+						</div>
+						<input type="text" name="fecha_nacimiento" id="id_fecha_nacimiento" value="{{form.fecha_nacimiento.value}}" >
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Celular [{{form.celular.value}}]</strong>
+					</td>
+					<td>
+						<input type="number"  name="celular" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.celular.value}}" maxlength="11" id="id_celular">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong style="font-size:1.5em; color: #8AC887;">Teléfono</strong>
+					</td>
+					<td>
+						<input type="number"  name="telefono" class="form-control" style="font-size:1.5em; color: #6FB26C; font-weight: bold;"  value="{{form.telefono.value}}" maxlength="11" id="id_telefono">
+					</td>
+				</tr>
+
 			</table>
 		<button type="submit" class="btn btn-outline-success btn-block">ACTUALIZAR DATOS</button>
 		<input type="text" value="{{request.user.pk}}" name="userpk" hidden>
-	</form>
+	</form-->
 	</div>
 
 
@@ -116,8 +187,6 @@
 
 <div class="col-12 my-4">
 
-
-	<button type="button" class="btn btn-outline-success form-control" data-toggle="modal" data-target="#mimodal">CAMBIAR CONTRASEÑA</button>
 
 	<!-- EL MODAL -->
 
@@ -159,6 +228,64 @@
 
 
 
+
+
+
+
+
+
+
+
+<div class="modales">
+	<!--button type="button" class="btn btn-primary" data-toggle="modal" data-target="#MdlEdiSexo">CONSULTA</button-->
+
+	<!-- EL MODAL -->
+
+	<div class="modal fade" id="MdlEdiFecha">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header"><!--cabecera-->
+					<h4 class="modal-title">Editar</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				
+				<div class="modal-body"><!--BODY-->
+					<input id="id_fechan" name="fecha_nacimiento" type="date" class="form-control">
+				</div>
+				
+				<div class="modal-footer"><!--FOOTER-->
+					<button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
+					<a href="#" class="btn btn-primary" onclick="EdiFechaN()" data-dismiss="modal">Acualizar</a>
+				</div>		
+			</div>
+		</div>
+	</div>
+	<!-- EL MODAL -->
+
+	<div class="modal fade" id="MdlEdiSexo">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header"><!--cabecera-->
+					<h4 class="modal-title">Editar </h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				
+				<div class="modal-body"><!--BODY-->
+					<select name="sexo" id="id_sexo" class="form-control">
+						<option value="M">MASCULINO</option>
+						<option value="F">FEMENINO</option>
+					</select>
+				</div>
+				
+				<div class="modal-footer"><!--FOOTER-->
+					<button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
+					<a href="#" class="btn btn-primary" onclick="EdiSexo()" data-dismiss="modal">Acualizar</a>
+				</div>		
+			</div>
+		</div>
+	</div>
 </div>
 
 
@@ -166,6 +293,48 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-12 container border">
+	<div class="row">
+		<div class="col-6 mx-auto border">
+			<!--
+			<form method="post"  enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}
+				<button type="submit" class="btn btn-primary form-control">GUARDAR</button><br><br><br><br>
+			</form>
+		
+			<form method="post"  enctype="multipart/form-data">
+		{% csrf_token %}
+				<p><label for="id_username">username:</label> <input type="text" name="username" value="{{form.username.value}}" class="form-control" maxlength="150" required="" id="id_username"></p>
+<p><label for="id_first_name">first_name:</label> <input type="text" name="first_name" value="{{form.first_name.value}}" class="form-control" maxlength="30" required="" id="id_first_name"></p>
+<p><label for="id_last_name">last_name:</label> <input type="text" name="last_name" value="{{form.last_name.value}}" class="form-control" maxlength="150" required="" id="id_last_name"></p>
+<p><label for="id_email">correo:</label> <input type="text" name="email" value="{{form.email.value}}" class="form-control" maxlength="254" id="id_email"></p>
+<p><label for="id_dni">Dni:</label> <input type="number" name="dni" value="{{form.dni.value}}" class="form-control" maxlength="8" required="" id="id_dni"></p>
+<p><label for="id_foto">foto:</label> <input type="file" name="foto" class="form-control" accept="image/*" id="id_foto"></p>
+<p><label for="id_sexo">Sexo:</label> <select name="sexo" class="form-control" id="id_sexo">
+  <option value="{{form.celular.value}}" selected="">{{form.celular.value}}</option>
+</select></p>
+<p><label for="id_alias">alias:</label> <input type="text" name="alias" value="{{form.alias.value}}" class="form-control" maxlength="30" id="id_alias"></p>
+<p><label for="id_fecha_nacimiento">fecha nacimiento:</label> <input type="date" name="fecha_nacimiento" class="form-control" id="id_fecha_nacimiento" value="{{form.fecha_nacimiento.value}}"></p>
+<p><label for="id_telefono">telefono:</label> <input type="text" name="telefono" value="{{form.telefono.value}}" class="form-control" id="id_telefono"></p>
+<p><label for="id_celular">Movil:</label> <input type="text" name="celular" value="{{form.celular.value}}" class="form-control" id="id_celular"></p>
+				<button type="submit" class="btn btn-primary form-control">GUARDAR</button><br><br><br><br>
+			</form>
+		-->
+		</div>
+	</div>
+</div>
 
 
 

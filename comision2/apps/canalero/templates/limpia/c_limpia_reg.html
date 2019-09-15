@@ -1,37 +1,24 @@
 {% extends "c_base.html" %}
 
-{% block txt_cabecera %}
-	REGISTRAR DESTAJO
-{% endblock txt_cabecera %}
 
+{% block cuerpo %}
+<div class="container">
+	<div class="row my-3 mx-3">
 
+		<div class="col-12 my-2 text-center">
+			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Registrar limpieza de canales</h3>
+		</div>
 
-{% block noticias %}
-{% endblock noticias %}
-
-
-{% block noticias1 %}
-<div class="row">
-		<div class="container border">
-
+		<div class="col-12 col-md-7 border py-2 mx-auto" >
 			<form method="post">
 				{% csrf_token %}
 				{{form.as_p}}
-				<button type="submit" class="btn btn-primary btn-block">GUARDAR</button><br><br><br><br>
+				<button type="submit" class="btn btn-primary btn-block">GUARDAR</button>
 			</form>
-
-
 		</div>
+
 	</div>
-{% endblock noticias1 %}
+</div>
 
+{% endblock cuerpo %}
 
-{% block tabla %}
-	
-{% endblock tabla %}
-
-
-
-{% block graficos %}
-	
-{% endblock graficos %}

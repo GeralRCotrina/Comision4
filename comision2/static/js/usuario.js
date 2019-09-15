@@ -127,3 +127,52 @@ function CambContra(){
 		alert("> Deben coincidir las contraseñas");
 	}
 }
+
+function EdiSexo(){
+	var userpk = document.getElementById('userpk').value;
+	var sx=document.getElementById('id_sexo').value;
+	var sxv=document.getElementById('id_sxv');
+	if (sx != "") {
+		var xhr = new XMLHttpRequest();
+		var cad = "/usuario/api_edi_sx/?userpk="+userpk+"&sx="+sx;
+		xhr.open('GET',cad,true); 
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				var rpta = xhr.response;
+				if (rpta=="Ok") {
+					sxv.value=sx;
+				}else{
+					alert("Error, consultar al administrador del sistema.");
+				}
+			}
+		}
+		xhr.send();
+	}else{
+		alert("Complete los campos");
+	}
+}
+
+function EdiFechaN(){
+	var userpk = document.getElementById('userpk').value;
+	var fn=document.getElementById('id_fechan').value;
+	var fnv=document.getElementById('id_fnv')
+	if (fn != "") {
+		var xhr = new XMLHttpRequest();
+		var cad = "/usuario/api_edi_fn/?userpk="+userpk+"&fn="+fn;
+		xhr.open('GET',cad,true); 
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				var rpta = xhr.response;
+				if (rpta=="Ok") {
+					fnv.value=fn;
+				}else{
+					alert("Error, consultar al administrador del sistema.");
+				}
+			}
+		}
+		xhr.send();
+	}else{
+		alert("Complete los campos");
+	}
+
+}

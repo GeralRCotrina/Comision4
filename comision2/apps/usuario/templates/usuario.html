@@ -1,8 +1,8 @@
 {% extends "u_base.html" %}
 {% load static %}
 
-{% block inicio_menu %}
-{% endblock inicio_menu %}
+
+
 
 {% block tabla %}	
 {% endblock tabla %}
@@ -138,14 +138,16 @@ Highcharts.chart('container', {
 		<h2 class="my-4">Noticias <small style="font-style:italic;"> ¿qué hay de nuevo?..</small>
 		<span class="float-right mt-0"><img src='{% static "img/001-ojo.gif" %}' alt="" height="40" class="mt-0"></span></h2>
      	
+<div class="border" style="height:auto; overflow-y: scroll; display:inline-block;">
+  
 
         {% if lst_noticias %}
         	{% for n in lst_noticias %}        	   	   
 		        <!-- Blog Post -->
 
-		        <div class="card mb-4" style="background:rgba(195,195,195,0.27);">
+		        <div class="card mx-3 my-3" style="background:rgba(195,195,195,0.27); display: inline-block; width:310px;">
 		          	<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
-		          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" width="750" height="300" >
+		          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" width="100%" height="auto" >
 		          	</a>
 		          <div class="mt-1 ml-1 mb-0 text-muted" >
 		            <h2 class="card-title" style="line-height:0.7em; ">
@@ -161,25 +163,25 @@ Highcharts.chart('container', {
 		          </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="notmdl{{n.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{n.titular}} <br> <small>{{n.titulo}}</small></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-         <img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" >
-      </div>
-      <div class="modal-footer pt-1 pr-2 pb-0 pl-2">
-      	<p class="text-justify font-italic pt-0 pr-0 pb-0 pl-0">{{n.descripcion}}</p>
-      </div>
-    </div>
-  </div>
-</div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="notmdl{{n.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{n.titular}} <br> <small>{{n.titulo}}</small></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                 <img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" >
+                              </div>
+                              <div class="modal-footer pt-1 pr-2 pb-0 pl-2">
+                              	<p class="text-justify font-italic pt-0 pr-0 pb-0 pl-0">{{n.descripcion}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
 
 
@@ -189,7 +191,7 @@ Highcharts.chart('container', {
         	Err al traer las noticias, contacte al administrador del sistema.
         {% endif %}
 		
-
+</div>
 
 
 
@@ -297,8 +299,8 @@ Highcharts.chart('container1', {
 
 
       	<div class="row">
-      		<div class="col-12 text-center font-italic pt-2" style="background: #E4E5E4;">
-      			<h6>Mi área</h6>
+      		<div class="col-12 text-center font-italic pt-2" style="background: #E4E5E4; color:white;">
+      			<h6> <strong> Mi área </strong></h6>
       		</div>
       	</div>
 
@@ -314,18 +316,6 @@ Highcharts.chart('container1', {
       			<i><i class="fas fa-file-invoice"></i>   cargando..</i>
       		</div>
         </div>
-
-
- 
-        <!-- Search Widget -->
-        <div class="card my-3 border ml-0" style="">
-    		<p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-map-marked-alt"></i>
-    			<strong style="font-size:1.0em; font-style:italic;">Parcelas</strong>
-    		</p>
-    		<div id="div_parc" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
-    			<i><i class="fas fa-map-marked-alt"></i> cargando..</i><br>
-    		</div>      
-        </div>
  
         <!-- Search Widget -->
         <div class="card my-3 border ml-0" style="">
@@ -335,6 +325,30 @@ Highcharts.chart('container1', {
     		<div id="div_ord" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
     			<i><i class="fas fa-money-check-alt"></i> cargando..</i><br>
     		</div> 
+        </div>
+
+
+ 
+        <!-- Search Widget -->
+        <div class="card my-3 border ml-0" style="">
+        <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-map-marked-alt"></i>
+          <strong style="font-size:1.0em; font-style:italic;">Parcelas</strong>
+        </p>
+        <div id="div_parc" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+          <i><i class="fas fa-map-marked-alt"></i> cargando..</i><br>
+        </div>      
+        </div>
+
+
+ 
+        <!-- Search Widget -->
+        <div class="card my-3 border ml-0" style="">
+        <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-map-marked-alt"></i>
+          <strong style="font-size:1.0em; font-style:italic;">Reuniónes</strong>
+        </p>
+        <div id="div_parc" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+          <i><i class="fas fa-map-marked-alt"></i> cargando..</i><br>
+        </div>      
         </div>
 
 

@@ -47,6 +47,42 @@ class PerfilEditar(UpdateView):
 
 
 
+def function(re):
+	print("ddd")
+	return "Ok"
+
+
+"""
+	def post(self, request, *args, **kwargs):
+		username = self.request.POST.get('username')
+		dni = self.request.POST.get('dni')
+		first_name = self.request.POST.get('first_name')
+		last_name = self.request.POST.get('last_name')
+		sexo = self.request.POST.get('sexo')
+		alias = self.request.POST.get('alias')
+		correo = self.request.POST.get('email')
+		foto = self.request.POST.get('foto')
+		fecha_nacimiento = self.request.POST.get('fecha_nacimiento')
+		celular = self.request.POST.get('celular')
+		telefono = self.request.POST.get('telefono')
+
+		print("------------------------------------")
+		print("  >>  first_name:"+first_name)
+		print("  >>  last_name:"+last_name)
+		print("  >>  alias:"+alias)
+		print("  >>  username:"+username)
+		print("  >>  dni: "+str(dni))
+		print("  >>  sexo: "+sexo)
+		print("  >>  correo :"+correo)
+		print("  >>  foto:"+str(foto))
+		print("  >>  fecha_nacimiento:"+fecha_nacimiento)
+		print("  >>  celular:"+str(celular))
+		print("  >>  telefono:"+str(telefono))
+		print("------------------------------------")
+		return render(request,self.template_name,{'form':self.form_class})
+"""
+
+
 class ApiTraerParc(View):
 
 	def get(self, request, *args, **kwargs):
@@ -159,7 +195,29 @@ class ApiContra(View):
 			rpta="Ok"	
 		return HttpResponse(rpta)
 		
+		
+class ApiEdiSx(View):
 
+	def get(self, request, *args, **kwargs):
+		userpk = self.request.GET.get('userpk')
+		sx = self.request.GET.get('sx')
+		rpta="Err"
+		if AuthUser.objects.filter(pk=userpk).exists():
+			AuthUser.objects.filter(pk=userpk).update(sexo=sx)
+			rpta="Ok"	
+		return HttpResponse(rpta)
+
+
+class ApiEdiFn(View):
+
+	def get(self, request, *args, **kwargs):
+		userpk = self.request.GET.get('userpk')
+		fn = self.request.GET.get('fn')
+		rpta="Err"
+		if AuthUser.objects.filter(pk=userpk).exists():
+			AuthUser.objects.filter(pk=userpk).update(fecha_nacimiento=fn)
+			rpta="Ok"	
+		return HttpResponse(rpta)
 
 
 

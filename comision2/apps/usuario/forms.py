@@ -7,26 +7,36 @@ class AuthUserForm(forms.ModelForm):
 	class Meta:
 		model = AuthUser
 
-		fields = ['username','first_name','last_name','email','dni','foto',]	
+		fields = ['username','first_name','last_name','email','dni','foto','sexo',
+		    'alias','telefono','celular']	
 		labels = {
 			'username':'username',
 			'first_name':'first_name',
 			'last_name':'last_name',
 			'email':'correo',
 			'foto':'foto',
-		}
+			'alias':'alias',
+			'sexo':'Sexo',
+			'telefono':'telefono',
+			'celular':'Movil',
+			}
 
 		widgets={
 		    'username':forms.TextInput(attrs={'class':'form-control'}),
 		    'first_name':forms.TextInput(attrs={'class':'form-control'}),
 		    'last_name':forms.TextInput(attrs={'class':'form-control'}),
-		    'email':forms.EmailInput(attrs={'class':'form-control'}),
-		    'dni':forms.TextInput(attrs={'class':'form-control'}),
+		    'email':forms.TextInput(attrs={'class':'form-control'}),
+		    'dni':forms.TextInput(attrs={'class':'form-control','type':'number','maxlength':'8'}),
 		    'foto':forms.FileInput(attrs={'class':'form-control'}),
-		    }
+		    'alias':forms.TextInput(attrs={'class':'form-control'}),
+			'sexo':forms.Select(attrs={'class':'form-control'}),
+			'telefono':forms.TextInput(attrs={'class':'form-control'}),
+			'celular':forms.TextInput(attrs={'class':'form-control'}),
+	    }
 
 
-
+			#'fecha_nacimiento':'fecha nacimiento',
+			#'fecha_nacimiento':forms.DateInput(attrs={'class':'form-control','type':'date'}),
 
 class OrdenRForm(forms.ModelForm):
 

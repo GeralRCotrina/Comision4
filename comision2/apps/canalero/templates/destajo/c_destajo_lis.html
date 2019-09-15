@@ -1,19 +1,91 @@
 {% extends "c_base.html" %}
 
 
-{% block txt_cabecera %}
-	NOTICIAS
-{% endblock txt_cabecera %}
+
+
+
+{% block cuerpo %}
+<div class="container">
+	<div class="row my-2 mx-2">
+
+
+	<div class="col-12 my-2 text-center">
+		<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Listado de destajos</h3>
+	</div>
+
+
+		<div class="col-12 form-inline">
+			{% if canales %}
+				<p class="alert alert-success mb-1 mr-1"><strong>TODOS</strong>
+						<a href="{% url 'c_destajo_lis' %}" style="font-style:italic;"> listar!</a></p>
+				{% for c in canales %}
+					<p class="alert alert-success mb-1 mr-1"><strong>{{c.nombre}}</strong>
+						<a href="{% url 'c_destajo_lis' %}?idc={{c.pk}}" style="font-style:italic;">listar!</a></p>
+				{% endfor %}			
+			{% endif %}
+		</div>
+
+
+
+		<div class="col-12 my-2" style="height:500px; overflow-x: scroll;">
+			
+			{% if object_list %}
+			<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+				<table class="table table-sm table-striped text-center" id="dataTable">
+			      <thead>
+			      	<tr style="background:#2DA544; color:white; font-weight: bold;">
+			          	<td>Id</td>
+						<td>Canal</td>
+						<td>Parcela</td>
+						<td>Usuario</td>
+						<td>Tamaño</td>
+						<td>N°</td>
+						<td>Registro</td>
+						<td>Descripción</td>
+						<td><i class="fas fa-box-open"></i></td>
+			        </tr>
+			      </thead>
+			      <tbody id="cuerpo">
+				{% for ob in object_list %}
+					<tr style="font-size: 0.8em;">
+						<td >{{ob.id_destajo}}</td>
+						<td> {{ ob.id_canal }}</td>
+						<td> {{ ob.id_parcela }}</td>
+						<td style="background:#F1FCF2;">{{ ob.id_parcela.id_auth_user.first_name }}</td>
+						<td>{{ ob.tamano }} m</td>
+						<td> {{ ob.num_orden }}</td>
+						<td>{{ ob.fecha_registro.day }}/{{ ob.fecha_registro.month}}/{{ ob.fecha_registro.year }}</td>
+						<td> {{ ob.descripcion }}</td>
+						<td>
+							<div class="btn-group btn-sm">
+								<a class="btn btn-sm btn-outline-success btn-sm" href="{% url 'c_destajo_edi' ob.id_destajo %}">
+									<i class="far fa-edit"></i></a>
+								<a class="btn btn-sm btn-outline-danger btn-sm" href="{% url 'c_destajo_eli' ob.id_destajo %}" >
+									<i class="far fa-trash-alt"></i></a>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+					</tbody>
+				</table>				
+				{% else %}
+					<h1>Error en el servidor</h1>
+				{% endif %}
+				
+			
+		</div>
+		<div class="col-12">
+			<a href="{% url 'c_reparto_reg' %}" class="btn btn-outline-success form-control">+  _ NUEVO DESTAJO</a>
+		</div>
 
 
 
 
-
-
-{% block noticias %}
-
-{% endblock noticias %}
-
+	</div>
+</div>
+{% endblock cuerpo %}
+<!--
 
 {% block noticias1 %}
 	<div class="row container mb-2">
@@ -107,3 +179,4 @@
 {% block graficos %}
 	
 {% endblock graficos %}
+-->

@@ -771,7 +771,7 @@ class ParcelaCreate(CreateView):
 class ParcelaList(ListView):
 	model=Parcela
 	template_name='parcela/c_parcela_lis.html'
-	paginate_by=9
+	paginate_by=20
 
 class ParcelaUpdate(UpdateView):
 	model=Parcela

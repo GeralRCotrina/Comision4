@@ -38,6 +38,9 @@ urlpatterns = [
 	re_path(r'^api_mul/?/$',login_required(views.ApiTraerMul.as_view()),name='api_mul'),
 	re_path(r'^api_perf/?/$',login_required(views.ApiTraerPerf.as_view()),name='api_perf'),
 	re_path(r'^api_cont/?/$',login_required(views.ApiContra.as_view()),name='api_cont'),
+	re_path(r'^api_edi_sx/?/$',login_required(views.ApiEdiSx.as_view()),name='api_edi_sx'),
+	re_path(r'^api_edi_fn/?/$',login_required(views.ApiEdiFn.as_view()),name='api_edi_fn'),
+	
 
 
 
