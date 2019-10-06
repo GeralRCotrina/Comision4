@@ -162,7 +162,7 @@ class AsambEdi(View):
 		ListAsamb = Asamblea.objects.all()
 		return render(request,'asamblea/v_asamb_lis.html',{'msj':'Se editó correctamente.','asambleas':ListAsamb})
 
-
+"""
 class AsmbList(View):
 
 	def get(self, request, *args, **kwargs):
@@ -182,7 +182,7 @@ class AsmbList(View):
 		else:
 			dicc['msj']= 'nusr'
 		return render(request,'v_act_usu.html',dicc)
-
+"""
 class AsambIni(View):
 	def get(self, request, *args, **kwargs):
 		pka = self.request.GET.get('id_asamb') 

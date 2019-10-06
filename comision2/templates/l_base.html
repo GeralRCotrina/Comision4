@@ -25,11 +25,11 @@
 <nav class="navbar navbar-expand  static-top" style="background: #317631">
 
       <a class="navbar-brand mr-1 text-white" href="#">Comité de regantes NUEVO HORIZONTE </a>
-      <!-- Navbar Search -->
+      
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0 text-white">
           <a href="{% url 'usuario' %}" class="text-white">{{ request.user.get_full_name }}</a>
       </form>
-      <!-- Navbar -->
+
       <ul class="navbar-nav ml-auto ml-md-0">
         <li class="nav-item dropdown no-arrow">
           <i class="text-success">......</i>
@@ -44,6 +44,7 @@
 
     <div class="container">
       <div class="card card-login mx-auto mt-5">
+      <!--div class="card card-login mx-auto mt-5"-->
         <div class="card-header">
           <img src="{% static 'img/login.png' %}" style="height: 30px; width: 30px;" class="rounded-circle">  
           <i style="font-size: larger;" class="text-muted"> Iniciar sesión </i>

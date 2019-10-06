@@ -67,6 +67,7 @@ class ActUsuario(View):
 			u=AuthUser.objects.get(username__exact=usuario)
 			dicc['passs']= u.password
 			dicc['usuario']= usuario
+			dicc['dni']= u.dni
 			dicc['nombres']= u.first_name+" "+u.last_name
 			dicc['msj']= 'nda'
 		elif AuthUser.objects.filter(dni__exact=usuario).exists():
@@ -74,6 +75,7 @@ class ActUsuario(View):
 			u=AuthUser.objects.get(dni__exact=usuario)
 			dicc['passs']= u.password
 			dicc['usuario']= u.username
+			dicc['dni']= u.dni
 			dicc['nombres']= u.first_name+" "+u.last_name
 			dicc['msj']= 'nda'
 		else:

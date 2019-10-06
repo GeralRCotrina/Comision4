@@ -106,10 +106,14 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 'usuario' %}"><i class="fas fa-user"></i></i> Usuario</a>
-            <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>
-            <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
-            <a class="dropdown-item" href="{% url 'tesorero' %}"><i class="fas fa-funnel-dollar"></i> Tesorero</a>
-            <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>
+            {% if perms.inicio.es_presidente %}
+                <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>{% endif %}            
+            {% if perms.inicio.es_canalero %}            
+                <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>{% endif %}
+            {% if perms.inicio.es_tesorero %}
+                <a class="dropdown-item" href="{% url 'tesorero' %}"><i class="fas fa-funnel-dollar"></i> Tesorero</a>{% endif %}
+            {% if perms.inicio.es_vocal %}
+              <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>{% endif %}
           </div>
         </li>
 

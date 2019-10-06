@@ -58,7 +58,7 @@
           <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown" >
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown" style="background:#E7F2FA;">
             {% block card_login %}
               <div class="" style="height: auto; width: 200px; margin: 3px;">
                 <p class="text-center text-muted mb-0"><strong> USUARIO</strong></p>
@@ -95,6 +95,7 @@
               <img src="{% static 'img/logo1.png' %}" class="w-100 h-100 img-thumbnail">
             </div>
           </a>
+          <input id="id_rutaf" type="text" value="{% static 'img/' %}" hidden>
         </li>
 
 
@@ -107,10 +108,14 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 'usuario' %}"><i class="fas fa-user"></i></i> Usuario</a>
-            <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>
-            <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>
-            <a class="dropdown-item" href="{% url 'tesorero' %}"><i class="fas fa-funnel-dollar"></i> Tesorero</a>
-            <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>
+            {% if perms.inicio.es_presidente %}
+                <a class="dropdown-item" href="{% url 'presidente' %}"><i class="fas fa-user-graduate"></i> Presidente</a>{% endif %}            
+            {% if perms.inicio.es_canalero %}            
+                <a class="dropdown-item" href="{% url 'canalero' %}"><i class="fas fa-user-tie"></i> Canalero</a>{% endif %}
+            {% if perms.inicio.es_tesorero %}
+                <a class="dropdown-item" href="{% url 'tesorero' %}"><i class="fas fa-funnel-dollar"></i> Tesorero</a>{% endif %}
+            {% if perms.inicio.es_vocal %}
+              <a class="dropdown-item" href="{% url 'vocal' %}"><i class="fas fa-user-edit"></i> Vocal</a>{% endif %}
           </div>
         </li>
         {% endblock inicio_menu %}
@@ -176,6 +181,15 @@
             <span>Ayuda  <i style="font-size: 2.1em;" class=""> F2</i></span>
           </a>
         </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link" style="color: #82D590;" href="#">
+            <i class="fas fa-terminal"></i> <i class="fab fa-python"></i>
+          </a>
+        </li>
+
+
 
 
       </ul>

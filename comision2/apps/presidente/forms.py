@@ -53,30 +53,30 @@ class ParcelaForm(forms.ModelForm):
 			    'estado','volumen_agua']
 
 		labels = {
-			'nombre':'Nombre de la Parcela',
-			'codigo_predio':'Codigo del predio',
-			'ubicacion':'Ubicación geográfica',
-			'num_toma':'N° de Toma en el canal',
-			'id_canal':'Canal en el que se encuentra',
-			'id_auth_user':'Actual Propietario',
-			'total_has':'Cantidad de hectáreas',
-			'has_sembradas':'Cantidad de Has Sembradas',
-			'descripcion':'Breve descripción..',
-			'estado':'Estado actual de la parcela',
+			'nombre':'Nombre de la Parcela (*)',
+			'codigo_predio':'Codigo del predio (*)',
+			'ubicacion':'Descripción de ubicación (*)',
+			'num_toma':'N° de Toma en el canal (*)',
+			'id_canal':'Canal en el que se encuentra (*)',
+			'id_auth_user':'Actual Propietario (*)',
+			'total_has':'Cantidad de hectáreas (*)',
+			'has_sembradas':'Cantidad de Has Sembradas (*)',
+			'descripcion':'Breve descripción.',
+			'estado':'Estado actual de la parcela (*)',
 			'volumen_agua':'Volumen de agua',
 		}
 
 		widgets={	
-			    'nombre':forms.TextInput(attrs={'class':'form-control'}),
-			    'codigo_predio':forms.TextInput(attrs={'class':'form-control'}),
-			    'ubicacion':forms.TextInput(attrs={'class':'form-control'}),
-			    'num_toma':forms.TextInput(attrs={'class':'form-control'}),
-			    'id_canal':forms.Select(attrs={'class':'form-control'}),
-			    'id_auth_user':forms.Select(attrs={'class':'form-control'}),
-			    'total_has':forms.TextInput(attrs={'class':'form-control'}),
-			    'has_sembradas':forms.TextInput(attrs={'class':'form-control'}),
+			    'nombre':forms.TextInput(attrs={'class':'form-control','required':'required'}),
+			    'codigo_predio':forms.TextInput(attrs={'class':'form-control','required':'required'}),
+			    'ubicacion':forms.TextInput(attrs={'class':'form-control','required':'required','row':'2'}),
+			    'num_toma':forms.TextInput(attrs={'class':'form-control','required':'required','min':'1'}),
+			    'id_canal':forms.Select(attrs={'class':'form-control','required':'required'}),
+			    'id_auth_user':forms.Select(attrs={'class':'form-control','required':'required'}),
+			    'total_has':forms.TextInput(attrs={'class':'form-control','required':'required'}),
+			    'has_sembradas':forms.TextInput(attrs={'class':'form-control','required':'required'}),
 			    'descripcion':forms.TextInput(attrs={'class':'form-control'}),
-			    'estado':forms.Select(attrs={'class':'form-control','placeholder':'No olvide poner "Activa"'}),
+			    'estado':forms.Select(attrs={'class':'form-control','placeholder':'No olvide poner "Activa"','required':'required'}),
 			    'volumen_agua':forms.TextInput(attrs={'class':'form-control'}),
 		    }
 
@@ -132,10 +132,10 @@ class AuthForm(forms.ModelForm):
 		    'alias','fecha_nacimiento','telefono','celular']
 
 		labels = {
-			'first_name':'Nombres',
-			'last_name':'Apellidos',
-			'username':'Nombre de acceso',
-			'dni':'N° de DNI',
+			'first_name':'Nombres (*)',
+			'last_name':'Apellidos (*)',
+			'username':'Nombre de acceso (*) (sin espacios)',
+			'dni':'N° de DNI (*)',
 			'email':'Correo @',
 			'alias':'alias',
 			'sexo':'Sexo',
@@ -145,14 +145,14 @@ class AuthForm(forms.ModelForm):
 			}
 
 		widgets={	
-			    'username':forms.TextInput(attrs={'class':'form-control'}),
-			    'first_name':forms.TextInput(attrs={'class':'form-control'}),
-			    'last_name':forms.TextInput(attrs={'class':'form-control'}),
+			    'username':forms.TextInput(attrs={'class':'form-control col-7','required':'required'}),
+			    'first_name':forms.TextInput(attrs={'class':'form-control','required':'required'}),
+			    'last_name':forms.TextInput(attrs={'class':'form-control','required':'required'}),
 			    'email':forms.TextInput(attrs={'class':'form-control'}),
-			    'dni':forms.TextInput(attrs={'class':'form-control','type':'number','min':'8','max':'8'}),
-			    'alias':forms.TextInput(attrs={'class':'form-control'}),
-				'sexo':forms.Select(attrs={'class':'form-control'}),
-				'fecha_nacimiento':forms.DateInput(attrs={'class':'form-control','type':'date'}),
-				'telefono':forms.TextInput(attrs={'class':'form-control'}),
-				'celular':forms.TextInput(attrs={'class':'form-control'}),
+			    'dni':forms.TextInput(attrs={'class':'form-control col-7','type':'number','required':'required'}),
+			    'alias':forms.TextInput(attrs={'class':'form-control col-7'}),
+				'sexo':forms.Select(attrs={'class':'form-control col-7'}),
+				'fecha_nacimiento':forms.DateInput(attrs={'class':'form-control col-7','type':'date'}),
+				'telefono':forms.TextInput(attrs={'class':'form-control col-7'}),
+				'celular':forms.TextInput(attrs={'class':'form-control col-7'}),
 		    }

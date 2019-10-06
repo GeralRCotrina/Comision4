@@ -5,7 +5,7 @@ window.onload = function() {
 	CargarPerfil();
 };
 
-
+ 
 function CargarParcelas(){
 	var userpk=document.getElementById('userpk').value;
 	var div_parc =document.getElementById('div_parc');
@@ -83,6 +83,7 @@ function CargarMultas(){
 function  CargarPerfil(){
 	var userpk=document.getElementById('userpk').value;
 	var divprf = document.getElementById('idperfil');
+	//var id_rutaf = document.getElementById('id_rutaf').value;
 	var img = '<img src="/static/img/perfil.png" class="w-100 h-100 img-thumbnail rounded-circle">';
 	var xhr = new XMLHttpRequest();
 	var cad = "/usuario/api_perf/?userpk="+userpk;

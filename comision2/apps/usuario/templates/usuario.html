@@ -31,11 +31,7 @@
 		<span class="float-right mt-0"><img src='{% static "img/002-agua.gif" %}' alt="" height="40" class="mt-0"></span></h2>
      
 
-
-
-
-
-
+    
       <!-- Search Widget -->
         <div class="card my-4 font-italic" style="color:#556860;">
             <h5 class="mt-1 pl-2" style="background:#E4E5E4;">Están regando..  <br></h5>
@@ -138,14 +134,15 @@ Highcharts.chart('container', {
 		<h2 class="my-4">Noticias <small style="font-style:italic;"> ¿qué hay de nuevo?..</small>
 		<span class="float-right mt-0"><img src='{% static "img/001-ojo.gif" %}' alt="" height="40" class="mt-0"></span></h2>
      	
-<div class="border" style="height:auto; overflow-y: scroll; display:inline-block;">
-  
+<!--div class="border bg-danger w-100" style="height: 1000px; overflow-x: scroll; display:inline;"-->
+  <!--div class="border bg-success" style="height: 800px; overflow-x: scroll; display: inline-block;">
 
         {% if lst_noticias %}
-        	{% for n in lst_noticias %}        	   	   
-		        <!-- Blog Post -->
+        	{% for n in lst_noticias %}    -->
 
-		        <div class="card mx-3 my-3" style="background:rgba(195,195,195,0.27); display: inline-block; width:310px;">
+
+		        <!--div class="card mx-3 my-3 border" style="background:rgba(195,195,195,0.27); display: inline-block; width:310px;"-->
+            <!--div class="card mx-3 my-3 border" style="background:rgba(195,195,195,0.27); display: inline-block; width:310px;">
 		          	<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
 		          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" width="100%" height="auto" >
 		          	</a>
@@ -163,7 +160,8 @@ Highcharts.chart('container', {
 		          </div>
 
 
-                        <!-- Modal -->
+                   
+
                         <div class="modal fade" id="notmdl{{n.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -191,7 +189,51 @@ Highcharts.chart('container', {
         	Err al traer las noticias, contacte al administrador del sistema.
         {% endif %}
 		
-</div>
+</div-->
+
+
+
+
+
+
+{% if lst_noticias %}
+  <div class="w-100" style="height:auto; overflow: auto; white-space: nowrap;  border: solid #7AFC92 3px;  border-radius: 10px; padding-top: 4px;"> 
+      {% for n in lst_noticias %}  
+          <div class=" mx-1 border" style="heigth:300px; width: 200px;  display: inline-block; ">
+            <img src="/media/{{ n.foto }}" style="width: 200px; height:auto;">
+            <!--p>{{n.titular}}</p>
+            <p class="text-justify" style="background: #DBD9D9;"><small>{{n.titulo}}</small></p>
+            <p>{{n.descripcion}}</p-->
+              <div class="bg-success border pr-1">
+                {{n.descripcion}}
+              </div>
+          
+          </div>
+              <!--a class="border" width="80px">
+
+                  <img src="/media/{{ n.foto }}" style="height:200px; width:150px; margin-top: 10px;  ">   
+                  <span> cdslvfndjslk</span>       
+              </a-->
+    {% endfor%}
+  </div>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

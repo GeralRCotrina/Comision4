@@ -1,18 +1,19 @@
 {% extends "p_base.html" %}
 
-{% block txt_cabecera %}
-	NUEVO USUARIO
-{% endblock txt_cabecera %}
 
 
 {% block noticias %}
+
+	<div class="col-12 my-3 text-center">
+		<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Formulario de usuaruio</h3>
+	</div>
 	
 	<div class="row mx-2 my-2">
-		<div class="container border p-2">
+		<div class="col-8 border mx-auto p-2">
 			{% if form.errors %}
-				<p class="alert alert-danger">{{ form.errors }}</p>
-			{% else %}
-				<p class="alert alert-success"><STRONG>USUARIO</STRONG></p>				
+				<div class="alert alert-danger">
+					{{ form.errors }}
+				</div>				
 			{% endif %}
 
 
