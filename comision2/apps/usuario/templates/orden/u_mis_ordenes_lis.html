@@ -5,9 +5,13 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-12 my-2 text-center">
-			<h2>Todas mis órdenes</h2>
-		</div>
+
+
+
+	<div class="col-12 my-3 text-center">
+		<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Todas mis órdenes</h3>
+	</div>
+
 
 
 		<div class="col-12 my-2">
@@ -17,7 +21,7 @@
 				<table class="table table-sm table-striped text-center" id="dataTable">
 			      <thead>
 			      	<tr style="background:#2DA544; color:white; font-weight: bold;">
-			          	<td>REPARTsO</td>
+			          	<td>REPARTO</td>
 						<td>PARCELA</td>
 						<td>FECHA INICIO</td>
 						<td>REGADADO</td>
@@ -34,17 +38,30 @@
 							<td>{{ ob.fecha_establecida.day }}-{{ ob.fecha_establecida.month }}-{{ ob.fecha_establecida.year }}</td>
 							<td>{{ ob.cantidad_has }}</td>
 							<td>{{ ob.importe }}</td>
-							<td>{{ ob.estado }}</td>
-							
+							<td id="tdstd{{ob.pk}}"><span class="badge badge-pill badge-light">{{ ob.estado }}</span></td>
+							<td id="tdbtn{{ob.pk}}">
 							{% if  ob.estado == 'Solicitada' %}
-								<td><a class="btn btn-sm btn-outline-danger" href="{% url 'u_orden_eli' ob.pk %}" ><i class="fas fa-trash-alt"></i></a></td>				
-							{% else %}
-								<td><span class="badge badge-pill badge-secondary"><i class="fas fa-lock"></i>   {{ ob.estado }}</span></td>
+								<a class="btn btn-sm btn-outline-danger" href="{% url 'u_orden_eli' ob.pk %}" ><i class="fas fa-trash-alt"></i></a>
 							{% endif %}
-							
-						</tr>
 
+							{% if  ob.estado == 'Entregada' %}
+								<a class="btn btn-sm btn-outline-warning" href="#" title="Iniciar riego." onclick="ApiOrdStd({{ob.pk}},'Iniciada')"><i class="far fa-play-circle"></i> Inicio</a>
+							{% endif %}
+
+							{% if  ob.estado == 'Iniciada' %}
+								<a class="btn btn-sm btn-outline-secondary" href="#" title="Finalizar riego." onclick="ApiOrdStd({{ob.pk}},'Entregada')"><i class="fas fa-arrow-left"></i> atrás</a>
+								<a class="btn btn-sm btn-outline-primary" href="#" title="Finalizar riego." onclick="ApiOrdStd({{ob.pk}},'Finalizada')"><i class="fas fa-stopwatch"></i> Fin</a>
+							{% endif %}
+
+							
+							{% if  ob.estado == 'Rechazada' or ob.estado == 'Aprobada' or ob.estado == 'Pagada' or ob.estado == 'Finalizada' %}
+								<span class="badge badge-pill badge-secondary"><i class="fas fa-lock"></i></span>
+							{% endif %}
+
+							</td>
+						</tr>
 					{% endfor %}
+
 					</tbody>
 				</table>				
 				{% else %}

@@ -2,13 +2,12 @@ window.onload = function() {
 	LlenarDicOrd();
 
 };
-
+ 
 
 function UrlJS(iOr,iRe,est){
 
 	var idtdstd = "tdstd"+iOr;
 	var tdstd = document.getElementById(idtdstd);
-
 
 	var xhr = new XMLHttpRequest();
 	var cad = "/canalero/c_orden_apr/?id_ord="+iOr+"&&id_rep="+iRe+"&&est="+est;
@@ -27,7 +26,13 @@ function UrlJS(iOr,iRe,est){
 				tdstd.innerHTML = '<span class="badge badge-pill badge-secondary"><i class="fas fa-money-bill"></i>  ENTREGADA</span>';
 			}
 			else if(est == "Solicitada"){
-				tdstd.innerHTML = '<span class="badge badge-pill badge-secondary badge-warning"><i class="fas fa-sign-in-alt"></i>  SOLICITADA</span>';
+				tdstd.innerHTML = '<span class="badge badge-pill badge-warning"><i class="fas fa-sign-in-alt"></i>  SOLICITADA</span>';
+			}
+			else if(est == "Iniciada"){
+				tdstd.innerHTML = '<span class="badge badge-pill badge-warning"><i class="far fa-play-circle"></i> INICIADA</span>';
+			}
+			else if(est == "Finalizada"){
+				tdstd.innerHTML = '<span class="badge badge-pill badge-primary"><i class="fas fa-stopwatch"></i> FINALIZADA</span>';
 			}
 			else{
 				alert("Err: ");
@@ -46,12 +51,12 @@ var ordenesBK=[];
 var resultado = [];
 
 function LlenarDicOrd(){
-	var tableGen = document.getElementById('tableGen');
+	var tableGen = document.getElementById('dataTable');
 	var cellsOfRow="";
 	var cont = 0;
 	if(lleno == true)
 	{
-		for (var i = 0; i < tableGen.rows.length; i++)
+		for (var i = 1; i < tableGen.rows.length; i++)
 		{
 			cont +=1;
 			cellsOfRow = tableGen.rows[i].getElementsByTagName('td');
@@ -63,13 +68,13 @@ function LlenarDicOrd(){
 		}
 		ordenesBK=ordenes;
 		lleno = false;
+		//alert("->"+ordenesBK.length);
 	}
 	else
 		ordenes=ordenesBK;
 }
 
 function BuscarOrden(){
-
 	var txt_buscado = document.getElementById('txt_buscar').value;
 	Buscar(txt_buscado);
 	BorrarTabla();
@@ -81,7 +86,8 @@ function Buscar(txt){
 	resultado = [];
 	var cont0=0;
 	for (var i = ordenes.length - 1; i >= 0; i--) {
-		if(ordenes[i].usuario.toUpperCase().indexOf(txt.toUpperCase()) > -1)
+		console.log(" -> "+ordenes[i].usuario)
+		if((ordenes[i].usuario.toUpperCase().indexOf(txt.toUpperCase()) > -1) || (ordenes[i].parcela.toUpperCase().indexOf(txt.toUpperCase()) > -1))
 		{
 			cont0 += 1;
 			resultado.push(ordenes[i]);
@@ -91,14 +97,14 @@ function Buscar(txt){
 }
 
 function BorrarTabla(){
-	$('#tableGen').remove();
+	$('#tableGen').remove();	
 }
 
 function LlenarTabla(){
 	var fila ='<tbody id="tableGen">';
 	for (var i = resultado.length - 1; i >= 0; i--) 
 	{
-		fila +='<tr><td>'
+		fila +='<tr style="font-size: 0.8em;" id="'+resultado[i].recibo+'"><td>'
 		+resultado[i].recibo+"</td><td>"
 		+resultado[i].canal+'</td><td>'
 		+resultado[i].usuario+"</td><td>"

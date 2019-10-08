@@ -2,12 +2,12 @@
 {% load static %}
 
 
-{% block txt_not1 %}Hoja de ordenes delreparto.{% endblock txt_not1 %}
-<br><br>
+{% block noticias %}
+{% endblock noticias %}
 
 
-{% block p_msj %} 
-{% endblock p_msj %}
+
+
 
 
 
@@ -15,6 +15,14 @@
 
 
 <div class="container">
+
+ 
+<div class="col-12 my-3 text-center">
+      <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Hoja de órdenes del reparto</h3>
+</div>
+
+
+
   {% if hja_or_reparto %}
   <div class="container m-1 p-2 border">
     <div class="btn-group btn-block">
@@ -62,7 +70,8 @@
           <td><strong>PARCELA</strong></td>
           <td><strong>HORA</strong></td>
           <td><strong>ESTADO</strong></td>
-          <td><i class="fas fa-box-open"></i></td>
+          <td><i class="fas fa-donate"></i>_ Pago</td>
+          <td><i class="fas fa-funnel-dollar"></i>_Multa</td>
         </tr>
       </thead>
       <tbody>
@@ -72,14 +81,11 @@
               <td>{{ord.id_parcela.id_auth_user.first_name}}</td>
               <td>{{ord.id_parcela.nombre}}</td>
               <td>{{ord.fecha_inicio.hour}}:{% if ord.fecha_inicio.minute <= 9 %}0{% endif %}{{ord.fecha_inicio.minute}}</td>
-              <td id="tdstd{{ord.pk}}"><span class="badge {% if ord.estado == 'Aprobada' %}badge-success{% elif  ord.estado == 'Solicitada' %}badge-warning{% elif  ord.estado == 'Pagada' %}badge-info{% elif  ord.estado == 'Rechazada' %}badge-danger{% elif  ord.estado == 'Entregada' %}badge-secondary{% else %}Err{% endif %}">{{ord.estado}}</span></td>
-            <td>
-              <div class="btn-group">  
+              <td id="tdstd{{ord.pk}}"><span class="badge {% if ord.estado == 'Aprobada' %}badge-success{% elif  ord.estado == 'Solicitada' %}badge-warning{% elif  ord.estado == 'Pagada' %}badge-info{% elif  ord.estado == 'Rechazada' %}badge-danger{% elif  ord.estado == 'Entregada' %}badge-secondary{% elif  ord.estado == 'Iniciada' %}badge-warning{% elif  ord.estado == 'Finalizada' %}badge-primary{% else %}Err{% endif %}">{{ord.estado}}</span></td>
+              <td>
                 {% if ord.estado == 'Aprobada' %}
-                  <a  href="#" data-toggle="modal" data-target="#ModalEst{{ord.pk}}" class="btn btn-sm btn-outline-info" title="Registrar pago">Estado</a> 
-
-                   <!-- Modal Esta -->
-                        <div class="modal fade" id="ModalEst{{ord.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <a  href="#" class="btn btn-sm btn-outline-info" title="¿pagar?" data-toggle="modal" data-target="#ModalPgr{{ord.pk}}"><i class="fas fa-donate"></i> Pagar</a>
+                <div class="modal fade" id="ModalPgr{{ord.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -110,9 +116,11 @@
                             </div>
                           </div>
                         </div>
-                {% endif %}                
-                {% if ord.estado == 'Aprobada' or ord.estado == 'Entregada' or ord.estado == 'Pagada' %}
-                  <a href="{% url 'mul_or' %}?pko={{ord.pk}}" class="btn btn-sm btn-outline-secondary" title="Registrar multa.">Multar</a> 
+                  {% endif %} 
+              </td>
+            <td>
+              <div class="btn-group">                                 
+                {% if ord.estado == 'Aprobada' or ord.estado == 'Entregada' or ord.estado == 'Pagada' or ord.estado == 'Iniciada' or ord.estado == 'Finalizada' %}                  <a href="{% url 'mul_or' %}?pko={{ord.pk}}" class="btn btn-sm btn-outline-secondary" title="Registrar multa.">Multar</a> 
                 {% endif %}
               </div>
 

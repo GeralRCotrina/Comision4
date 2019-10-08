@@ -9,7 +9,7 @@
 			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Hoja de reparto</h3>
 		</div>
 
-
+ 
 
 		<div class="col-12 border">			
 			<div class="row m-1" style="height:190px; overflow-y: scroll; white-space: nowrap;">
@@ -38,33 +38,33 @@
 						                	
 								            <div class="col-3">
 							                		{% if ob.estado == "1" %}
-							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=2" class="float-left text-white">
+							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=2" class="float-left text-white" title="Registrado">
 							                			<i class="fas fa-check"></i></a> 
 						                			{% elif ob.estado == "2" %}
-							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=3" class="float-left text-white">
+							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=3" class="float-left text-white" title="Aperturado">
 							                			<i class="fas fa-lock-open"></i></a> 
 						                			{% else %}
-							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=1" class="float-left text-white">
+							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=1" class="float-left text-white" title="Cerrado">
 							                			<i class="fas fa-lock"></i></a> 
 						                			{% endif %}
 							                	</div>
 
 							                	<div class="col-3">{% if ob.estado == "1" %}.{% else %}
-							                		<a href="{% url 'c_reparto_lis_ord' %}?id_repa={{ob.id_reparto}}" class="float-left text-white">
+							                		<a href="{% url 'c_reparto_lis_ord' %}?id_repa={{ob.id_reparto}}" class="float-left text-white" title="Listar órdenes">
 							                			 <i class="far fa-eye"></i></a>{% endif %}
 							                	</div>
 							                	<div class="col-3">
 							                		{% if ob.estado == "3" %}
-							                		<a href="{% url 'c_rep_rep' %}?pkr={{ob.pk}}" class="float-left text-white">
-							                			<i class="fas fa-print"></i></a>
+							                		<a href="{% url 'c_rep_rep' %}?pkr={{ob.pk}}" class="float-left text-white" title="Generar reporte de hoja de reparto">
+							                			<i class="fas fa-fw fa-chart-area"></i></a>
 							                		{% else %}
-							                		<a href="{% url 'c_reparto_edi' ob.id_reparto %}" class="float-left text-white">
+							                		<a href="{% url 'c_reparto_edi' ob.id_reparto %}" class="float-left text-white" title="Editar reparto">
 							                			<i class="fas fa-cog"></i></a>
 							                		{% endif %}
 							                	</div>
 							                	<div class="col-3">
 							                		{% if ob.estado == "1" %}.{% else %}
-							                		<a href="{% url 'c_rep_print'%}?id_repa={{ ob.id_reparto }}" class="float-left text-white">
+							                		<a href="{% url 'c_rep_print'%}?id_repa={{ ob.id_reparto }}" class="float-left text-white" title="Imprimir todas las órdenes en estado ENTREGADAS.">
 							                			<i class="fas fa-money-bill"></i> </a>{% endif %}
 							                	</div>
 							            </div>
@@ -142,7 +142,7 @@
 						<td><i class="fas fa-box-open"></i></td>
 			        </tr>
 			      </thead>
-			      <tbody id="cuerpo">
+			      <tbody id="tableGen">
 				{% for ob in ordenes %}
 					<tr style="font-size: 0.8em;" id="{{ob.id_orden_riego}}" >
 						<td id="td_{{ob.pk}}">{{ob.id_orden_riego}}   
@@ -166,6 +166,10 @@
 								<span class="badge badge-pill badge-success"><i class="fas fa-check"></i>  APROBADA</span>
 							{% elif ob.estado == 'Entregada' %}
 								<span class="badge badge-pill badge-secondary"><i class="fas fa-money-bill"></i>  ENTREGADA</span>
+							{% elif ob.estado == 'Iniciada' %}
+								<span class="badge badge-pill badge-warning"><i class="far fa-play-circle"></i>  INICIADA</span>
+							{% elif ob.estado == 'Finalizada' %}
+								<span class="badge badge-pill badge-primary"><i class="fas fa-stopwatch"></i>  FINALIZADA</span>
 							{% else %}
 								Err: {{ob.estado}}
 							{% endif %}
@@ -178,23 +182,35 @@
 						
 					        <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 					        	<i class="fas fa-cog"></i></button>
+
 						      <div class="dropdown-menu" >
 						      	<div class="btn-group ml-2">
-									<button class="btn btn-outline-warning btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Solicitada")' title="Solicitar">
+									<button class="btn btn-outline-warning btn-sm" onclick='UrlJS({{ ob.pk }},{{ reparto.id_reparto }},"Solicitada")' title="Solicitar">
 										<i class="fas fa-sign-in-alt"></i></button>
 
-									<button class="btn btn-outline-success btn-sm" onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Aprobada")' title="Aprobar">
+									<button class="btn btn-outline-success btn-sm" onclick='UrlJS({{ ob.pk }},{{ reparto.id_reparto }},"Aprobada")' title="Aprobar">
 										<i class="fas fa-check"></i></button>
 
-									<button class="btn btn-outline-danger btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Rechazada")' title="Rechazar">
+									<button class="btn btn-outline-danger btn-sm"onclick='UrlJS({{ ob.pk }},{{ reparto.id_reparto }},"Rechazada")' title="Rechazar">
 										<i class="fas fa-ban"></i></button>
 
-									{% if ob.estado == 'Pagada' %}
-										<button class="btn btn-outline-secondary btn-sm"onclick='UrlJS({{ ob.id_orden_riego }},{{ reparto.id_reparto }},"Entregada")' title="Entregar">
-											<i class="fas fa-money-bill"></i></button>
-									{% endif %}
+								{% if ob.estado == 'Pagada' %}
+									<button class="btn btn-outline-secondary btn-sm"onclick='UrlJS({{ ob.pk }},{{ reparto.id_reparto }},"Entregada")' title="Entregar">
+										<i class="fas fa-money-bill"></i></button>
+								{% endif %}
 
-									<a class="btn btn-outline-info" href="{% url 'c_orden_hora' %}?id_ord={{ ob.id_orden_riego }}" >
+
+
+								{% if ob.estado == 'Entregada' or ob.estado == 'Finalizada' or  ob.estado == 'Iniciada' %}
+									<button class="btn btn-sm btn-outline-warning" title="Iniciar riego." onclick="UrlJS({{ob.pk}},{{ reparto.id_reparto }},'Iniciada')">
+										<i class="far fa-play-circle"></i></button>
+
+									<button class="btn btn-sm btn-outline-primary" title="Finalizar riego." onclick="UrlJS({{ob.pk}},{{ reparto.id_reparto }},'Finalizada')">
+										<i class="fas fa-stopwatch"></i></button>
+								{% endif %}
+
+
+									<a class="btn btn-outline-info" href="{% url 'c_orden_hora' %}?id_ord={{ ob.pk }}" title="Establecer hora.">
 										<i class="far fa-clock"></i></a>
 								</div>
 					      </div>

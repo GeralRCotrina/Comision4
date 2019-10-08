@@ -48,7 +48,7 @@ class RepartoForm(forms.ModelForm):
 		widgets={	
 				'descripcion':forms.Textarea(attrs={'class':'form-control','rows':'5'}),
 			    'tipo':forms.Select(attrs={'class':'form-control'}),
-			    'fecha_registro':forms.DateTimeInput(attrs={'class':'form-control col-7','type':'date','disabled':'disabled'}),
+			    'fecha_registro':forms.DateTimeInput(attrs={'class':'form-control col-7','type':'date'}),
 			    'fecha_reparto':forms.DateTimeInput(attrs={'class':'form-control col-7','type':'date'}),
 			    'hora_reparto':forms.TimeInput(attrs={'class':'form-control col-7','type':'time'}),
 			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
@@ -81,7 +81,7 @@ class DestajoForm(forms.ModelForm):
 			    'tamano':forms.TextInput(attrs={'class':'form-control'}),
 			    'num_orden':forms.TextInput(attrs={'class':'form-control'}),
 			    'descripcion':forms.TextInput(attrs={'class':'form-control'}),
-			    'fecha_registro':forms.TextInput(attrs={'class':'form-control','disabled':'disabled'}),
+			    'fecha_registro':forms.DateInput(attrs={'class':'form-control'}),
 			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
 		    }
 
@@ -102,7 +102,7 @@ class MultaForm(forms.ModelForm):
 
 		widgets={
 			    'concepto':forms.Textarea(attrs={'class':'form-control','rows':'5'}),
-			    'fecha':forms.DateInput(attrs={'class':'form-control col-7','type':'date','disabled':'disabled'}),
+			    'fecha':forms.DateInput(attrs={'class':'form-control col-7','type':'date'}),
 			    'estado':forms.Select(attrs={'class':'form-control col-7'}),
 			    'tipo':forms.Select(attrs={'class':'form-control col-7'}),
 		    }

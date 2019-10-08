@@ -42,14 +42,12 @@ urlpatterns = [
 	re_path(r'^api_edi_fn/?/$',login_required(views.ApiEdiFn.as_view()),name='api_edi_fn'),
 	
 
-
-
-
-
 	re_path(r'^lst_dtjs/?/$',login_required(views.LstDestajos.as_view()),name='lst_dtjs'),
-
 	re_path(r'^mul_lst/?/$',login_required(views.LstMultas.as_view()),name='mul_lst'),
 
+
+	re_path(r'^api_orden/?/$',login_required(views.ApiOrd.as_view()),name='api_orden'),
+	re_path(r'^api_qr/?/$',login_required(views.ApiQr.as_view()),name='api_qr'),
 	
 
 

@@ -1,19 +1,19 @@
 {% extends "c_base.html" %}
 {% load static %} 
-{% block txt_cabecera %}
-	ENTREGA DE ÓRDENES
-{% endblock txt_cabecera %}
 
 
 
 {% block cuerpo %}
 
 
-	{% if msj %}
-	 	<h1 class="text-success">{{ msj }}</h1>
-	 {% else %}
-	 	<h1 class="text-muted">No llegó el PDF</h1>
-	 {% endif %} 
+
+{% if msj %}
+	<div class="col-12 my-3 text-center">
+		<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Reporte de Reparto</h3>
+	</div>
+{% else %}
+	<h1 class="text-muted">No llegó el PDF</h1>
+{% endif %} 
 
 <div class="row container h-100">
 	<div class="col h-100">

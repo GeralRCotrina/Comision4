@@ -2,12 +2,8 @@
 {% load static %}
 
 
-{% block txt_not1 %}Lista de repartos{% endblock txt_not1 %}
-<br><br>
-
-
-{% block p_msj %} 
-{% endblock p_msj %}
+{% block noticias %} 
+{% endblock noticias %}
 
 
 
@@ -15,6 +11,15 @@
 
 
 <div class="container">
+
+
+ 
+<div class="col-12 my-3 text-center">
+      <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Hoja repartos</h3>
+</div>
+
+
+
   {% if lst_repartos %}
 
     <table class="table table-sm table-striped text-center">
@@ -39,9 +44,9 @@
               <td>
                 <div class="btn-group">
                     <a href="{% url 'hj_or_reparto' %}?pkr={{lr.pk}}" class="btn btn-sm btn-outline-warning" title="Ver hoja de reaprto">
-                      <i class="fas fa-list-ol"></i></a>
+                      <i class="fas fa-list-ol"></i> Órd</a>
                     <a href="{% url 'hj_ml_reparto' %}?pkr={{lr.pk}}" class="btn btn-sm btn-outline-info" title="Ver hoja de multas">
-                      <i class="fas fa-donate"></i></a>
+                      <i class="fas fa-donate"></i> Mul</a>
                   </div>
               </td>
             </tr>

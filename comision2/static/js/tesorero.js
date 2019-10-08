@@ -99,14 +99,14 @@ function CrearMultaDstj(pkd){
 	var mon= document.getElementById(idmon).value;
 	var con = document.getElementById(idcon).value;
 
-	if (mon != "" && con != "") {
+	if (mon != "" && con != "" && mon > 0) {
 		var xhr = new XMLHttpRequest();
 		var cad = "/tesorero/mul_dest_cre/?pkd="+pkd+"&&monto="+mon+"&&concepto="+con;
 		xhr.open('GET',cad,true); // sincrono o asincrono
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4 && xhr.status == 200){
 				if (xhr.response=="Ok") {
-					alert(" >> Ok")
+					alert(" >> Multa creada.")
 				}else if(xhr.response=="Inv"){
 					alert("Ya tiene una multa creada, edite ella.")
 				}else{
@@ -116,7 +116,7 @@ function CrearMultaDstj(pkd){
 		}
 		xhr.send();
 	}else{
-		alert("TIENE QUE COLOCAR AMBOS DATOS.");
+		alert("TIENE QUE COLOCAR BIEN AMBOS DATOS.");
 	}
 }
 

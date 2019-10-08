@@ -474,7 +474,7 @@ class RepCaudal(View):
 		return render(request,'reportes/c_reporte_caudal.html',reporte_caudal)
 
 
-
+ 
 
 
 
@@ -1128,3 +1128,7 @@ class LimpiaPdf(View):
 		dicc['url_pdf']='pdfs/c_lmp.pdf'
 
 		return render(request,'limpia/c_limpia_pdf.html',dicc)
+
+
+
+

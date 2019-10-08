@@ -52,12 +52,14 @@
 										{% endif %}
 									</td>
 									<td>
+										{% if a.estado == '3' %}
 										<div class="btn-group">
 											<a href="{% url 't_asmb_mul' a.pk %}" class="btn btn-sm btn-outline-warning" title="Ver hoja de asistencia">
 												<i class="fas fa-list-ol"></i></a>
 											<a href="{% url 't_h_mul' %}?pko={{a.pk}}" class="btn btn-sm btn-outline-info" title="Ver hoja de multas">
 												<i class="fas fa-donate"></i></a>
 										</div>
+										{% endif %}
 									</td>
 								</tr>
 							{% endfor %}

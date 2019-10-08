@@ -114,28 +114,23 @@ class ApiTraerOrd(View):
 				pr=OrdenRiego.objects.filter(id_parcela__id_auth_user=userpk).order_by('-fecha_inicio')
 				rpta='{'
 				cont=0
+				fechaa = "sin fecha"
 				for p in pr:
+					if p.fecha_inicio != None:
+						fechaa = " "+str(p.fecha_inicio.day)+'/'+str(p.fecha_inicio.month)+'/'+str(p.fecha_inicio.year)+' - H: '
+						fechaa += str(p.fecha_inicio.hour)+':'+str(p.fecha_inicio.minute)
+
 					if cont == 0:
-						rpta+='"'+str(cont)+('":" F: '+str(p.fecha_inicio.day)+'/'+
-							str(p.fecha_inicio.month)+'/'+
-							str(p.fecha_inicio.year)+' - H: '+
-							str(p.fecha_inicio.hour)+':'+
-							str(p.fecha_inicio.minute)+'_ Est:  '+
-							p.estado+'"')
+						rpta+='"'+str(cont)+('":" F: '+fechaa+'_ Est:  '+ p.estado+'"')
 					else:
-						rpta+=',"'+str(cont)+('":" F: '+str(p.fecha_inicio.day)+'/'+
-							str(p.fecha_inicio.month)+'/'+
-							str(p.fecha_inicio.year)+' - H: '+
-							str(p.fecha_inicio.hour)+':'+
-							str(p.fecha_inicio.minute)+'_ Est:  '+
-							p.estado+'"')
+						rpta+=',"'+str(cont)+('":" F: '+fechaa+'_ Est:  '+ p.estado+'"')
 					cont+=1
 				rpta+='}'
 			else:
 				print("  >> no tiene órdenes..")		
 		return HttpResponse(rpta)
 
-
+ 
 
 class ApiTraerMul(View):
 
@@ -442,3 +437,38 @@ class LstMultas(View):
 			print("  >> no tiene multas de destajo")
 
 		return render(request,"multa/mul_lst.html",dicc)
+
+
+class ApiOrd(View):
+
+	def get(self, request, *args, **kwargs):
+		ordpk=self.request.GET.get("ordpk")		
+		estado=self.request.GET.get("estado")
+		#print("  >> ordpk: "+str(ordpk)+"  >> std: "+estado)
+		OrdenRiego.objects.filter(pk=ordpk).update(estado=estado)
+		return HttpResponse("Ok")
+	
+
+
+class ApiQr(View):
+
+	def get(self, request, *args, **kwargs):
+		userpk=self.request.GET.get("userpk")	
+		rpta = "Ok"
+		if userpk == '1':
+			if OrdenRiego.objects.filter(estado='Iniciada').exists():
+				enr=OrdenRiego.objects.filter(estado='Iniciada')
+				rpta='{'
+				cont=0
+				for x in enr:
+					if cont==0:
+						rpta+='"0":" En el '+x.id_parcela.id_canal.nombre+' está regando '+x.id_parcela.id_auth_user.first_name+' '+x.id_parcela.id_auth_user.last_name+' en la toma '+ str(x.id_parcela.num_toma)+'"'
+					else:
+						rpta+=',"'+str(cont)+'":" En el '+x.id_parcela.id_canal.nombre+' está regando '+x.id_parcela.id_auth_user.first_name+' '+x.id_parcela.id_auth_user.last_name+' en la toma '+ str(x.id_parcela.num_toma)+'"'
+					cont+=1
+				rpta+='}'
+				print("  >> Si están regando.")
+			else:
+				rpta="Err"
+			
+		return HttpResponse(rpta)
