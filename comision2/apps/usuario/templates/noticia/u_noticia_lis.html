@@ -53,7 +53,7 @@
 		        		</div>
 		        		<div class="col-4">
 		        			<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
-					          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" height="250px" width="300px">
+					          		<img class="card-img-top" src="/media/{% if n.foto == '' %}no-noticia.png{% else %}{{ n.foto }}{% endif %}" alt="Card image cap" height="250px" width="300px">
 					          	</a>
 		        		</div>
 		        	</div>
@@ -73,7 +73,7 @@
         </button>
       </div>
       <div class="modal-body">
-         <img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" >
+         <img class="card-img-top" src="/media/{% if n.foto == '' %}no-noticia.png{% else %}{{ n.foto }}{% endif %}" alt="Card image cap" >
       </div>
       <div class="modal-footer pt-1 pr-2 pb-0 pl-2">
       	<p class="text-justify font-italic pt-0 pr-0 pb-0 pl-0">{{n.descripcion}}</p>

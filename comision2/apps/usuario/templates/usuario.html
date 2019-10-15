@@ -4,15 +4,6 @@
 
 
 
-{% block tabla %}	
-{% endblock tabla %}
-
-
-
-{% block graficos %}	
-{% endblock graficos %}
-
-
 {% block cuerpo %}	
 <div class="container">
 	
@@ -24,16 +15,20 @@
 <div class="row">
 
       <!-- Blog Entries Column -->
-<div class="col-sm-8 w-100" style="height:1000px; overflow-y: scroll;" -webkit-scrollbar="background:green;">
+<div class="col-sm-8 w-100 pb-4" style="height:1000px; overflow-y: scroll;" -webkit-scrollbar="background:green;">
 
-     	<hr>
-		<h2 class="my-4">Agua <small style="font-style:italic;"> ¿dónde está?..</small>
+     	
+
+
+
+
+
+
+		<h2 class="mt-2"><small style="font-style:italic;">¿dónde está el agua?</small>
 		<span class="float-right mt-0"><img src='{% static "img/002-agua.gif" %}' alt="" height="40" class="mt-0"></span></h2>
      
-
-    
       <!-- Search Widget -->
-        <div class="card my-4 font-italic" style="color:#556860;">
+        <div class="card font-italic" style="color:#556860;">
             <h5 class="mt-1 pl-2" style="background:#E4E5E4;">Están regando..  <br></h5>
             <div class="ml-4 mr-2 h5" id="dvqr">
              <li>Cargando...</li>
@@ -42,20 +37,33 @@
 
  
 
-    <h2 class="my-2"> <small style="font-style:italic;">Nivel de agua..</small>
-  
+
+
+   <hr>
+    <h2 class="mt-4"><small style="font-style:italic;"> Asambleas</small>
+    <span class="float-right mt-0"><img src='{% static "img/006-asamblea.gif" %}' alt="" height="40" class="mt-0"></span></h2>
+ 
+      <!-- Search Widget -->
+        <div class="card font-italic" style="color:#556860;">
+            <h5 class="mt-1 pl-2" style="background:#E4E5E4;">Asambleas pendientes..  <br></h5>
+            <div class="ml-4 mr-2 h5" id="dvasb">
+             <li>Cargando...</li>
+           </div>
+        </div>
 
 
 
 
-<div class="row mt-2">
-	<div class="col-12 container">
 
-   
-<div id="container" class="border w-100" style="height: 300px" ></div>
+ <hr>
+    <h2 class="mt-4"> <small style="font-style:italic;">Nivel de agua..</small>
+    <span class="float-right mt-0"><img src='{% static "img/005-nivel.gif" %}' alt="" height="40" class="mt-0"></span></h2>
 
 
-        <script type="text/javascript">
+<div class="col-12 container">
+  <div id="container" class="border w-100" style="height: 300px" ></div>
+
+<script type="text/javascript">
 
 Highcharts.chart('container', {
     chart: {
@@ -113,11 +121,7 @@ Highcharts.chart('container', {
         stack: 'male'
     }]
 });
-
-
-        </script>
-
-	</div>
+</script>
 </div>
 
 
@@ -127,38 +131,43 @@ Highcharts.chart('container', {
 
 
 
-     	<hr>
-		<h2 class="my-4">Noticias <small style="font-style:italic;"> ¿qué hay de nuevo?..</small>
-		<span class="float-right mt-0"><img src='{% static "img/001-ojo.gif" %}' alt="" height="40" class="mt-0"></span></h2>
-     	
-<!--div class="border bg-danger w-100" style="height: 1000px; overflow-x: scroll; display:inline;"-->
-  <!--div class="border bg-success" style="height: 800px; overflow-x: scroll; display: inline-block;">
-
-        {% if lst_noticias %}
-        	{% for n in lst_noticias %}    -->
 
 
-		        <!--div class="card mx-3 my-3 border" style="background:rgba(195,195,195,0.27); display: inline-block; width:310px;"-->
-            <!--div class="card mx-3 my-3 border" style="background:rgba(195,195,195,0.27); display: inline-block; width:310px;">
-		          	<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
-		          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" width="100%" height="auto" >
-		          	</a>
-		          <div class="mt-1 ml-1 mb-0 text-muted" >
-		            <h2 class="card-title" style="line-height:0.7em; ">
-                  <i class="far fa-eye animated infinite fadeIn" style="color:#52A1FA"></i>{{n.titular}}
-                </h2>
-                <h4 class="h4 font-italic ml-0 pl-2" style="background:#F8FFF8;">{{n.titulo}}</h4>
-		            <p style="font-style:italic; font-size:1.0em; line-height:0.9em;" class="mb-1">{{n.descripcion}}</p>
-		            <span class="float-lefth ml-2 mb-1 badge badge-pill badge-light text-muted font-italic">{{ n.fecha }}</span>
-		            <span class="float-right mr-2 mb-1 badge badge-pill badge-light">
-		            	<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">leer más..</a>
-			            <a href="#" style="font-style:italic; color:#4985FF;" onclick="alert('lo haré despues, no te apures.')">comentar..</a>
-			        </span>
-		          </div>
 
 
-                   
 
+
+
+
+<hr>
+		<h2 class="mt-4"><small style="font-style:italic;"> ¿qué hay de nuevo?</small>
+		<span class="float-right"><img src='{% static "img/001-ojo.gif" %}' alt="" height="40" class="mt-0"></span></h2>
+
+
+
+{% if lst_noticias %}
+  <div class="container w-100 border" style="heigth:300px;">
+    <div id="demo" class="carousel slide" data-ride="carousel">
+    
+  <!-- INDICADORES  -->
+        <ul class="carousel-indicators">
+          {% for n in lst_noticias %}
+            <li data-target="demo" data-slide-to="{{n.pk}}"  class="{% if n.pk == pk_max %}active{% endif %}"></li>
+          {% endfor %}
+        </ul>
+
+  <!-- IMAGENES -->
+        <div class="carousel-inner">
+          {% for n in lst_noticias %}
+            <div class="carousel-item {% if n.pk == pk_max %}active{% endif %} carousel-item-left text-center" height="300px">
+              <a href="#" data-toggle="modal" data-target="#notmdl{{n.pk}}">
+                <img src="/media/{% if n.foto == '' %}no-noticia.png{% else %}{{ n.foto }}{% endif %}" class="img-fluid"><!--img-fluid-->
+              </a>
+              <div class="carousel-caption">
+                <h3><a href="#" data-toggle="modal" data-target="#notmdl{{n.pk}}" class="text-white">{{n.titular}}</a></h3>
+                <!--p>descripción de la imgen</p-->
+              </div>
+            </div>
                         <div class="modal fade" id="notmdl{{n.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -168,50 +177,26 @@ Highcharts.chart('container', {
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
-                              <div class="modal-body">
-                                 <img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" >
-                              </div>
+                              {% if n.foto == '' %}
+                              {% else %}
+                                <div class="modal-body">
+                                   <img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" >
+                                </div>
+                              {% endif %}
                               <div class="modal-footer pt-1 pr-2 pb-0 pl-2">
-                              	<p class="text-justify font-italic pt-0 pr-0 pb-0 pl-0">{{n.descripcion}}</p>
+                                <p class="text-justify font-italic pt-0 pr-0 pb-0 pl-0">{{n.descripcion}}</p>
                               </div>
                             </div>
                           </div>
                         </div>
+          {% endfor %}
+        </div>
 
+  <!-- CONTROLES DE IZQUIERDA Y DERECHA -->
+        <a href="#demo" class="carousel-control-prev" data-slide="prev"><span class="carousel-control-prev-icon"></span></a> 
+        <a href="#demo" class="carousel-control-next" data-slide="next"><span class="carousel-control-next-icon"></span></a> 
 
-
-		        </div>
-        	 {% endfor %}
-	     {% else %}
-        	Err al traer las noticias, contacte al administrador del sistema.
-        {% endif %}
-		
-</div-->
-
-
-
-
-
-
-{% if lst_noticias %}
-  <div class="w-100" style="height:auto; overflow: auto; white-space: nowrap;  border: solid #7AFC92 3px;  border-radius: 10px; padding-top: 4px;"> 
-      {% for n in lst_noticias %}  
-          <div class=" mx-1 border" style="heigth:300px; width: 200px;  display: inline-block; ">
-            <img src="/media/{{ n.foto }}" style="width: 200px; height:auto;">
-            <!--p>{{n.titular}}</p>
-            <p class="text-justify" style="background: #DBD9D9;"><small>{{n.titulo}}</small></p>
-            <p>{{n.descripcion}}</p-->
-              <div class="bg-success border pr-1">
-                {{n.descripcion}}
-              </div>
-          
-          </div>
-              <!--a class="border" width="80px">
-
-                  <img src="/media/{{ n.foto }}" style="height:200px; width:150px; margin-top: 10px;  ">   
-                  <span> cdslvfndjslk</span>       
-              </a-->
-    {% endfor%}
+      </div>
   </div>
 {% endif %}
 
@@ -226,25 +211,13 @@ Highcharts.chart('container', {
 
 
 
+<hr>
+    <h2 class="mt-4"><small style="font-style:italic;"> ¿último reparto?</small>
+    <span class="float-right"><img src='{% static "img/007-graf.gif" %}' alt="" height="40" class="mt-0"></span></h2>
 
 
-
-
-
-
-
-
-
-
-
-
-
-<div class="row mt-2 mb-4">
-  <div class="col-12">
-    
+<div class="col-12">    
 <div id="container1" class="border w-100" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-
 
     <script type="text/javascript">
 
@@ -285,7 +258,6 @@ Highcharts.chart('container1', {
 });
     </script>
   </div>
-</div>
 
 
 
@@ -298,7 +270,7 @@ Highcharts.chart('container1', {
 
 
 
-        <!-- Pagination -->
+        <!-- Pagination 
         <ul class="pagination justify-content-center mb-4">
           <li class="page-item">
             <a class="page-link" href="#">← Anterior</a>
@@ -306,7 +278,7 @@ Highcharts.chart('container1', {
           <li class="page-item disabled">
             <a class="page-link" href="#">Siguiente →</a>
           </li>
-        </ul>
+        </ul>-->
 
       </div>
 
@@ -382,10 +354,10 @@ Highcharts.chart('container1', {
  
         <!-- Search Widget -->
         <div class="card my-3 border ml-0" style="">
-        <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-map-marked-alt"></i>
-          <strong style="font-size:1.0em; font-style:italic;">Reuniónes</strong>
+        <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-users-cog"></i>
+          <strong style="font-size:1.0em; font-style:italic;">Asambleas</strong>
         </p>
-        <div id="div_parc" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+        <div id="div_asamb" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
           <i><i class="fas fa-map-marked-alt"></i> cargando..</i><br>
         </div>      
         </div>
@@ -398,7 +370,7 @@ Highcharts.chart('container1', {
 
 
  
-        <!-- Search Widget -->
+        <!-- Search Widget 
         <div class="card my-3 border ml-0" style="">
           <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="far fa-comments"></i>
             <strong style="font-size:1.0em; font-style:italic;">Comentarios</strong>
@@ -406,6 +378,19 @@ Highcharts.chart('container1', {
           <div id="div_ord" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
             <i><i class="fas fa-comments"></i> cargando..</i><br>
             <i><i class="fas fa-user-alt"></i> cargando..</i><br>
+          </div> 
+        </div>-->
+
+
+        <div class="card my-3 border ml-0" style="">
+          <p style="background: #E4E5E4;" class="pl-2 mt-2 mb-1"><i class="fas fa-tree"></i>
+            <strong style="font-size:1.0em; font-style:italic;">Comité CrNH</strong>
+          </p>
+          <div id="div_ord" style="line-height:1.4em; font-style:italic; color:#849686; font-size:0.9em;" class="pl-2">
+            <i><i class="fas fa-user-alt"></i> <strong>Presidente. </strong> Diomenes Muñoz</i><br>
+            <i><i class="fas fa-user-alt"></i> <strong>Canalero. </strong> Saul Cieza</i><br>
+            <i><i class="fas fa-user-alt"></i> <strong>Tesorero. </strong> Guisela Muñoz</i><br>
+            <i><i class="fas fa-user-alt"></i> <strong>Vocal. </strong> Ludim Arias</i><br>
           </div> 
         </div>
 

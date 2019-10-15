@@ -14,6 +14,9 @@ urlpatterns = [
 
 
 
+	re_path(r'^u_asmb_lst/$',login_required(views.AsambLst.as_view()),name='u_asmb_lst'),
+	re_path(r'^u_asmb_det/?/$',login_required(views.AsambDet.as_view()),name='u_asmb_det'),
+	
 	re_path(r'^prf_edi/(?P<pk>\d+)/$',login_required(views.PerfilEditar.as_view()),name='prf_edi'),
 
 	re_path(r'^u_orden_lis/$',login_required(views.OrdenList.as_view()),name='u_orden_lis'),
@@ -40,6 +43,7 @@ urlpatterns = [
 	re_path(r'^api_cont/?/$',login_required(views.ApiContra.as_view()),name='api_cont'),
 	re_path(r'^api_edi_sx/?/$',login_required(views.ApiEdiSx.as_view()),name='api_edi_sx'),
 	re_path(r'^api_edi_fn/?/$',login_required(views.ApiEdiFn.as_view()),name='api_edi_fn'),
+	re_path(r'^api_asmb/?/$',login_required(views.ApiAsamb.as_view()),name='api_asmb'),
 	
 
 	re_path(r'^lst_dtjs/?/$',login_required(views.LstDestajos.as_view()),name='lst_dtjs'),
@@ -48,8 +52,6 @@ urlpatterns = [
 
 	re_path(r'^api_orden/?/$',login_required(views.ApiOrd.as_view()),name='api_orden'),
 	re_path(r'^api_qr/?/$',login_required(views.ApiQr.as_view()),name='api_qr'),
-	
-
 
 
 

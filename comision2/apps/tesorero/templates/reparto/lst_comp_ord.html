@@ -2,19 +2,30 @@
 {% load static %}
 
 
-{% block txt_not1 %}Lista de comprobantes por reparto.{% endblock txt_not1 %}
-<br><br>
 
 
-{% block p_msj %} 
-{% endblock p_msj %}
+{% block noticias %}
+{% endblock noticias %}
+
+{% block noticias1 %} 
+{% endblock noticias1 %}
 
 
 
 {% block cuerpo %}
 
 
-<div class="container">
+<div class="container border">
+
+
+
+<div class="col-12 my-3 text-center">
+  <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Comprobantes de reparto.</h3>
+</div>
+
+
+
+
   {% if lst_cmp %}
    <a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">Exportar a excel_ <i class="fas fa-file-excel"></i></a>
     <table class="table table-sm table-striped text-center" id="dataTable">

@@ -19,13 +19,13 @@
 
                     <tr><td colspan="2" class="text-center"> <strong>SANCIÓN DEL COMITÉ DE REGANTES</strong> <br></td></tr>
                     <tr><td colspan="2"></td></tr>
-                    <tr><td><strong>Usuario:</strong></td><td>{{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.last_name}}, {{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.first_name}}</td></tr>
+                    <tr><td><strong>Usuario:</strong></td><td style="font-size: 0.8em;">{{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.last_name}}, {{ multa.id_det_limpia.id_destajo.id_parcela.id_auth_user.first_name}}</td></tr>
                     <tr><td><strong>Motivo:</strong></td><td>Por limpieza de canales.</td></tr>
                     <tr><td colspan="2"><strong>Concepto:</strong>
                       <textarea class="w-100 form-control" rows="3" style="font-size: 0.9em; font-style:italic;">{{ multa.id_multa.concepto}}</textarea></td></tr>
                     <tr><td></td><td class="text-right"><span class="badge badge-secondary">
                         . . . . . . . . . . Recibo por ingresos</span></td></tr>
-                    <tr><td><strong>Mon: </strong> S/. {{ multa.id_multa.monto}}</td> <td><strong>Fecha: </strong> {{multa.id_multa.fecha.day}}/{{multa.id_multa.fecha.month}}/{{multa.id_multa.fecha.year}}</td></tr>
+                    <tr><td style="font-size: 0.9em;"><strong>Mon: </strong> S/. {{ multa.id_multa.monto}}</td> <td><strong>Fecha: </strong> {{multa.id_multa.fecha.day}}/{{multa.id_multa.fecha.month}}/{{multa.id_multa.fecha.year}}</td></tr>
                     <tr><td></td><td><strong> Hora: </strong> {{multa.id_multa.fecha.hour}}:{% if multa.id_multa.fecha.minute <= 9 %}0{% endif %}{{multa.id_multa.fecha.minute}}:{{multa.id_multa.fecha.second}}</td></tr>
                     <tr><td colspan="2">
                       <div class="text-center font-italic" style="font-size: 0.7em; line-height: 1.0em;">

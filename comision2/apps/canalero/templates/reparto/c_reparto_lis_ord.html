@@ -38,13 +38,13 @@
 						                	
 								            <div class="col-3">
 							                		{% if ob.estado == "1" %}
-							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=2" class="float-left text-white" title="Registrado">
+							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=2" class="float-left text-white" title="¿Aperturar?">
 							                			<i class="fas fa-check"></i></a> 
 						                			{% elif ob.estado == "2" %}
-							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=3" class="float-left text-white" title="Aperturado">
+							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=3" class="float-left text-white" title="¿Cerrar?">
 							                			<i class="fas fa-lock-open"></i></a> 
 						                			{% else %}
-							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=1" class="float-left text-white" title="Cerrado">
+							                			<a href="{% url 'c_rep_apr' %}?id_repa={{ob.pk}}&&std=1" class="float-left text-white" title="¿Registrado?">
 							                			<i class="fas fa-lock"></i></a> 
 						                			{% endif %}
 							                	</div>
@@ -96,7 +96,7 @@
 
 
 		<div class="col-12 btn-group my-2">			
-			<button id="btn_cnt_impr" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">
+			<button id="btn_cnt_impr" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal" title="IMPRIMIR">
 				<i class="fas fa-print"></i>=0
 			</button>
 			<input type="text" placeholder="solo nombre.." class="w-100 btn w-100 border text-left" id="txt_buscar" onkeyup="BuscarOrden()">			
@@ -109,7 +109,7 @@
 				  	<input id="inpt_url" type="text" value="{% url 'c_ordlis' %}?lst1=" hidden="hidden" />
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Lista de ordenes a imprimir..</h5>
+				        <h5 class="modal-title" id="exampleModalLabel">Lista de órdenes a imprimir..</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -146,7 +146,7 @@
 				{% for ob in ordenes %}
 					<tr style="font-size: 0.8em;" id="{{ob.id_orden_riego}}" >
 						<td id="td_{{ob.pk}}">{{ob.id_orden_riego}}   
-							<button class="btn btn-sm btn-outline-primary" onclick="AgrListImp({{ob.pk}},'{{ob.id_parcela.id_auth_user.first_name}}')"><i id="PkImp_{{ob.pk}}" class="fas fa-print"></i></button>
+							<button class="btn btn-sm btn-outline-primary" onclick="AgrListImp({{ob.pk}},'{{ob.id_parcela.id_auth_user.first_name}}')" title="¿Agregar a la lista de impresión?"><i id="PkImp_{{ob.pk}}" class="fas fa-print"></i></button>
 						</td>
 						<td>{{ ob.id_parcela.id_canal.nombre }}</td>
 						<td>{{ob.id_parcela.id_auth_user.first_name}}</td>

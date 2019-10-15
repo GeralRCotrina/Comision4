@@ -1,8 +1,6 @@
 {% extends "c_base.html" %}
 {% load static %} 
-{% block txt_cabecera %}
-	ENTREGA DE ÓRDENES
-{% endblock txt_cabecera %}
+
 
 
 
@@ -10,7 +8,9 @@
 {% block cuerpo %}
 
 	{% if pdf %}
-	 	<h1 class="text-success">{{ pdf }}</h1>
+		<div class="col-12 my-3 text-center">
+			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">{{ pdf }}</h3>
+		</div>
 	 {% else %}
 	 	<h1 class="text-muted">No llegó el PDF</h1>
 	 {% endif %} 

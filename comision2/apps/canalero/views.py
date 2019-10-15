@@ -173,7 +173,7 @@ class ImpLstOrd(View):
 		pdfkit.from_file('pdf/ordenes.html', 'static/pdfs/reparto_01.pdf',options=options, configuration=config)
 
 		dicc = {}
-		dicc['pdf']='Listados de las órdenes por reparto'
+		dicc['pdf']='Entrega de comprobantes.'
 		dicc['url_pdf']='pdfs/reparto_01.pdf'
 
 		return render(request,'reportes/c_pdf_01.html',dicc)
@@ -1124,7 +1124,7 @@ class LimpiaPdf(View):
 		pdfkit.from_file('pdf/canalero/limp_f.html', 'static/pdfs/c_lmp.pdf',options=options, configuration=config)
 
 		dicc = {}
-		dicc['pdf']='Listados de las órdenes por reparto'
+		dicc['pdf']=' Resporte de limpieza.'
 		dicc['url_pdf']='pdfs/c_lmp.pdf'
 
 		return render(request,'limpia/c_limpia_pdf.html',dicc)

@@ -1,11 +1,15 @@
 {% extends "t_base.html" %}
 
-{% block txt_not1 %}{% if tpo == 2 %}Multa por tardanza{% else %} Multa por inasistencia a una asamblea{% endif %}{% endblock txt_not1 %}
-<br><br>
-{% block p_msj %} 
-{% endblock p_msj %}
 
+{% block noticias %} 
 
+  <div class="col-12 my-3 text-center">
+    <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">{% if tpo == 2 %}Multa por tardanza{% else %} Multa por inasistencia a una asamblea{% endif %}</h3>
+  </div>
+{% endblock noticias %}
+
+{% block noticias1 %} 
+{% endblock noticias1 %}
 
 {% block cuerpo %}
 

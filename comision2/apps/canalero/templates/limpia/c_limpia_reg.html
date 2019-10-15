@@ -1,15 +1,17 @@
 {% extends "c_base.html" %}
+{% load static %}
 
 
 {% block cuerpo %}
-<div class="container">
-	<div class="row my-3 mx-3">
 
-		<div class="col-12 my-2 text-center">
+<div class="container">
+	<div class="row">
+			
+		<div class="col-11 my-2 mx-auto text-center">
 			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Registrar limpieza de canales</h3>
 		</div>
 
-		<div class="col-12 col-md-7 border py-2 mx-auto" >
+		<div class="col-11 col-lg-7 py-2 mx-auto border" >
 			<form method="post">
 				{% csrf_token %}
 				{{form.as_p}}

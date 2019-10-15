@@ -20,12 +20,21 @@ def Pruebas(request):
 	return render(request,'usuario.html')
 
 
+
+
  
 def usuario(request):
 	dicc={}
 
 	#===============noticia===========
-	dicc['lst_noticias']=Noticia.objects.all().order_by('-pk')
+	lst_not=Noticia.objects.filter(estado='Publicada').order_by('-pk')
+	dicc['pk_max']=0
+	for x in lst_not:
+		if x.pk > dicc['pk_max']:
+			dicc['pk_max']= x.pk
+		#print("  >> not: "+str(x.pk))
+	#print("  >> pk max:"+str(dicc['pk_max']))
+	dicc['lst_noticias']=lst_not
 
 	# ===========caudal==============
 	cau=Caudal.objects.all().order_by("fecha")
@@ -46,41 +55,6 @@ class PerfilEditar(UpdateView):
 	success_url=reverse_lazy('usuario')
 
 
-
-def function(re):
-	print("ddd")
-	return "Ok"
-
-
-"""
-	def post(self, request, *args, **kwargs):
-		username = self.request.POST.get('username')
-		dni = self.request.POST.get('dni')
-		first_name = self.request.POST.get('first_name')
-		last_name = self.request.POST.get('last_name')
-		sexo = self.request.POST.get('sexo')
-		alias = self.request.POST.get('alias')
-		correo = self.request.POST.get('email')
-		foto = self.request.POST.get('foto')
-		fecha_nacimiento = self.request.POST.get('fecha_nacimiento')
-		celular = self.request.POST.get('celular')
-		telefono = self.request.POST.get('telefono')
-
-		print("------------------------------------")
-		print("  >>  first_name:"+first_name)
-		print("  >>  last_name:"+last_name)
-		print("  >>  alias:"+alias)
-		print("  >>  username:"+username)
-		print("  >>  dni: "+str(dni))
-		print("  >>  sexo: "+sexo)
-		print("  >>  correo :"+correo)
-		print("  >>  foto:"+str(foto))
-		print("  >>  fecha_nacimiento:"+fecha_nacimiento)
-		print("  >>  celular:"+str(celular))
-		print("  >>  telefono:"+str(telefono))
-		print("------------------------------------")
-		return render(request,self.template_name,{'form':self.form_class})
-"""
 
 
 class ApiTraerParc(View):
@@ -125,9 +99,28 @@ class ApiTraerOrd(View):
 					else:
 						rpta+=',"'+str(cont)+('":" F: '+fechaa+'_ Est:  '+ p.estado+'"')
 					cont+=1
-				rpta+='}'
-			else:
-				print("  >> no tiene órdenes..")		
+				rpta+='}'		
+		return HttpResponse(rpta)
+
+class ApiAsamb(View):
+		
+	def get(self, request, *args, **kwargs):
+		userpk = self.request.GET.get('userpk')
+		rpta ="Err"
+
+		if Asamblea.objects.filter(estado=1).exists():
+			lsta=Asamblea.objects.filter(estado=1)
+			rpta='{'
+			cant=0
+			for a in lsta:
+				if cant == 0:
+					rpta+='"0":" tipo: '+a.tipo+', el '+str(a.fecha_asamblea.day)+'/'+str(a.fecha_asamblea.month)+'/'+str(a.fecha_asamblea.year)+'_'+str(a.fecha_asamblea.hour)+':'+str(a.fecha_asamblea.minute)+'"'
+				else:
+					rpta+=',"'+cant+'":" tipo: '+a.tipo+', el '+str(a.fecha_asamblea.day)+'/'+str(a.fecha_asamblea.month)+'/'+str(a.fecha_asamblea.year)+'_'+str(a.fecha_asamblea.hour)+':'+str(a.fecha_asamblea.minute)+'"'
+				cant+=1
+			rpta+='}'
+
+			
 		return HttpResponse(rpta)
 
  
@@ -141,20 +134,14 @@ class ApiTraerMul(View):
 		if MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk).exists():
 			lmo=MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk)
 			cant+=lmo.count()
-		else:
-			print("  >> no tiene multas de orden")
 
 		if MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk).exists():
 			lma=MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk)
 			cant+=lma.count()
-		else:
-			print("  >> no tiene multas de asistencia")
 
 		if MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk).exists():
 			lmd=MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk)
 			cant+=lmd.count()
-		else:
-			print("  >> no tiene multas de destajo")
 
 		rpta+=str(cant)+'}'
 
@@ -168,11 +155,11 @@ class ApiTraerPerf(View):
 		rpta ="Err"
 		if userpk != "":
 			if AuthUser.objects.get(pk=userpk).foto:
-				print("  >> Si tiene foto: ["+str(AuthUser.objects.get(pk=userpk).foto)+"]")
+				#print("  >> Si tiene foto: ["+str(AuthUser.objects.get(pk=userpk).foto)+"]")
 				rpta=str(AuthUser.objects.get(pk=userpk).foto)
 			else:
 				rpta="Inv"
-				print("  >> No tiene foto")		
+				#print("  >> No tiene foto")		
 		return HttpResponse(rpta)
 		
 
@@ -327,9 +314,11 @@ class SolOrdenList(TemplateView):
 class NoticiaList(ListView):
 	model=Noticia
 	template_name='noticia/u_noticia_lis.html'
-	paginate_by=9
 
-
+	def get(self, request, *args, **kwargs):
+		dicc = {}
+		dicc['object_list']=Noticia.objects.filter(estado="Publicada").order_by('-pk')
+		return render(request, self.template_name,dicc)
 
 
 class OrdenDelete(DeleteView):
@@ -384,12 +373,34 @@ class UsuarioList(ListView):
 
 
 
+
+class AsambLst(View):
+
+	def get(self,request,*args,**kwargs):
+		dicc={}
+		if Asamblea.objects.filter(estado=2).exists():
+			dicc['object_list']=Asamblea.objects.filter(estado=2).order_by('-pk')			
+		return render(request,"asamblea/lst_asamblea.html",dicc)
+		
+class AsambDet(View):
+
+	def get(self,request,*args,**kwargs):
+		apk=self.request.GET.get("apk")
+		dicc={}
+		if Asamblea.objects.filter(pk=apk).exists():
+			dicc['object_list']=Asamblea.objects.get(pk=apk)
+
+		if Asamblea.objects.filter(estado=2).exists():
+			dicc['agenda']=AgendaAsamblea.objects.filter(id_asamblea=apk).order_by('-pk')
+			
+		return render(request,"asamblea/asamblea_det.html",dicc)
+		
+
 ## ======================= 	LstDestajos ============================
 
 
 class LstDestajos(View):
 	def get(self,request,*args,**kwargs):
-		print(">>llegó")
 		userpk=self.request.GET.get("userpk")
 		dicc={}
 		if Destajo.objects.filter(id_parcela__id_auth_user=userpk).exists():
@@ -400,41 +411,20 @@ class LstDestajos(View):
 
 
 
-class LstMultas1(View):
-
-	def get(self,request,*args,**kwargs):
-		print(">>llegó")
-		userpk=self.request.GET.get("userpk")
-
-		print(">>llegó pk:"+str(userpk))
-		dicc={}
-		dicc['mul_lst']="ok"
-			
-		return render(request,"multa/mul_lst.html",dicc)
-
-
-
 
 class LstMultas(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >>Llegó pet --------->->->")
 		userpk = self.request.GET.get('userpk')
 		dicc={}		
 		if MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk).exists():
 			dicc['lst_ord']=MultaOrden.objects.filter(id_orden__id_parcela__id_auth_user=userpk)
-		else:
-			print("  >> no tiene multas de orden")
 
 		if MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk).exists():
 			dicc['lst_asi']=MultaAsistencia.objects.filter(id_hoja_asistencia__id_auth_user=userpk)
-		else:
-			print("  >> no tiene multas de asistencia")
 
 		if MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk).exists():
 			dicc['lst_des']=MultaLimpia.objects.filter(id_det_limpia__id_destajo__id_parcela__id_auth_user=userpk)
-		else:
-			print("  >> no tiene multas de destajo")
 
 		return render(request,"multa/mul_lst.html",dicc)
 
@@ -467,7 +457,6 @@ class ApiQr(View):
 						rpta+=',"'+str(cont)+'":" En el '+x.id_parcela.id_canal.nombre+' está regando '+x.id_parcela.id_auth_user.first_name+' '+x.id_parcela.id_auth_user.last_name+' en la toma '+ str(x.id_parcela.num_toma)+'"'
 					cont+=1
 				rpta+='}'
-				print("  >> Si están regando.")
 			else:
 				rpta="Err"
 			

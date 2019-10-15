@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block txt_titulo %} crNH {% endblock txt_titulo %}</title>
+    <title>{% block txt_titulo %} CrNH {% endblock txt_titulo %}</title>
 
 
     <!-- Bootstrap core CSS-->
@@ -42,7 +42,9 @@
 
     <nav class="navbar navbar-expand  static-top" style="background: #317631">
 
-      <a class="navbar-brand mr-1 text-white"> {% block txt_cabecera %} PRESIDENTE {% endblock txt_cabecera %} </a>
+      <a class="navbar-brand mr-1 text-white"> 
+        {% block txt_cabecera %}<h4 style="font-size:1.3em; font-weight: bold;">PRESIDENTE</h4>{% endblock txt_cabecera %}
+      </a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
@@ -73,8 +75,8 @@
                 <div class="card-body">
                   <h5 class="h5">{{ request.user.get_full_name }}</h5>
                       <div class="btn-group btn-block">
-                        <a href="{% url 'mylogin' %}" class="btn btn-success form-control"><i class="fas fa-lock-open"></i></a>
-                        <a href="{% url 'logout' %}" class="btn btn-danger form-control"><i class="fas fa-lock"></i></a>                          
+                        <a href="{% url 'mylogin' %}" class="btn btn-success form-control" title="Ingresar con otro usuario."><i class="fas fa-lock-open"></i></a>
+                        <a href="{% url 'logout' %}" class="btn btn-danger form-control" title="Cerrar sesión."><i class="fas fa-lock"></i></a>    
                       </div>  
                 </div>
             </div>
@@ -194,7 +196,7 @@
           </div>
         </li>
 
-        <li class="nav-item dropdown">
+        <!--li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>REP. GRÁFICOS</span>
@@ -215,7 +217,7 @@
             <a class="dropdown-item" href="#">Pdf 1</a>
             <a class="dropdown-item" href="#">Pdf 2</a>
           </div>
-        </li>
+        </li-->
       </ul>
    
 

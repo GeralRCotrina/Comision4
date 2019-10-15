@@ -1,16 +1,15 @@
 {% extends "c_base.html" %}
 
 
-{% block txt_cabecera %}
-	NOTICIAS
-{% endblock txt_cabecera %}
 
 
 
 {% block cuerpo %}
 
-<div class="container">
+<div class="container mx-2 my-3 border">
 
+<div class="row">
+	
 
 
 {% if object_list %}
@@ -64,18 +63,18 @@
 			</td>
 			<td>
 				<div class="btn-group btn-sm text-center">
-					<a class="btn btn-sm btn-outline-warning" href="{% url 'c_limpia_edi' ob.id_limpieza %}">
+					<a class="btn btn-sm btn-outline-warning" href="{% url 'c_limpia_edi' ob.id_limpieza %}" title="Editar">
 						<i class="far fa-edit"></i></a>
 
 				{% if ob.estado != '0' %}	
-					<a class="btn btn-sm btn-outline-success" href="{% url 'c_limp_rev' ob.id_limpieza %}" >
+					<a class="btn btn-sm btn-outline-success" href="{% url 'c_limp_rev' ob.id_limpieza %}" title="Revisar">
 						<i class="fas fa-check-double"></i></a>
-					<a class="btn btn-sm btn-outline-secondary" href="{% url 'c_limp_pie' ob.id_limpieza %}" >
+					<a class="btn btn-sm btn-outline-secondary" href="{% url 'c_limp_pie' ob.id_limpieza %}" title="Reporte gráfico">
 						<i class="fas fa-chart-pie"></i></a>
-					<a class="btn btn-sm btn-outline-secondary" href="{% url 'c_limp_pdf' ob.id_limpieza %}" >
+					<a class="btn btn-sm btn-outline-secondary" href="{% url 'c_limp_pdf' ob.id_limpieza %}" title="Reporte pdf">
 						<i class="fas fa-file-pdf"></i></a>
 				{% endif %}					
-					<a class="btn btn-sm btn-outline-danger" href="{% url 'c_limpia_eli' ob.id_limpieza %}" >
+					<a class="btn btn-sm btn-outline-danger" href="{% url 'c_limpia_eli' ob.id_limpieza %}" title="Eliminar">
 						<i class="far fa-trash-alt"></i></a>
 				</div>
 			</td>
@@ -85,6 +84,8 @@
 	{% else %}
 		<h1>NO HAY LIMPIEZAS REGISTRADAS</h1>
 	{% endif %}
+
+</div>
 
 </div>
 {% endblock cuerpo %}

@@ -59,6 +59,7 @@ urlpatterns = [
 	re_path(r'^p_asamb_edi/?/$',login_required(views.AsambEdi.as_view()),name='p_asamb_edi'),
 	re_path(r'^p_asamb_ini/?/$',login_required(views.AsambIni.as_view()),name='p_asamb_ini'),
 	re_path(r'^p_hasis_est/?/$',login_required(views.HjaAsisEst.as_view()),name='p_hasis_est'),
-	re_path(r'^p_asamb_del/?/$',login_required(views.AsmbDel.as_view()),name='p_asamb_del'),
+
+	re_path(r'^p_not_est/?/$',login_required(views.NotEstado.as_view()),name='p_not_est'),
 
 	] 

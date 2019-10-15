@@ -28,17 +28,16 @@
         	{% for n in object_list %}        	   	   
 		        <!-- Blog Post -->
 
-					        
-		        	
 				       
-
 		        <div class="card mb-4" style="background:rgba(195,195,195,0.27);">
 		        	<div class="row">
-		        		<div class="col-7 pt-4 pr-3 ml-3">
+		        		<div class="col-7 pt-4 pb-2 pr-3 ml-3">
 		        			<h2><span class="float-left"><img src='{% static "img/003-noticia.gif" %}' alt="" height="50px"></span> 
 					        	{{n.titular}}   <small class="font-italic">{{n.titulo}}</small></h2><br>
 		        			
 					        <p style="font-style:italic; font-size:1.0em; line-height:0.9em;">{{n.descripcion}}</p>
+
+					        <p><strong>{{n.estado}}</strong></p>
 					            
 					        <span class="ml-2 mb-1 badge badge-pill badge-light text-muted font-italic">{{ n.fecha }}
 					           		</span>
@@ -53,15 +52,22 @@
 				<div class="btn-group btn-group">
 					<a class="btn btn-sm btn-outline-success font-italic" href="{% url 'p_noticia_edi' n.id_noticia %}"> Editar  <i class="far fa-edit"></i></a>		
 					<a class="btn btn-sm btn-outline-danger font-italic" href="{% url 'p_noticia_eli' n.id_noticia %}" >Eliminar   <i class="fas fa-trash-alt"></i></a>
+					{% if n.estado == 'Registrada' or n.estado == 'Finalizada'  %}
+						<a class="btn btn-sm btn-outline-success font-italic" href="{% url 'p_not_est' %}?pkn={{n.pk}}&std=Publicada" >Visible   <i class="far fa-eye"></i></a>
+					{% endif %}
+					{% if n.estado == 'Publicada'  %}
+						<a class="btn btn-sm btn-outline-secondary font-italic" href="{% url 'p_not_est' %}?pkn={{n.pk}}&std=Finalizada" >Finalizar  <i class="fas fa-eye-slash"></i></a>
+					{% endif %}
 				</div>
 
 
 
 
 		        		</div>
+
 		        		<div class="col-4 py-2">
 		        			<a href="#" style="font-style:italic" data-toggle="modal" data-target="#notmdl{{n.pk}}">
-					          		<img class="card-img-top" src="/media/{{ n.foto }}" alt="Card image cap" height="250px" width="300px">
+					          		<img class="card-img-top" src="/media/{% if n.foto == '' %}no-noticia.png{% else %}{{ n.foto }}{% endif %}" alt="Card image cap" height="250px" width="300px">
 					          	</a>
 		        		</div>
 		        	</div>

@@ -135,7 +135,8 @@ class AsmbGrfRep(View):
 
 class AsambLis(View):
 	def get(self, request, *args, **kwargs):
-		ListAsamb = Asamblea.objects.all().order_by('-id_asamblea')
+		ListAsamb = Asamblea.objects.all().order_by('-pk')
+		print("  >> _ _ ok")
 		return render(request,'asamblea/v_asamb_lis.html',{'asambleas':ListAsamb})
 
 class AsambEdi(View):
@@ -159,7 +160,7 @@ class AsambEdi(View):
 		dt=dt+datetime.timedelta(hours=float(HorArr[0]))
 		dt=dt+datetime.timedelta(minutes=float(HorArr[1]))
 		Asamblea.objects.filter(pk=int(float(pka))).update(tipo=tipo,descripcion=desc,fecha_asamblea=dt,estado=int(float(est)))
-		ListAsamb = Asamblea.objects.all()
+		ListAsamb = Asamblea.objects.all().order_by('-pk')
 		return render(request,'asamblea/v_asamb_lis.html',{'msj':'Se editó correctamente.','asambleas':ListAsamb})
 
 """

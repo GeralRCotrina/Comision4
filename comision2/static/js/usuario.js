@@ -3,6 +3,7 @@ window.onload = function() {
 	CargarOrdenes();
 	CargarMultas();
 	CargarPerfil();
+	CargarAsambleas();
 	DivRegando();
 };
 
@@ -242,4 +243,32 @@ function DivRegando(){
 	}
 	xhr.send();
 
+}
+
+
+
+function CargarAsambleas() {
+	// body...
+	var dva=document.getElementById("div_asamb");
+	var xhr = new XMLHttpRequest();
+	var cad = "/usuario/api_asmb/?userpk=1";
+	xhr.open('GET',cad,true); 
+	var rpta ="Ok";
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			var json = xhr.response;
+			if (json=="Err") {
+				rpta='<i><i class="fas fa-users"></i> No hay reuniónes pendientes.</i><br>';
+			}else{
+				var myObj = JSON.parse(json);
+				rpta ="";
+				for (var i in myObj) {
+			        rpta+='<i class="fas fa-users"></i>'+myObj[i]+'';
+			    }
+			}
+			dva.innerHTML=rpta;
+		}
+	}
+	xhr.send();
+	
 }

@@ -500,7 +500,8 @@ class Noticia(models.Model):
     titulo = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.CharField(max_length=400, blank=True, null=True)
     fecha = models.DateTimeField(default=get_date_now)
-    foto = models.ImageField(upload_to='photos')
+    foto = models.ImageField(upload_to='photos', blank=True, null=True)
+    estado = models.CharField(max_length=10, blank=True, null=True, default="Registrada")
 
     class Meta:
         managed = False

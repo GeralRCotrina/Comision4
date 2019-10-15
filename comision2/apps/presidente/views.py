@@ -395,13 +395,34 @@ class NoticiaCreate(CreateView):
 class NoticiaList(ListView):
 	model=Noticia
 	template_name='noticia/p_noticia_lis.html'
-	paginate_by=9
+
+	def get(self, request, *args, **kwargs):
+		dicc = {}
+		dicc['object_list']=Noticia.objects.all().order_by('-pk')
+		return render(request, self.template_name,dicc)
+
+
 
 class NoticiaUpdate(UpdateView):
 	model=Noticia
 	form_class=NoticiaForm
 	template_name='noticia/p_noticia_reg.html'
 	success_url=reverse_lazy('p_noticia_lis') 
+
+
+class NotEstado(View):
+	model=Noticia
+	template_name='noticia/p_noticia_lis.html'
+
+	def get(self, request, *args, **kwargs):
+		pkn = self.request.GET.get('pkn')
+		std = self.request.GET.get('std')
+		if Noticia.objects.filter(pk=pkn).exists():
+			Noticia.objects.filter(pk=pkn).update(estado=std)
+		dicc = {}
+		dicc['object_list']=Noticia.objects.all().order_by('-pk')
+		return render(request, self.template_name,dicc)
+
 
 class NoticiaDelete(DeleteView):
 	model=Noticia

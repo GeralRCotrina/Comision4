@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block txt_titulo %}CrNH{% endblock txt_titulo %}</title>
+    <title>{% block txt_titulo %} CrNH {% endblock txt_titulo %}</title>
 
 
     <!-- Bootstrap core CSS-->
@@ -58,7 +58,7 @@
           <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown" style="background:#E7F2FA;">
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown" style="background:#FFFFFF;">
             {% block card_login %}
               <div class="" style="height: auto; width: 200px; margin: 3px;">
                 <p class="text-center text-muted mb-0"><strong> USUARIO</strong></p>
@@ -68,8 +68,10 @@
 
                 <a href="{% url 'prf_edi' request.user.pk %}"><span class="badge font-italic text-light mt-0" style="background:#8BCD6B;">Editar perfil <i class="fas fa-cog"></i></span></a>
                 <div class="btn-group btn-block mb-0">
-                  <a href="{% url 'mylogin' %}" class="btn btn-outline-success form-control"><i class="fas fa-lock-open"></i></a>
-                  <a href="{% url 'logout' %}" class="btn btn-outline-danger form-control"><i class="fas fa-lock"></i></a>
+                  <a href="{% url 'mylogin' %}" class="btn btn-outline-success form-control"  title="Ingresar con otro usuario.">
+                    <i class="fas fa-lock-open"></i></a>
+                  <a href="{% url 'logout' %}" class="btn btn-outline-danger form-control"  title="Cerrar sesión.">
+                    <i class="fas fa-lock"></i></a>
                 </div> 
                </div>
             {% endblock card_login %}
@@ -119,6 +121,39 @@
           </div>
         </li>
         {% endblock inicio_menu %}
+      
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <i class="fas fa-list-ol"></i>
+            <span>REPARTO</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="{% url 'u_reparto_lis' %}"><i class="fas fa-file-signature"></i>  Solicitar</a>
+            <a class="dropdown-item" href="{% url 'u_mis_orden_lis' %}?id_auth={{user.id}}"><i class="fas fa-ticket-alt"></i>  Mis órdenes</a>
+          </div>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-money-check-alt"></i>
+            <span>MULTAS</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="{% url 'mul_lst' %}?userpk={{user.pk}}"><i class="fas fa-dollar-sign"></i>   Mis multas</a>
+          </div>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <i class="fas fa-clipboard-list"></i>
+            <span>ASAMBLEAS</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown"> 
+            <a class="dropdown-item" href="{% url 'u_asmb_lst' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
+          </div>
+        </li>
 
 
         <li class="nav-item dropdown">
@@ -140,17 +175,6 @@
             <a class="dropdown-item" href="{% url 'u_misparcelas_lis' %}?id_auth={{user.id}}"><i class="far fa-map"></i>  Mis parcelas</a>
           </div>
         </li>
-      
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             <i class="fas fa-list-ol"></i>
-            <span>REPARTO</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'u_reparto_lis' %}"><i class="fas fa-file-signature"></i>  Solicitar</a>
-            <a class="dropdown-item" href="{% url 'u_mis_orden_lis' %}?id_auth={{user.id}}"><i class="fas fa-ticket-alt"></i>  Mis órdenes</a>
-          </div>
-        </li>
 
 
         <li class="nav-item dropdown">
@@ -160,17 +184,6 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 'lst_dtjs' %}?userpk={{user.id}}"><i class="fas fa-draw-polygon"></i>  Mis destajos</a>
-          </div>
-        </li>
-
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-money-check-alt"></i>
-            <span>MULTAS</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="{% url 'mul_lst' %}?userpk={{user.pk}}"><i class="fas fa-dollar-sign"></i>   Mis multas</a>
           </div>
         </li>
 
@@ -201,7 +214,7 @@
 
       <div id="content-wrapper"> <!-- /.content-wrapper ****************************************************-->
         {% block cuerpo %}
-          
+           
        
          
             

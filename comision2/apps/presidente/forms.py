@@ -10,7 +10,7 @@ class NoticiaForm(forms.ModelForm):
 	class Meta:
 		model = Noticia
 
-		fields = ['id_noticia','titular','titulo','descripcion','fecha','foto',]	
+		fields = ['id_noticia','titular','titulo','descripcion','fecha','foto']	
 		labels = {
 			'titular':'Titular',
 			'titulo':'Titulo',
