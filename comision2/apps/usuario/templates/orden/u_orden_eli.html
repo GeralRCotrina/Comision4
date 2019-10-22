@@ -1,13 +1,9 @@
 
 {% extends "u_base.html" %}
 
-{% block txt_cabecera %}
-	CANCELAR SOLICITUD ORDEN DE RIEGO
-{% endblock txt_cabecera %}
 
 
-
-{% block noticias %}
+{% block cuerpo %}
 	<div class="container border">
 		<br>
 		<form method="post">
@@ -17,20 +13,4 @@
 			<button class="btn  btn-danger" type="submit">Sí, retirar</button>		
 		</form><br>
 	</div>
-{% endblock noticias %}
-
-
-{% block noticias1 %}
-{% endblock noticias1 %}
-
-
-
-{% block tabla %}
-	
-{% endblock tabla %}
-
-
-
-{% block graficos %}
-	
-{% endblock graficos %}
+{% endblock cuerpo %}

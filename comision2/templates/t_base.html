@@ -137,11 +137,12 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-map-marked-alt"></i>
+            <i class="fas fa-list-ol"></i>
             <span>REPARTO</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{% url 't_lst_repartos' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
+            <a class="dropdown-item" href="{% url 't_rep' %}"><i class="fas fa-fw fa-chart-area"></i> REPORTES</a>
           </div>
         </li>
       
@@ -158,6 +159,16 @@
           </div>
         </li>
   {% endblock limpia_menu %} 
+
+    <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>REPORTES</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="{% url 't_rep' %}"><i class="fas fa-list-ol"></i> LISTAR</a>
+          </div>
+        </li>
 
       </ul>
    

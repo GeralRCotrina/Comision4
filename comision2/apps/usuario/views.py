@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 
 from django.core.files.storage import FileSystemStorage
 
+
 def Pruebas(request):
 	print('--------------------------->>    ',time.strftime("%A"),'/',time.strftime("%B"))
 	return render(request,'usuario.html')
@@ -22,7 +23,8 @@ def Pruebas(request):
 
 
 
- 
+
+from django.db import connection
 def usuario(request):
 	dicc={}
 
@@ -32,17 +34,31 @@ def usuario(request):
 	for x in lst_not:
 		if x.pk > dicc['pk_max']:
 			dicc['pk_max']= x.pk
-		#print("  >> not: "+str(x.pk))
-	#print("  >> pk max:"+str(dicc['pk_max']))
 	dicc['lst_noticias']=lst_not
 
-	# ===========caudal==============
+	# ===========caudal===================
 	cau=Caudal.objects.all().order_by("fecha")
+	p=0
+	for x in cau:
+		p+=1
 	cant_cau=cau.count()
 	dicc['fecha']=datetime.datetime.now()
 	dicc['caudales']=cau
 	dicc['cant_cau']=cant_cau
-	return render(request, 'usuario.html',dicc)
+
+	
+	# ===========rep_reparto==============
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_cant_por_reparto")
+	result = []
+	detalles = cursor.fetchall()
+	for row in detalles:
+	        dic = dict(zip([col[0] for col in cursor.description], row))				
+	        result.append(dic)
+	cursor.close()
+	dicc['repartos']=result
+	
+	return render(request,'usuario.html',dicc)
  
 
 
@@ -241,7 +257,7 @@ class MisOrdenes(ListView):
 class VerRepartos(View):
 
 	def get(self, request, *args, **kwargs):
-		from django.db import connection, transaction	
+		from django.db import connection	
 		cursor = connection.cursor()
 		cursor.execute("CALL sp_rep_disponibles")
 		result = []
@@ -327,18 +343,7 @@ class OrdenDelete(DeleteView):
 	template_name='orden/u_orden_eli.html'
 	success_url=reverse_lazy('u_orden_lis')
 
-class OrdenUpdate(UpdateView):
-	model=OrdenRiego
-	form_class=OrdenRForm
-	template_name='orden/u_orden_reg.html'
-	success_url=reverse_lazy('u_orden_lis') 
-
-class OrdenCreate(CreateView):
-	model=OrdenRiego
-	form_class=OrdenRForm
-	template_name='orden/u_orden_reg.html'
-	success_url=reverse_lazy('u_orden_lis')
-
+ 
 class OrdenList(ListView):
 	model=OrdenRiego
 	template_name='orden/u_orden_lis.html'
@@ -461,3 +466,45 @@ class ApiQr(View):
 				rpta="Err"
 			
 		return HttpResponse(rpta)
+
+"""
+class ApiGraf1(View):
+
+	def get(self, request, *args, **kwargs):
+		userpk=self.request.GET.get("userpk")	
+		# ===========caudal===================
+		json = "{"	
+		cau=Caudal.objects.all().order_by("fecha")
+		json+='"0":"'+str(cau.count())+'","1":"'+str(datetime.datetime.now())+'"'
+		cont=2
+		for x in cau:
+			json+=',"'+str(cont)+'":"'+str(x.fecha.day)+'/'+str(x.fecha.month)+'/'+str(x.fecha.year)+'"'
+			cont+=1
+
+
+		cont = 50
+		for x in cau:
+			json+=',"'+str(cont)+'":"'+str(x.nivel)+'"'
+			cont+=1
+
+		json += '}'			
+		return HttpResponse(json)
+
+"""
+
+"""
+
+		# ===========caudal===================
+		cau=Caudal.objects.all().order_by("fecha")
+		p=0
+		for x in cau:
+			p+=1
+		cant_cau=cau.count()
+		dicc['fecha']=datetime.datetime.now()
+		dicc['caudales']=cau
+		dicc['cant_cau']=cant_cau
+
+		rpta = json.dumps(cau)
+
+		#print("   json: "+json.dumps(cau))
+"""

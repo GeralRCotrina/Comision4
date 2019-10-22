@@ -1,24 +1,11 @@
 {% extends "u_base.html" %}
 
 
-{% block txt_cabecera %}
-	REPARTO
-{% endblock txt_cabecera %}
 
+{% block cuerpo %}
 
-{% block txt_ol %}
-		<strong>REAPARTOS DISPONIBLES </strong> 
-{% endblock txt_ol %}
-
-{% block txt_bienv %}	
-{% endblock txt_bienv %}
-
-
-
-
-
-{% block noticias1 %}
-
+<div class="container ">
+	
 	<div class="row">
 
 		{% csrf_token %}
@@ -66,19 +53,7 @@
     </div>
 
 
+</div>
 
-{% endblock noticias1 %}
+{% endblock cuerpo %}
  
-
-
-
-
-
-{% block tabla %}
-{% endblock tabla %}
-
-
-
-
-{% block graficos %}	
-{% endblock graficos %}

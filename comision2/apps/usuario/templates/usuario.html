@@ -1,7 +1,6 @@
 {% extends "u_base.html" %}
+
 {% load static %}
-
-
 
 
 {% block cuerpo %}	
@@ -24,7 +23,7 @@
 
 
 
-		<h2 class="mt-2"><small style="font-style:italic;">¿dónde está el agua?</small>
+		<h2 class="mt-2"><small style="font-style:italic;">¿Dónde está el agua?</small>
 		<span class="float-right mt-0"><img src='{% static "img/002-agua.gif" %}' alt="" height="40" class="mt-0"></span></h2>
      
       <!-- Search Widget -->
@@ -60,12 +59,14 @@
     <span class="float-right mt-0"><img src='{% static "img/005-nivel.gif" %}' alt="" height="40" class="mt-0"></span></h2>
 
 
+
+
 <div class="col-12 container">
-  <div id="container" class="border w-100" style="height: 300px" ></div>
+  <div id="container1" class="border w-100" style="height: 300px" ></div>
 
 <script type="text/javascript">
 
-Highcharts.chart('container', {
+Highcharts.chart('container1', {
     chart: {
         type: 'column',
         options3d: {
@@ -121,6 +122,7 @@ Highcharts.chart('container', {
         stack: 'male'
     }]
 });
+
 </script>
 </div>
 
@@ -140,7 +142,7 @@ Highcharts.chart('container', {
 
 
 <hr>
-		<h2 class="mt-4"><small style="font-style:italic;"> ¿qué hay de nuevo?</small>
+		<h2 class="mt-4"><small style="font-style:italic;"> ¿Qué hay de nuevo?</small>
 		<span class="float-right"><img src='{% static "img/001-ojo.gif" %}' alt="" height="40" class="mt-0"></span></h2>
 
 
@@ -212,54 +214,57 @@ Highcharts.chart('container', {
 
 
 <hr>
-    <h2 class="mt-4"><small style="font-style:italic;"> ¿último reparto?</small>
+    <h2 class="mt-4"><small style="font-style:italic;"> Repartos</small>
     <span class="float-right"><img src='{% static "img/007-graf.gif" %}' alt="" height="40" class="mt-0"></span></h2>
 
 
-<div class="col-12">    
-<div id="container1" class="border w-100" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div class="col-12 mb-4">    
+  <div id="container2" class="border w-100" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-Highcharts.chart('container1', {
+Highcharts.chart('container2', {
     chart: {
-        type: 'line'
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
     },
     title: {
-        text: '{{fecha}}'
+        text: 'Porcentaje de órdenes sacadas por repartos..'
     },
-    subtitle: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for c in caudales %}
-                '{{c.fecha.day}}/{{c.fecha.month}}/{{c.fecha.year}}',
-            {% endfor %}]
-    },
-    yAxis: {
-        title: {
-            text: '0 = sin agua, 10 = Canal lleno.'
-        }
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
     },
     plotOptions: {
-        line: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
             dataLabels: {
-                enabled: true
-            },
-            enableMouseTracking: false
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
         }
     },
-    series: [{name: 'Nivel',
-        data: [{% for c in caudales %}
-                {{c.nivel}},
-            {% endfor %}],
-        stack: 'male'
+    series: [{
+        name: 'Órdenes',
+        colorByPoint: true,
+        data: [
+            {% for r in repartos %}
+                {
+                    name: '{{ r.fecha.day }}/{{ r.fecha.month }}/{{ r.fecha.year }}',
+                    y: {{ r.cantidad }},
+                },
+            {% endfor %}
+        ]
     }]
 });
-    </script>
-  </div>
 
-
+</script>
+</div>
 
 
 
@@ -280,7 +285,7 @@ Highcharts.chart('container1', {
           </li>
         </ul>-->
 
-      </div>
+  </div>
 
 
 
@@ -409,3 +414,4 @@ Highcharts.chart('container1', {
 
 </div>
 {% endblock cuerpo %}
+

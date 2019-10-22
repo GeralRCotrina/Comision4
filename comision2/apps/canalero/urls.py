@@ -18,7 +18,7 @@ urlpatterns = [
 	re_path(r'^c_rep_caudal/$', login_required(views.RepCaudal.as_view()),name='c_rep_caudal'),
 	re_path(r'^c_rep_caudal2/$', login_required(views.RepCaudal2.as_view()),name='c_rep_caudal2'),
 	re_path(r'^c_rep_reparto/$', login_required(views.RepPeparto.as_view()),name='c_rep_reparto'),
-
+ 
 	re_path(r'^registrar-usuario/$',views.RegistrarUsuario.as_view(),name='c_RegistrarUsuario'),	
 
 	re_path(r'^c_reparto_reg/$',login_required(views.RepartoCreate.as_view()),name='c_reparto_reg'),

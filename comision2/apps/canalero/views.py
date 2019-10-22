@@ -443,7 +443,7 @@ class RepPeparto(View):
 		for d in result:
 			print('   - -  - >',d)
 		return render(request,'reportes/c_reporte_rep.html',diccionario)
-
+ 
 
 class RepCaudal2(View):
 

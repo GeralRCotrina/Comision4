@@ -3,37 +3,39 @@
 
 {% block cuerpo %}
 
-<div class="container">
+<div class="container px-4 py-2">
 	<div class="row">
 
 		<div class="col-12 my-3 text-center">
 			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Listado de parcelas</h3>
 		</div>
 
-		<div class="col-12 ">
-			<span class="float-right form-inline">
-			 	{% if page_obj.has_previous %}
-			      <ul class="pagination pagination-sm" >
-			        <li class="page-item"><a class="page-link" href="?page=1">&laquo; primera</a></li>
-			      </ul> 
-			    {% endif %}
+		<div class="col-12 card">
+			<div class="div mt-2">
+				<span class="float-right form-inline">
+				 	{% if page_obj.has_previous %}
+				      <ul class="pagination pagination-sm" >
+				        <li class="page-item"><a class="page-link" href="?page=1">&laquo; primera</a></li>
+				      </ul> 
+				    {% endif %}
 
-			      <ul class="pagination pagination-sm mx-1" >
-			        {% if page_obj.has_previous %}
-			          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; previo</a></li>
-			        {% endif %}
-			        <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
-			        {% if page_obj.has_next %}
-			          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">siguiente &raquo;</a></li>  
-			        {% endif %} 
-			      </ul>
+				      <ul class="pagination pagination-sm mx-1" >
+				        {% if page_obj.has_previous %}
+				          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; previo</a></li>
+				        {% endif %}
+				        <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+				        {% if page_obj.has_next %}
+				          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">siguiente &raquo;</a></li>  
+				        {% endif %} 
+				      </ul>
 
-			      {% if page_obj.has_next %}
-			        <ul class="pagination pagination-sm" >
-			          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a></li>
-			        </ul> 
-			      {% endif %}
-			 </span>
+				      {% if page_obj.has_next %}
+				        <ul class="pagination pagination-sm" >
+				          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a></li>
+				        </ul> 
+				      {% endif %}
+				 </span>
+			</div>
 
 			{% if object_list %}
 			<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">

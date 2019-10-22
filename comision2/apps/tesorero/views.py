@@ -20,20 +20,20 @@ def tesorero(request):
 class Asmb(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> GET")
+		#print("  >> GET")
 		dicc = {}
 		dicc['asambleas']=Asamblea.objects.all().order_by('-pk')
 		return render(request,'asamblea/t_asamblea.html',dicc)
 
 	def post(self, request, *args, **kwargs):
-		print("  >> POST")
+		#print("  >> POST")
 		return render(request,'asamblea/t_asamblea.html')
 
-
+ 
 class AsmbMul(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> ...GET   AsmbMul")
+		#print("  >> ...GET   AsmbMul")
 		pka=self.kwargs.get('pk')
 		dicc = {}
 		if Asamblea.objects.filter(pk=pka).exists():
@@ -52,7 +52,7 @@ from django.db.models import Q
 class MultarAsistenciaTodas(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> GET ->1")
+		#print("  >> GET ->1")
 		pko = self.request.GET.get('pko')
 		dicc={}		
 		dicc['pko']=pko
@@ -60,7 +60,7 @@ class MultarAsistenciaTodas(View):
 		return render(request,'multa/t_multa.html',dicc)
 
 	def post(self, request, *args, **kwargs):
-		print("  >> POST ->")
+		#print("  >> POST ->")
 		pko = self.request.POST.get('pko')
 		monto = self.request.POST.get('monto')
 		concepto = self.request.POST.get('concepto')
@@ -81,13 +81,13 @@ class MultarAsistenciaTodas(View):
 class VerHojaDeMultas(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> GET ->1")
+		#print("  >> GET ->1")
 		pko = self.request.GET.get('pko')
 		dicc = {}
 
 		if MultaAsistencia.objects.filter(id_hoja_asistencia__id_asamblea=pko).exists():
 			dicc['hoja_multas']=MultaAsistencia.objects.filter(id_hoja_asistencia__id_asamblea=pko).order_by("-id_hoja_asistencia__estado")
-		print("  >> pasó")
+		#print("  >> pasó")
 		return render(request,"multa/t_asmb_mul_lst.html",dicc)
 
 
@@ -134,7 +134,7 @@ def CrearMultasAsist(pka,monto,concepto,gen):
 		if monto > 0:
 			if concepto != "":
 				std=HojaAsistencia.objects.get(pk=pka).estado
-				print("  >> std : "+str(std))
+				#print("  >> std : "+str(std))
 				if gen == 0:
 					concept = concepto
 				else:
@@ -170,7 +170,7 @@ def CrearMultasAsist(pka,monto,concepto,gen):
 class EditarMulta(View):
 
 	def get(self, request, *args, **kwargs):
-		print(" >> EditarMulta")
+		#print(" >> EditarMulta")
 		pka = self.request.GET.get('pka')
 		mon = self.request.GET.get('monto')
 		con = self.request.GET.get('concepto')
@@ -191,17 +191,17 @@ class EditarMulta(View):
 class EliminarMulta(View):
 
 	def get(self, request, *args, **kwargs):
-		print(" >> EliminarMulta")
+		#print(" >> EliminarMulta")
 		pka = self.request.GET.get('pka')
 		rpta = 'Ok'
 		if Multa.objects.filter(pk=int(float(pka))).exists():
 			ml=Multa.objects.get(pk=int(float(pka)))
 			MultaAsistencia.objects.filter(id_multa=ml).delete()
 			Multa.objects.filter(pk=int(float(pka))).delete()
-			print('  >> Ok')
+			#print('  >> Ok')
 		else:
 			rpta = 'Err'
-			print("  >> Err")
+			#print("  >> Err")
 		return HttpResponse(rpta)
 
 
@@ -236,7 +236,7 @@ class ImprimirMulta(View):
 
 			dicc['url_pdf']='pdfs/impMul3.pdf'
 			#--------------------------------------------------end pdf
-			print("  >> finaló 1")
+			#print("  >> finaló 1")
 		else:
 			print("  >> Err")
 		return render(request,url,dicc)
@@ -289,7 +289,7 @@ class EditarMultaO(View):
 class EliminarMultaO(View):
 
 	def get(self, request, *args, **kwargs):
-		print(" >> EliminarMulta")
+		#print(" >> EliminarMulta")
 		pka = self.request.GET.get('pka')
 		rpta = 'Ok'
 		from apps.inicio.models import MultaOrden
@@ -299,7 +299,7 @@ class EliminarMultaO(View):
 			Multa.objects.filter(pk=pko).delete()
 		else:
 			rpta = 'Err'
-			print("  >> Err + "+str(pka))
+			#print("  >> Err + "+str(pka))
 		return HttpResponse(rpta)
 
 
@@ -369,9 +369,6 @@ class EstdoMultaO(View):
 class LstRepartos(View):
 
 	def get(self, request, *args, **kwargs):
-		#print(" >> StdMulta")
-		print("  >> ok")
-
 		dicc = {}
 		dicc['lst_repartos']=Reparto.objects.all().order_by('-pk')
 
@@ -381,7 +378,7 @@ class LstRepartos(View):
 class HjaMulReparto(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> ok")		
+		#print("  >> ok")		
 		pkr = self.request.GET.get('pkr')
 
 		dicc = {}
@@ -398,11 +395,11 @@ class HjaMulReparto(View):
 class HjaOrdReparto(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> ok-or")		
+		#print("  >> ok-or")		
 		pkr = self.request.GET.get('pkr')
 		dicc = {}
 		if OrdenRiego.objects.filter(id_reparto=pkr).exists():
-			print("  >> Si hay multas de ordenes")
+			#print("  >> Si hay multas de ordenes")
 			dicc['hja_or_reparto']=OrdenRiego.objects.filter(id_reparto=pkr).order_by('-estado')
 			dicc['reparto']=Reparto.objects.get(id_reparto=pkr)
 		else:
@@ -413,7 +410,7 @@ class HjaOrdReparto(View):
 class MultaOrden(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> get")		
+		#print("  >> get")		
 		pko = self.request.GET.get('pko')
 		dicc = {}
 		dicc['fch']=datetime.datetime.now()
@@ -423,12 +420,11 @@ class MultaOrden(View):
 		return render(request,'reparto/multa_ord.html',dicc)
 
 	def post(self, request, *args, **kwargs):
-		print("  >> post")		
+		#print("  >> post")		
 		mon = self.request.POST.get('monto')
 		pko = self.request.POST.get('pko')
 		concept = self.request.POST.get('concepto')
-
-		print("  >> monto: "+str(mon)+"  >> pko: "+str(pko)+"  >> con: "+str(concept))
+		#print("  >> monto: "+str(mon)+"  >> pko: "+str(pko)+"  >> con: "+str(concept))
 		dicc={}
 		#----------------creamos la multa
 		if OrdenRiego.objects.filter(pk=int(pko)).exists():
@@ -437,7 +433,7 @@ class MultaOrden(View):
 				dicc['rpta']="ya existe."
 				print("  >> ya existe.")
 			else:
-				print("  >> creará.")
+				#print("  >> creará.")
 				mo=Multa(concepto=concept,fecha=datetime.datetime.now(),estado="0",tipo="1",monto=float(mon))
 				mo.save()
 				ordn=OrdenRiego.objects.get(pk=int(pko))			
@@ -457,7 +453,9 @@ class EstadoOrden(View):
 		std = self.request.GET.get('std')
 		rpta = "Err"
 		if OrdenRiego.objects.filter(id_orden_riego=pko).exists():
-			OrdenRiego.objects.filter(id_orden_riego=pko).update(estado=std)
+			hf = datetime.datetime.now()
+			print("  >hora y fecha: "+str(hf))
+			OrdenRiego.objects.filter(id_orden_riego=pko).update(estado=std,fecha_pago=hf)
 			rpta = "Ok"
 		else:
 			rpta='Err'
@@ -473,8 +471,7 @@ class CompGenerar(View):
 		pkr = self.request.GET.get('pkr')
 		pkt = self.request.GET.get('pkt')
 		rpta = "Err"
-		print("  >> pko.."+pkr+"  >> pkt.."+pkt)
-
+		#print("  >> pko.."+pkr+"  >> pkt.."+pkt)
 		if Reparto.objects.filter(pk=pkr).exists():
 			hr_e=OrdenRiego.objects.filter(Q(id_reparto=pkr) & Q(estado="Entregada"))
 			for ho in hr_e:
@@ -525,7 +522,7 @@ class LstDestajos(View):
 
 	def get(self, request, *args, **kwargs):
 		pkl = self.request.GET.get('pkl')
-		print("  >> pkl::"+pkl)
+		#print("  >> pkl::"+pkl)
 		dicc={}
 		if DetLimpieza.objects.filter(id_limpieza=pkl).exists():
 			dicc["lst_dstjs"]=DetLimpieza.objects.filter(id_limpieza=pkl).order_by('-pk')
@@ -540,10 +537,10 @@ class CrearMulDstj(View):
 		pkd = self.request.GET.get('pkd')
 		mon = self.request.GET.get('monto')
 		con = self.request.GET.get('concepto')
-		#print("  >> pkd: "+str(pkd)+"  > monto: "+str(mon)+"  > con:"+str(con))
+		#print(" ____*** >> pkd: "+str(pkd)+"  > monto: "+str(mon)+"  > con:"+str(con))
 		rpta = "Err"
 		if MultaLimpia.objects.filter(id_det_limpia=pkd).exists():
-			print("  >> Err: ya tiene mullta creada, editese.")
+			#print("  >> Err: ya tiene mullta creada, editese.")
 			rpta="Inv"
 		else:
 			dtl=DetLimpieza.objects.get(pk=pkd)
@@ -561,9 +558,8 @@ class LstMulsLimpia(View):
 
 
 	def get(self, request, *args, **kwargs):
-		pkl = self.request.GET.get('pkl')
-		
-		print("  >> pkl: "+str(pkl))
+		pkl = self.request.GET.get('pkl')		
+		#print("  >> pkl: "+str(pkl))
 		dicc = {}
 		if MultaLimpia.objects.filter(id_det_limpia__id_limpieza=pkl).exists():
 			dicc["hja_mul_limpia"]=MultaLimpia.objects.filter(id_det_limpia__id_limpieza=pkl)
@@ -613,7 +609,7 @@ class EliminarMultaD(View):
 class EditarMultaD(View):
 
 	def get(self, request, *args, **kwargs):
-		print(" >> EditarMulta")
+		#print(" >> EditarMulta")
 		pkd = self.request.GET.get('pkd')
 		mon = self.request.GET.get('monto')
 		con = self.request.GET.get('concepto')
@@ -633,7 +629,7 @@ class EditarMultaD(View):
 class ImprimirMultaD(View):
 
 	def get(self, request, *args, **kwargs):
-		print("  >> this is us")
+		#print("  >> this is us")
 		pka = self.request.GET.get('pkd')
 		rpta = 'Ok'
 		dicc={}
@@ -670,3 +666,106 @@ class ImprimirMultaD(View):
 
 
 # ======================================= MUL LIMPIEZA ============
+
+
+
+
+
+from datetime import  timedelta
+class Reportes(View):
+
+	def get(self,request,*arg,**kwargs):
+		return render(request,'reportes/t_rep.html')
+	
+	def post(self,request,*arg,**kwargs):
+		deque = self.request.POST.get('deque')
+		desde = self.request.POST.get('desde')
+		hasta = self.request.POST.get('hasta')
+		dicc={}
+
+		if deque == 'reparto':
+			dicc['msj']='Ok'
+			dicc['hoy']=datetime.datetime.now()
+			dicc['desde']=desde
+			dicc['hasta']=hasta
+			dicc['ordenes']=ReporteReparto(desde,hasta)
+			dicc['total']=Tamano(dicc['ordenes'])
+			dicc['importe']=CalcularImporte(dicc['ordenes'])
+			dicc['deuda']=CalcularDeuda(dicc['ordenes'])
+			dicc['Pagada']=CalcularPorEstado('Pagada',dicc['ordenes'])
+			dicc['Finalizada']=CalcularPorEstado('Finalizada',dicc['ordenes'])
+			dicc['Entregada']=CalcularPorEstado('Entregada',dicc['ordenes'])
+			dicc['Iniciada']=CalcularPorEstado('Iniciada',dicc['ordenes'])
+			dicc['Aprobada']=CalcularPorEstado('Aprobada',dicc['ordenes'])
+			dicc['Solicitada']=CalcularPorEstado('Solicitada',dicc['ordenes'])
+			dicc['Anulada']=CalcularPorEstado('Anulada',dicc['ordenes'])
+
+			#======================================================================
+			dicc['repxestado']=ReportexEstado(desde,hasta)
+		
+
+		elif deque == 'limpia':
+			print("  > limpia")
+		else:
+			print("  >> ¿de qué? = "+str(deque))
+		#print("  >> desde "+ str(desde)+" hasta "+str(hasta))
+		return render(request,'reportes/t_rep.html',dicc)
+
+"""
+
+			d_fecha_inicio = datetime.datetime.strptime(desde,'%d/%m/%Y')			
+			d_fecha_final = datetime.datetime.strptime(hasta,'%d/%m/%Y') + timedelta(days=1)	
+"""
+
+def ReporteReparto(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_reporte_completo (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result
+
+def CalcularImporte(lst):
+	rpta=0
+	for x in lst:
+		if x['estado'] == 'Finalizada' or  x['estado'] == 'Pagada' or  x['estado'] == 'Entregada' or  x['estado'] == 'Iniciada':
+			rpta+=x['importe']
+	return rpta
+
+def CalcularDeuda(lst):
+	rpta=0
+	for x in lst:
+		if x['estado'] == 'Aprobada':
+			rpta+=x['importe']
+	return rpta
+
+def CalcularPorEstado(std,lst):
+	rpta=0
+	for x in lst:
+		if x['estado'] == std:
+			rpta+=1
+	return rpta
+
+def Tamano(lst):
+	rpta=0
+	for x in lst:
+		rpta+=1
+	return rpta
+
+def ReportexEstado(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_cantidad_xestado (%s,%s)",[desde,hasta])
+	#detalles = cursor.fetchall()
+	cursor.execute("CALL sp_cantidad_xestado (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result

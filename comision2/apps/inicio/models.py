@@ -533,6 +533,7 @@ class OrdenRiego(models.Model):
     importe = models.FloatField(blank=True, null=True)
     estado = models.CharField(max_length=20, blank=True, null=True)
     id_comprobante = models.IntegerField(blank=True, null=True)
+    fecha_pago = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False

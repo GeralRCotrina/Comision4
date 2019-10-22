@@ -70,6 +70,7 @@
           <td><strong>PARCELA</strong></td>
           <td><strong>HORA</strong></td>
           <td><strong>ESTADO</strong></td>
+          <td><strong>FEC PAGO</strong></td>
           <td><i class="fas fa-donate"></i>_ Pago</td>
           <td><i class="fas fa-funnel-dollar"></i>_Multa</td>
         </tr>
@@ -82,6 +83,7 @@
               <td>{{ord.id_parcela.nombre}}</td>
               <td>{{ord.fecha_inicio.hour}}:{% if ord.fecha_inicio.minute <= 9 %}0{% endif %}{{ord.fecha_inicio.minute}}</td>
               <td id="tdstd{{ord.pk}}"><span class="badge {% if ord.estado == 'Aprobada' %}badge-success{% elif  ord.estado == 'Solicitada' %}badge-warning{% elif  ord.estado == 'Pagada' %}badge-info{% elif  ord.estado == 'Rechazada' %}badge-danger{% elif  ord.estado == 'Entregada' %}badge-secondary{% elif  ord.estado == 'Iniciada' %}badge-warning{% elif  ord.estado == 'Finalizada' %}badge-primary{% else %}Err{% endif %}">{{ord.estado}}</span></td>
+              <td>{{ord.fecha_pago.day}}/{{ord.fecha_pago.month}}/{{ord.fecha_pago.year}} {{ord.fecha_pago.hour}}:{{ord.fecha_pago.minute}}</td>
               <td>
                 {% if ord.estado == 'Aprobada' %}
                 <a  href="#" class="btn btn-sm btn-outline-info" title="¿pagar?" data-toggle="modal" data-target="#ModalPgr{{ord.pk}}"><i class="fas fa-donate"></i> Pagar</a>

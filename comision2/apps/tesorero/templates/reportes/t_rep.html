@@ -1,0 +1,359 @@
+{% extends "t_base.html" %}
+
+
+
+
+{% block noticias %}	
+{% endblock noticias %}
+
+
+{% block cuerpo %}
+
+<div class="continer border px-2 py-2">
+	<div class="row">
+		
+
+	  <div class="col-12 my-3 text-center">
+	    <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Reportes <i class="fas fa-fw fa-chart-area"></i> </h3>
+	  </div>
+
+
+
+		<div class="col-12">
+			
+			<div id="acordion">
+				<div class="card">
+					<div class="card-header">
+						<a href="#uno" class="card-link" data-toggle="collapse" data-parent="#acordion">Reparto  <i class="fas fa-list-ol"></i></a>
+					</div>
+					<div id="uno" class="collapse"> <!--show"-->
+						<div class="card-body">
+							<label for=" frm-rep" class="font-italic">Reporte completo entre fechas</label>
+							<form name="frm-rep" method="POST">
+								{% csrf_token %}
+								<input type="text" name="deque" value="reparto" hidden>
+								<div class="row text-center">
+									<div class="col-4">
+										<input name="desde" type="date" class="form-control" required>
+									</div>
+									<div class="col-4">
+										<input name="hasta" type="date" class="form-control" required>
+									</div>
+									<div class="col-4">
+										<button class="btn btn-outline-primary form-control">Examinar</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+
+
+
+
+					<div class="card-header">
+						<a href="#dos" class="card-link" data-toggle="collapse" data-parent="#acordion">Limpieza <i class="fas fa-broom"></i></a>
+					</div>
+					<div id="dos" class="collapse">
+						<div class="card-body">
+							<label for=" frm-rep" class="font-italic">Reporte completo entre fechas</label>
+							<form name="frm-rep" method="POST">
+								{% csrf_token %}
+								<input type="text" name="deque" value="limpia" hidden>
+								<div class="row text-center">
+									<div class="col-4">
+										<input name="desde" type="date" class="form-control" required>
+									</div>
+									<div class="col-4">
+										<input name="hasta" type="date" class="form-control" required>
+									</div>
+									<div class="col-4">
+										<button class="btn btn-outline-primary form-control">Examinar</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+
+	</div>
+</div>
+
+
+<br>
+<hr>
+<br>
+
+{% if msj %}
+<div class="container border">
+
+	{% if ordenes %}
+
+	<div class="row my-3 px-3">
+		<div class="col-5 border">
+			<p class="text-center bg-success text-white mt-1"> <strong>RESUMEN DEL REPORTE </strong></p>
+			<p class="font-italic text-center">desde el {{desde}} al {{hasta}}</p>
+			<table class="table-bordered table-responcive mx-auto" style="font-weight: bold;">
+				<tr><td>IMPORTE TOTAL:</td><td>  S/.{{importe}}</td></tr>
+				<tr><td>DEUDA TOTAL: </td><td>S/.{{deuda}}</td></tr>
+				<tr><td>TOTAL FINALIZADAS:     </td><td>{{Finalizada}}</td></tr>
+				<tr><td>TOTAL INICIADAS:     </td><td>{{Iniciada}}</td></tr>
+				<tr><td>TOTAL ENTREGADAS:   .</td><td> {{Entregada}}</td></tr>
+				<tr><td>TOTAL PAGADAS:</td><td> {{Pagada}}</td></tr>
+				<tr><td>TOTAL APROBADAS:</td><td> {{Aprobada}}</td></tr>
+				<tr><td>TOTAL SOLICITADAS:</td><td> {{Solicitada}}</td></tr>
+				<tr><td>TOTAL ANULADAS: </td><td>{{Anulada}}</td></tr>
+				<tr><td colspan="2" class="text-center"><strong>TOTAL ÓRDENES: {{total}}</strong></td></tr>
+			</table>
+			<p class="text-center font-italic" style="font-weigth: blod;">{{hoy}}</p>
+		</div>
+		<div class="col-7 border">
+			<div id="container3" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+
+
+		<script type="text/javascript">
+
+Highcharts.chart('container3', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: '{{hoy}}'
+    },
+    subtitle: {
+        text: 'del {{desde}} al {{hasta}}'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'De todo el reporte',
+        colorByPoint: true,
+        data: [{
+            name: 'Finalizadas',
+            y: parseFloat('{{finalizada}}.0'),
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Iniciadas',
+            y: parseFloat('{{Iniciada}}')
+        }, {
+            name: 'Entregadas',
+            y: parseFloat('{{Entregada}}')
+        }, {
+            name: 'Pagadas',
+            y: parseFloat('{{Pagada}}')
+        }, {
+            name: 'Aprobadas',
+            y: parseFloat('{{Aprobada}}')
+        }, {
+            name: 'Solicitadas',
+            y: parseFloat('{{Solicitada}}')
+        }]
+    }]
+});
+		</script>
+		</div>
+
+		<br>
+
+
+		<div class="col-12 border my-2">
+			
+			<div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto">
+        
+        <script type="text/javascript">
+            Highcharts.chart('container4', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Estados de la órdenes por reparto.'
+    },
+    subtitle: {
+        text: 'desde el {{desde}} hasta el {{hasta}}.'
+    },
+    xAxis: {
+        categories: [
+        {% for x in repxestado %}
+        	'{{x.fecha_reparto}}',
+        {% endfor %}
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Rainfall (ord)'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b> órd</td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+
+
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+
+
+    series: [{
+        name: 'Solicitadas',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.solicitada}},
+        {% endfor %}
+        ]
+
+    }, { 
+        name: 'Aprobada',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.aprobada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Pagada',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.pagada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Entregada',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.entregada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Iniciada',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.iniciada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Finalizada',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.finalizada}},
+        {% endfor %}
+        ]
+
+    }, {
+        name: 'Rechazada',
+        data: [ 
+        {% for x in repxestado %}
+        	{{x.rechazada}},
+        {% endfor %}
+        ]
+
+    }, {
+
+        name: 'TOTAL',
+        data: [
+        {% for x in repxestado %}
+        	{{x.total}},
+        {% endfor %}
+        ]
+
+    }]
+});
+
+            /*
+            {
+        categories: [
+        {% for x in repxestado %}
+        	{{x.reparto}},
+        {% endfor %}
+        ],
+        crosshair: true
+    },
+    */
+        </script>
+
+			</div>
+		</div>
+
+
+
+
+
+	
+	<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+		<table class="table table-sm table-striped text-center" id="dataTable">
+			<thead>
+			      <tr style="background:#2DA544; color:white; font-weight: bold;">
+					<td>REPARTO</td>
+					<td>FECHA REPARTO</td>
+					<td>RECIBO</td>
+					<td>CANAL</td>
+					<td>USUARIO</td>
+					<td>PARCELA</td>
+					<td>TOMA</td>
+					<td>FECHA ORDEN</td>
+					<td>HORAS</td>
+					<td>ESTADO</td>
+					<td>IMPORTE</td>
+				</tr>
+			</thead>
+			<tbody>
+					{% for x in ordenes %}
+						<tr style="font-size: 0.8em;">
+							<td>{{x.reparto }}</td>
+							<td>{{x.fecha_reparto }}</td>
+							<td>{{x.recibo}}</td>
+							<td>{{x.canal}}</td>
+							<td>{{x.usuario}}</td>
+							<td>{{x.parcela}}</td>
+							<td>{{x.toma }}</td>
+							<td>{{x.fecha }}</td>
+							<td>{{x.horas}}</td>
+							<td>{{x.estado }}</td>
+							<td>{{x.importe}}</td>
+						</tr>
+					{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+	<span class="badge badge-pill badge-success">Sin data</span>
+	{% endif %}
+</div>
+{% else %}
+	<span class="badge badge-pill badge-success float-right">°°°</span>
+{% endif %}
+
+{% endblock cuerpo %}

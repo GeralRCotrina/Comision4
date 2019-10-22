@@ -20,7 +20,6 @@ urlpatterns = [
 	re_path(r'^prf_edi/(?P<pk>\d+)/$',login_required(views.PerfilEditar.as_view()),name='prf_edi'),
 
 	re_path(r'^u_orden_lis/$',login_required(views.OrdenList.as_view()),name='u_orden_lis'),
-	re_path(r'^u_orden_reg/$',login_required(views.OrdenCreate.as_view()),name='u_orden_reg'),
 
 	re_path(r'^u_noticia_lis/$',login_required(views.NoticiaList.as_view()),name='u_noticia_lis'),
 
@@ -53,10 +52,8 @@ urlpatterns = [
 	re_path(r'^api_orden/?/$',login_required(views.ApiOrd.as_view()),name='api_orden'),
 	re_path(r'^api_qr/?/$',login_required(views.ApiQr.as_view()),name='api_qr'),
 
-
-
 ]
 
 
 
-
+#re_path(r'^api_graf1/?/$',login_required(views.ApiGraf1.as_view()),name='api_graf1'),

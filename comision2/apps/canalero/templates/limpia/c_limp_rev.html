@@ -8,11 +8,12 @@
 
 
 
-<div class="container border">
+<div class="container mx-4 my-2">
 	<div class="row">
 
-		<div class="col-12 mb-2 text-center">
-			<h1>Revisión de destajos</h1>
+		
+		<div class="col-12 my-3 text-center">
+			<h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Revisión de destajos</h3>
 		</div>
 
 		<div class="col-12 mb-2">
@@ -40,7 +41,7 @@
 
 
 
-		<div class="col-12" style="width: 100%; height:500px; overflow-y: scroll;">
+		<div class="col-12 card my-2 mr-4" style="height:500px; overflow-y: scroll;">
 			<a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
 								Exportar a excel_ <i class="fas fa-file-excel"></i></a>
 								<input type="text" hidden="hidden" id="id_url_dtdestajo" value="{% url 'c_dtlimp_std' %}">

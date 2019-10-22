@@ -1,8 +1,8 @@
 window.onload = function() {
+	CargarPerfil();
 	CargarParcelas();
 	CargarOrdenes();
 	CargarMultas();
-	CargarPerfil();
 	CargarAsambleas();
 	DivRegando();
 };
@@ -267,8 +267,119 @@ function CargarAsambleas() {
 			    }
 			}
 			dva.innerHTML=rpta;
+			dvasb.innerHTML=rpta;
+		}
+	}
+	xhr.send();	
+}
+
+
+/*
+function CargarGraficos(){
+
+
+		
+
+	var categories = []
+	var data = []
+	var fecha = ""
+/*
+	for (i=0; i<caudales.length; i++){
+		var cad = ""+str(caudales.fecha.day)+"/"+str(caudales.fecha.month)+"/"+str(caudales.fecha.year)+""
+		categories[i] = cad
+	}
+	
+	for (i=0; i< caudales.length;i++) {
+		data1[1]=caudales[i].nivel
+	}
+*/
+
+/*
+	var xhr = new XMLHttpRequest();
+	var cad = "/usuario/api_graf1/?userpk=1";
+	xhr.open('GET',cad,true); 
+	var rpta ="Ok";
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			var json = xhr.response;
+			if (json=="Err") {
+				console.log("  >> Err ");
+			}else{
+				var myObj = JSON.parse(json);
+				cant = myObj[0];
+				fecha = myObj[1];
+				//alert("   fecha: "+fecha+"  cant: "+cant)
+				for (var i=0; i<cant; i++) {
+			        categories[i]=myObj[i+2]
+			    }
+			    for (var i=0; i<cant; i++) {
+			        data[i]=myObj[i+50]
+			        //alert(" >> data: "+data[i]+'  cat: '+categories[i]);
+			    }
+			}
+
 		}
 	}
 	xhr.send();
-	
+	CargarC1();
+
 }
+function CargarC1() {
+	// body...
+alert(" Cargará ")
+	Highcharts.chart('container1', {
+    chart: {
+        type: 'column',
+        options3d: {
+            enabled: true,
+            alpha: 15,
+            beta: 15,
+            viewDistance: 25,
+            depth: 40
+        }
+    },
+
+    title: {
+        text: 'Reporte de nivel de agua <br> '+fecha+'::'
+    },
+
+    xAxis: { 
+    	categories, 
+        labels: {
+            skew3d: true,
+            style: {
+                fontSize: '16px'
+            }
+        }
+    },
+
+    yAxis: {
+        allowDecimals: false,
+        min: 0,
+        title: {
+            text: 'del  0   al   10',
+            skew3d: true
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<b>{point.key}</b><br>',
+        pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} / {point.stackTotal}'
+    },
+
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            depth: 40
+        }
+    },
+
+    series: [{name: 'Caudal',
+        data,
+        stack: 'male'
+    }]
+});
+
+}
+
+*/
