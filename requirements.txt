@@ -1,8 +1,9 @@
-cymysql==0.9.12
-Django==2.1.1
-django-cymysql==2.1.0
-Jinja2==2.10
-MarkupSafe==1.0
+cymysql==0.9.14
+Django==2.2.3
+django-cymysql==2.2.0
+Jinja2==2.10.1
+MarkupSafe==1.1.1
 pdfkit==0.6.1
-Pillow==5.3.0
-pytz==2018.5
+Pillow==6.1.0
+pytz==2019.1
+sqlparse==0.3.0
