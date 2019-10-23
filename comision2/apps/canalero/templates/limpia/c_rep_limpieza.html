@@ -1,0 +1,174 @@
+{% extends "c_base.html" %}
+
+
+
+
+{% block noticias %}	
+{% endblock noticias %}
+
+
+{% block cuerpo %}
+
+<div class="container">
+	<div class="row border my-3 mx-3">		
+
+	  <div class="col-12 my-3 text-center">
+	    <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Limpieza de canales <i class="fas fa-fw fa-chart-area"></i> </h3>
+	  </div>
+
+		<div class="col-12 my-3">
+			<div id="acordion">
+				<div class="card">
+					<div class="card-header">
+						<a href="#uno" class="card-link" data-toggle="collapse" data-parent="#acordion">Reporte general por fecha   <i class="fas fa-list-ol"></i></a>
+					</div>
+					<div id="uno" class="collapse"> <!--show"-->
+						<div class="card-body">
+							<label for=" frm-rep" class="font-italic">Reporte completo entre fechas</label>
+							<form name="frm-rep" method="POST">
+								{% csrf_token %}
+								<input type="text" name="deque" value="limpia" hidden>
+								<div class="row text-center">
+									<div class="col-8 btn-group btn-block">
+										<input name="desde" type="date" class="btn form-control border" required>
+										<input name="hasta" type="date" class="btn form-control border" required>
+									</div>
+									<div class="col-4">
+										<button class="btn btn-outline-primary form-control">Examinar</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </div>
+</div>
+
+
+
+
+<div class="col-12"><br><hr><br></div>
+
+
+
+
+
+
+
+
+{% if msj %}
+
+<div class="container">
+    <div class="row border my-3 mx-3 py-3 px-3">  
+
+	{% if lst_rep_3 %}
+
+
+<div class="col-12 border my-2 ">
+  
+    <div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto">
+        
+    <script type="text/javascript">
+            Highcharts.chart('container4', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Detalle de las limpiezas'
+    },
+    subtitle: {
+        text: 'Se realizó un total de <b>{{total_destajos}}</b> revisiones de destajos en <b>{{total}}</b> limpiezas de canales ocurridas entre el {{desde}} y el {{hasta}}.'
+    },
+    xAxis: {
+        categories: [
+        {% for x in lst_rep_3 %}
+            '{{x.limpieza}}<br><small>{{x.fecha_limpieza.day}}/{{x.fecha_limpieza.month}}/{{x.fecha_limpieza.year}}</small>',
+        {% endfor %}
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '{{hoy}}'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+
+
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+
+
+    series: [{
+        name: 'Mal hechos',
+        data: [ 
+        {% for x in lst_rep_3 %}
+            {{x.mal_hecho}},
+        {% endfor %}
+        ]
+
+    }, { 
+        name: 'Bien hecho',
+        data: [ 
+        {% for x in lst_rep_3 %}
+            {{x.revisado}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'No hecho',
+        data: [ 
+        {% for x in lst_rep_3 %}
+            {{x.no_hecho}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Aún no se revisa',
+        data: [ 
+        {% for x in lst_rep_3 %}
+            {{x.esperando}},
+        {% endfor %}
+        ]
+    }, {
+
+        name: 'TOTAL',
+        data: [
+        {% for x in lst_rep_3 %}
+            {{x.total}},
+        {% endfor %}
+        ]
+
+    }]
+});
+
+</script>
+
+    </div>
+</div>
+
+
+	{% else %}
+	   <span class="badge badge-pill badge-success">Sin data</span>
+	{% endif %}
+
+</div>
+{% else %}
+	<span class="badge badge-pill badge-success float-right">°°°</span>
+{% endif %}
+
+</div>
+{% endblock cuerpo %}

@@ -75,5 +75,10 @@ urlpatterns = [
 	re_path(r'^c_limp_pie/(?P<pk>\d+)/$',login_required(views.LimpiaPie.as_view()),name='c_limp_pie'),
 	re_path(r'^c_limp_pdf/(?P<pk>\d+)/$',login_required(views.LimpiaPdf.as_view()),name='c_limp_pdf'),
 
+
+	re_path(r'^c_rep/$',login_required(views.Reportes.as_view()),name='c_rep'),
+	re_path(r'^c_rep_lmp/$',login_required(views.RepLimpieza.as_view()),name='c_rep_lmp'),
+
+
 	]
 

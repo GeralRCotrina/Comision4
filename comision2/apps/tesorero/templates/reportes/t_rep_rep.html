@@ -1,0 +1,487 @@
+{% extends "t_base.html" %}
+
+
+
+
+{% block noticias %}    
+{% endblock noticias %}
+
+
+{% block cuerpo %}
+
+<div class="continer border px-2 py-2">
+    <div class="row">
+        
+
+      <div class="col-12 my-3 text-center">
+        <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Repartos <i class="fas fa-fw fa-chart-area"></i> </h3>
+      </div>
+
+
+
+        <div class="col-12"> 
+            
+            <div id="acordion">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="#uno" class="card-link" data-toggle="collapse" data-parent="#acordion">Reporte general por fecha</a>
+                    </div>
+                    <div id="uno" class="collapse"> <!--show"-->
+                        <div class="card-body">
+                            <label for=" frm-rep" class="font-italic">Reporte completo entre fechas</label>
+                            <form name="frm-rep" method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="deque" value="reparto" hidden>
+                                <div class="row text-center">
+                                    <div class="col-8">
+                                        <div class="btn-group btn-block">
+                                            <input name="desde" type="date" class="btn form-control border" required>
+                                            <input name="hasta" type="date" class="btn form-control border" required>
+                                        </div>                                            
+                                    </div>
+                                    <div class="col-4">
+                                        <button class="btn btn-outline-primary form-control">Examinar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="card-header">
+                        <a href="#dos" class="card-link" data-toggle="collapse" data-parent="#acordion">Ingresos de multas por órdenes de riego </a>
+                    </div>
+                    <div id="dos" class="collapse"> <!--show"-->
+                        <div class="card-body">
+                            <label for=" frm-rep" class="font-italic">Reporte completo entre fechas</label>
+                            <form name="frm-rep" method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="deque" value="reparto1" hidden>
+                                <div class="row text-center">                                    
+                                    <div class="col-8">
+                                        <div class="btn-group btn-block">
+                                            <input name="desde" type="date" class="btn form-control border" required>
+                                            <input name="hasta" type="date" class="btn form-control border" required>
+                                        </div>                                            
+                                    </div>
+                                    <div class="col-4">
+                                        <button class="btn btn-outline-primary form-control">Examinar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<br>
+<hr>
+<br>
+
+{% if msj %}
+<div class="container border">
+
+    {% if ordenes %}
+
+    <div class="row my-3 px-3">
+
+
+
+
+
+
+<div class="col-12 border my-2">
+    
+    <div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto">
+
+<script type="text/javascript">
+            Highcharts.chart('container4', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Órdenes por reparto'
+    },
+    subtitle: {
+        text: 'desde el {{desde}} hasta el {{hasta}}. <br> Total <b>{{total}}</b> órdenes registradas.'
+    },
+    xAxis: {
+        categories: [
+        {% for x in repxestado %}
+            '{{x.reparto}}<br><small>{{x.fecha_reparto.day}}/{{x.fecha_reparto.month}}/{{x.fecha_reparto.year}}</small>',
+        {% endfor %}
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '{{hoy}}'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b> órd</td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+
+
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+
+
+    series: [{
+        name: 'Solicitadas',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.solicitada}},
+        {% endfor %}
+        ]
+
+    }, { 
+        name: 'Aprobada',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.aprobada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Pagada',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.pagada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Entregada',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.entregada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Iniciada',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.iniciada}},
+        {% endfor %}
+        ]
+ }, { 
+        name: 'Finalizada',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.finalizada}},
+        {% endfor %}
+        ]
+
+    }, {
+        name: 'Rechazada',
+        data: [ 
+        {% for x in repxestado %}
+            {{x.rechazada}},
+        {% endfor %}
+        ]
+
+    }, {
+
+        name: 'TOTAL',
+        data: [
+        {% for x in repxestado %}
+            {{x.total}},
+        {% endfor %}
+        ]
+
+    }]
+});
+</script>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="col-12"><br><hr><br></div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="col-5 border">
+            <p class="text-center bg-success text-white mt-1"> <strong>RESUMEN DEL REPORTE </strong></p>
+            <p class="font-italic text-center">desde el {{desde}} al {{hasta}}</p>
+            <table class="table-bordered table-responcive mx-auto" style="font-weight: bold;">
+                <tr><td>IMPORTE TOTAL:</td><td>  S/.{{importe}}</td></tr>
+                <tr><td>DEUDA TOTAL: </td><td>S/.{{deuda}}</td></tr>
+                <tr><td>TOTAL FINALIZADAS:     </td><td>{{Finalizada}}</td></tr>
+                <tr><td>TOTAL INICIADAS:     </td><td>{{Iniciada}}</td></tr>
+                <tr><td>TOTAL ENTREGADAS:   .</td><td> {{Entregada}}</td></tr>
+                <tr><td>TOTAL PAGADAS:</td><td> {{Pagada}}</td></tr>
+                <tr><td>TOTAL APROBADAS:</td><td> {{Aprobada}}</td></tr>
+                <tr><td>TOTAL SOLICITADAS:</td><td> {{Solicitada}}</td></tr>
+                <tr><td>TOTAL ANULADAS: </td><td>{{Anulada}}</td></tr>
+                <tr><td colspan="2" class="text-center"><strong>TOTAL: {{total}} ÓRDENES REGISTRADAS.</strong></td></tr>
+            </table>
+            <p class="text-center font-italic" style="font-weigth: blod;">{{hoy}}</p>
+        </div>
+
+
+
+        <div class="col-7 border">
+            <div id="container3" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+
+
+        <script type="text/javascript">
+
+Highcharts.chart('container3', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Procentaje de órdenes en sus estados.<br>Del {{desde}} al {{hasta}}.'
+    },
+    subtitle: {
+        text: '{{hoy}}'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.y} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'De todo el reporte',
+        colorByPoint: true,
+        data: [{
+            name: 'Finalizadas',
+            y: parseFloat('{{finalizada}}.0'),
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Iniciadas',
+            y: parseFloat('{{Iniciada}}')
+        }, {
+            name: 'Entregadas',
+            y: parseFloat('{{Entregada}}')
+        }, {
+            name: 'Pagadas',
+            y: parseFloat('{{Pagada}}')
+        }, {
+            name: 'Aprobadas',
+            y: parseFloat('{{Aprobada}}')
+        }, {
+            name: 'Rechazadas',
+            y: parseFloat('{{Anulada}}')
+        }, {
+            name: 'Solicitadas',
+            y: parseFloat('{{Solicitada}}')
+        }]
+    }]
+});
+        </script>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-12"><br><hr><br></div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-12 border">
+    <a href="#" onclick="tableToExcel('dataTable', 'Cr Nuevo Horizonte')" style="font-style:italic; color:#5FC65A;">
+                Exportar a excel_ <i class="fas fa-file-excel"></i></a>
+        <table class="table table-sm table-striped text-center" id="dataTable">
+            <thead>
+                  <tr style="background:#2DA544; color:white; font-weight: bold;">
+                    <td>REPARTO</td>
+                    <td>FECHA REPARTO</td>
+                    <td>RECIBO</td>
+                    <td>CANAL</td>
+                    <td>USUARIO</td>
+                    <td>PARCELA</td>
+                    <td>TOMA</td>
+                    <td>FECHA ORDEN</td>
+                    <td>HORAS</td>
+                    <td>ESTADO</td>
+                    <td>IMPORTE</td>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for x in ordenes %}
+                        <tr style="font-size: 0.8em;">
+                            <td>{{x.reparto }}</td>
+                            <td>{{x.fecha_reparto }}</td>
+                            <td>{{x.recibo}}</td>
+                            <td>{{x.canal}}</td>
+                            <td>{{x.usuario}}</td>
+                            <td>{{x.parcela}}</td>
+                            <td>{{x.toma }}</td>
+                            <td>{{x.fecha }}</td>
+                            <td>{{x.horas}}</td>
+                            <td>{{x.estado }}</td>
+                            <td>{{x.importe}}</td>
+                        </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+</div>
+
+    {% else %}
+    <span class="badge badge-pill badge-success">Sin data</span>
+    {% endif %}
+</div>
+{% else %}
+    <span class="badge badge-pill badge-success float-right">°°°</span>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if msj1 %}
+<div class="container my-3 mx-3">
+    <div class="row">
+        <div class="col-12 border">
+           
+            <div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+        <script type="text/javascript">
+
+Highcharts.chart('container4', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Imgresos por multas a órdenes de riego.'
+    },
+    subtitle: {
+        text: 'desde {{desde}} hasta {{hasta}}. <br> Total recaudado: <b>S/. {{total_importe}}</b>.'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '{{hoy}}'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Ingreso por multas: <b>S/.  {point.y}</b>'
+    },
+    series: [{
+        name: 'Population',
+        data: [
+        {% for x in rep_imp_mul_xrep %}
+            ['{{x.reparto}}<br>{{x.fecha_reparto}}', {% if x.importe == null %}0{% else %}{{x.importe}}{% endif %}],
+        {% endfor %}
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y}', // one decimal
+            y: 4, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+        </script>
+        </div>
+    </div>
+</div>
+    
+{% endif %}
+
+{% endblock cuerpo %}

@@ -252,7 +252,10 @@ class EstdoMulta(View):
 		if MultaAsistencia.objects.filter(pk=pka).exists():
 			hma= MultaAsistencia.objects.get(pk=pka)
 			if Multa.objects.filter(id_multa=hma.id_multa.pk).exists():
-				Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std)
+				if std == 1:
+					Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std,fecha_pago=datetime.datetime.now())
+				else:
+					Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std)
 			else:
 				rpta = 'Err'
 				print("  >> Err1")
@@ -352,7 +355,10 @@ class EstdoMultaO(View):
 		if MultaOrden.objects.filter(pk=pka).exists():
 			hma= MultaOrden.objects.get(pk=pka)
 			if Multa.objects.filter(id_multa=hma.id_multa.pk).exists():
-				Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std)
+				if std == '1':
+					Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std,fecha_pago=datetime.datetime.now())
+				else:
+					Multa.objects.filter(id_multa=hma.id_multa.pk).update(estado=std)
 			else:
 				rpta = 'Err'
 				print("  >> Err1")
@@ -453,9 +459,7 @@ class EstadoOrden(View):
 		std = self.request.GET.get('std')
 		rpta = "Err"
 		if OrdenRiego.objects.filter(id_orden_riego=pko).exists():
-			hf = datetime.datetime.now()
-			print("  >hora y fecha: "+str(hf))
-			OrdenRiego.objects.filter(id_orden_riego=pko).update(estado=std,fecha_pago=hf)
+			OrdenRiego.objects.filter(id_orden_riego=pko).update(estado=std,fecha_pago=datetime.datetime.now())
 			rpta = "Ok"
 		else:
 			rpta='Err'
@@ -569,7 +573,7 @@ class LstMulsLimpia(View):
 		
 # =================================== END COMPROBANTE ============	
 
-
+ 
 # ======================================= MUL LIMPIEZA ============
 class EstdoMultaD(View):
 
@@ -582,7 +586,10 @@ class EstdoMultaD(View):
 		if MultaLimpia.objects.filter(pk=pkd).exists():
 			hmd= MultaLimpia.objects.get(pk=pkd)
 			if Multa.objects.filter(id_multa=hmd.id_multa.pk).exists():
-				Multa.objects.filter(id_multa=hmd.id_multa.pk).update(estado=std)
+				if std == 1:
+					Multa.objects.filter(id_multa=hmd.id_multa.pk).update(estado=std,fecha_pago=datetime.datetime.now())
+				else:
+					Multa.objects.filter(id_multa=hmd.id_multa.pk).update(estado=std)
 			else:
 				rpta = 'Err'
 				print("  >> Err1")
@@ -675,9 +682,10 @@ from datetime import  timedelta
 class Reportes(View):
 
 	def get(self,request,*arg,**kwargs):
-		return render(request,'reportes/t_rep.html')
+		return render(request,'reportes/t_rep_rep.html')
 	
 	def post(self,request,*arg,**kwargs):
+		print("  >> reparto-.....")
 		deque = self.request.POST.get('deque')
 		desde = self.request.POST.get('desde')
 		hasta = self.request.POST.get('hasta')
@@ -704,12 +712,17 @@ class Reportes(View):
 			dicc['repxestado']=ReportexEstado(desde,hasta)
 		
 
-		elif deque == 'limpia':
-			print("  > limpia")
+		elif deque == 'reparto1':
+			dicc['msj1']='Ok'
+			dicc['hoy']=datetime.datetime.now()
+			dicc['desde']=desde
+			dicc['hasta']=hasta
+			dicc['rep_imp_mul_xrep']=RepImpMulRep(desde,hasta)
+			dicc['total_importe']=TotalImporteMultas(dicc['rep_imp_mul_xrep'])
 		else:
 			print("  >> ¿de qué? = "+str(deque))
 		#print("  >> desde "+ str(desde)+" hasta "+str(hasta))
-		return render(request,'reportes/t_rep.html',dicc)
+		return render(request,'reportes/t_rep_rep.html',dicc)
 
 """
 
@@ -763,6 +776,78 @@ def ReportexEstado(desde, hasta):
 	cursor.execute("CALL sp_cantidad_xestado (%s,%s)",[desde,hasta])
 	#detalles = cursor.fetchall()
 	cursor.execute("CALL sp_cantidad_xestado (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result
+
+
+
+def RepImpMulRep(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_importe_dmul_xrep (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result
+
+
+
+
+
+
+#===================================================================================
+
+class ReportesLimieza(View):
+
+	def get(self,request,*arg,**kwargs):
+		return render(request,'reportes/t_rep_lim.html')
+
+	def post(self,request,*arg,**kwargs):
+		print("  >> impieza-.....")
+		deque = self.request.POST.get('deque')
+		desde = self.request.POST.get('desde')
+		hasta = self.request.POST.get('hasta')
+		dicc={}
+
+		if deque == 'limpia':
+			dicc['msj']='Ok'
+			dicc['hoy']=datetime.datetime.now()
+			dicc['desde']=desde
+			dicc['hasta']=hasta
+			dicc['rep_imp_mul_xlimp']=RepImpMulLimp(desde,hasta)
+			dicc['total_importe']=TotalImporteMultas(dicc['rep_imp_mul_xlimp'])
+			
+		
+
+		elif deque == 'reparto':
+			print("  > reparto")
+		else:
+			print("  >> ¿de qué? = "+str(deque))
+		#print("  >> desde "+ str(desde)+" hasta "+str(hasta))
+		return render(request,'reportes/t_rep_lim.html',dicc)
+
+
+def TotalImporteMultas(lst):
+	rpta=0
+	for x in lst:
+		#print("   > x:"+str(x))
+		if x['importe'] != None:
+			rpta+=float(x['importe'])
+			
+	return rpta
+
+def RepImpMulLimp(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_importe_dmul_xlimp (%s,%s)",[desde,hasta])
 	detalles = cursor.fetchall()
 	for row in detalles:
 		dic = dict(zip([col[0] for col in cursor.description], row))

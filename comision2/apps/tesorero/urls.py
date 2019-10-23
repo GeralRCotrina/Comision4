@@ -47,8 +47,8 @@ urlpatterns = [
 	re_path(r'^t_mul_impd/?/$',login_required(views.ImprimirMultaD.as_view()),name='t_mul_impd'),
 
 
-
 	re_path(r'^t_rep/$',login_required(views.Reportes.as_view()),name='t_rep'),
+	re_path(r'^t_rep_lim/$',login_required(views.ReportesLimieza.as_view()),name='t_rep_lim'),
 
 
 

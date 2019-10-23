@@ -1,6 +1,13 @@
-from django.db import models
+#from django.db import models
 
 # Create your models here.
+ 
+
+
+from django.db import models
+
+
+from django.utils.translation import ugettext as _
 
 
 
@@ -40,5 +47,3 @@ class Asamblea(models.Model):
     class Meta:
         managed = False
         db_table = 'asamblea'
-
-

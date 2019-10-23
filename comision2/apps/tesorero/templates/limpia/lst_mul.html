@@ -22,7 +22,7 @@
 
 
 <div class="col-12 my-3 text-center">
-  <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Hoja de multas</h3>
+  <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Hoja de multas por limpieza</h3>
 </div>
 
 
@@ -42,19 +42,21 @@
           <td><strong>MONTO</strong></td>          
           <td><strong>CONCEPTO</strong></td>
           <td><strong>ESTADO</strong></td>
+          <td><strong>FECHA PAGO</strong></td>
           <td><i class="fas fa-box-open"></i></td>
         </tr>
       </thead>
       <tbody>
         {% for hm in hja_mul_limpia %}
             <tr id="tr_{{hm.pk}}" style="font-style:italic; font-size:0.8em;">
-              <td>{{hm.pk}}</td>
+              <td>{{hm.id_multa.pk}}</td>
               <td>{{hm.id_det_limpia.id_destajo.id_parcela.id_auth_user.first_name}}</td>
               <td>{{hm.id_det_limpia.id_destajo.id_parcela.nombre}}</td>
               <td>{{hm.id_det_limpia.id_destajo.id_parcela.num_toma}}</td>
               <td id="tdmon{{hm.pk}}">S/. {{hm.id_multa.monto}}</td>
               <td id="tdcon{{hm.pk}}" style="font-size:0.7em;">{{hm.id_multa.concepto}}</td>
               <td id="tdstd{{hm.pk}}">{% if hm.id_multa.estado == "0" %}<span class="badge badge-pill badge-warning">Creada</span>{% elif hm.id_multa.estado == "1" %}<span class="badge badge-pill badge-success">Pagada</span>{% elif hm.id_multa.estado == "2" %}<span class="badge badge-pill badge-secondary">Anulada</span>{% else %}Err{% endif%}</td>
+              <td>{{hm.id_multa.fecha_pago}}</td>
               
               <td align="center">
               <a href="#" data-toggle="modal" data-target="#ModalEditar{{hm.pk}}" style="color:#FAC257;" title="Editar"><i class="far fa-edit"></i></a>

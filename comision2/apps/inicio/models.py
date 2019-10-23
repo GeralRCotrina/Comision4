@@ -16,7 +16,7 @@ def get_hour_rep():
 
 
 
-
+ 
 
 
 
@@ -455,6 +455,7 @@ class Multa(models.Model):
     fecha = models.DateTimeField(default=get_date_now)
     estado = models.CharField(max_length=1, blank=True, null=True, choices=ESTADO)
     tipo = models.CharField(max_length=1, blank=True, null=True, choices=TIPO)
+    fecha_pago = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False

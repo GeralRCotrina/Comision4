@@ -1,0 +1,147 @@
+{% extends "t_base.html" %}
+
+
+
+
+{% block noticias %}    
+{% endblock noticias %}
+
+
+{% block cuerpo %}
+
+<div class="continer border px-2 py-2">
+    <div class="row">
+        
+
+      <div class="col-12 my-3 text-center">
+        <h3 style="font-size:2.5em; color: #6FB26C; font-weight: bold;">Limpieza de canales  <i class="fas fa-fw fa-chart-area"></i> </h3>
+      </div>
+
+
+
+        <div class="col-12">
+            
+            <div id="acordion">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="#uno" class="card-link" data-toggle="collapse" data-parent="#acordion">Ingresos multas a destajos</a>
+                    </div>
+                    <div id="uno" class="collapse"> <!--show"-->
+                        <div class="card-body">
+                            <label for=" frm-rep" class="font-italic">Destajos multados entre</label>
+                            <form name="frm-rep" method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="deque" value="limpia" hidden>
+                                <div class="row text-center">
+                                    <div class="col-8">
+                                        <div class="btn-group btn-block ">
+                                            <input name="desde" type="date" class="btn form-control border" required>
+                                            <input name="hasta" type="date" class="btn form-control border" required>
+                                        </div>                                            
+                                    </div>
+                                    <div class="col-4">
+                                        <button class="btn btn-outline-primary form-control">Examinar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<br>
+<hr>
+<br>
+
+{% if msj %}
+<div class="container border">
+
+    {% if rep_imp_mul_xlimp %}
+
+    <div class="row my-3 px-3">
+    
+
+
+        <div class="col-12 border my-2">
+            
+            <div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto">
+
+
+        <script type="text/javascript">
+
+Highcharts.chart('container4', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Imgresos por multas mala limpieza de destajos.'
+    },
+    subtitle: {
+        text: 'desde {{desde}} hasta {{hasta}}. <br> Total recaudado: <b>S/. {{total_importe}}</b>.'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '{{hoy}}'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Importe: <b>S/.  {point.y}</b>'
+    },
+    series: [{
+        name: 'Population',
+        data: [
+        {% for x in rep_imp_mul_xlimp %}
+            ['{{x.limpieza}}<br> {{x.fecha_limpieza}}',{% if x.importe == null %}0{% else %}{{x.importe}}{% endif %}],
+        {% endfor %}
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y}', // one decimal
+            y: 5, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+        </script>
+        
+       
+
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% else %}
+    <span class="badge badge-pill badge-success float-right">°°°</span>
+{% endif %}
+
+{% endblock cuerpo %}

@@ -1131,4 +1131,159 @@ class LimpiaPdf(View):
 
 
 
+#==============================================rep===========================
 
+
+
+
+from datetime import  timedelta
+class Reportes(View):
+
+	def get(self,request,*arg,**kwargs):
+		return render(request,'reportes/c_rep.html')
+	
+	def post(self,request,*arg,**kwargs):
+		deque = self.request.POST.get('deque')
+		desde = self.request.POST.get('desde')
+		hasta = self.request.POST.get('hasta')
+		dicc={}
+
+		if deque == 'reparto':
+			dicc['msj']='Ok'
+			dicc['hoy']=datetime.datetime.now()
+			dicc['desde']=desde
+			dicc['hasta']=hasta
+			dicc['ordenes']=ReporteReparto(desde,hasta)
+			dicc['total']=Tamano(dicc['ordenes'])
+			dicc['importe']=CalcularImporte(dicc['ordenes'])
+			dicc['deuda']=CalcularDeuda(dicc['ordenes'])
+			dicc['Pagada']=CalcularPorEstado('Pagada',dicc['ordenes'])
+			dicc['Finalizada']=CalcularPorEstado('Finalizada',dicc['ordenes'])
+			dicc['Entregada']=CalcularPorEstado('Entregada',dicc['ordenes'])
+			dicc['Iniciada']=CalcularPorEstado('Iniciada',dicc['ordenes'])
+			dicc['Aprobada']=CalcularPorEstado('Aprobada',dicc['ordenes'])
+			dicc['Solicitada']=CalcularPorEstado('Solicitada',dicc['ordenes'])
+			dicc['Anulada']=CalcularPorEstado('Anulada',dicc['ordenes'])
+
+			#======================================================================
+			dicc['repxestado']=ReportexEstado(desde,hasta)
+		
+
+		elif deque == 'limpia':
+			print("  > limpia")
+		else:
+			print("  >> ¿de qué? = "+str(deque))
+		#print("  >> desde "+ str(desde)+" hasta "+str(hasta))
+		return render(request,'reportes/c_rep.html',dicc)
+
+"""
+
+			d_fecha_inicio = datetime.datetime.strptime(desde,'%d/%m/%Y')			
+			d_fecha_final = datetime.datetime.strptime(hasta,'%d/%m/%Y') + timedelta(days=1)	
+"""
+
+def ReporteReparto(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_reporte_completo (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result
+
+def CalcularImporte(lst):
+	rpta=0
+	for x in lst:
+		if x['estado'] == 'Finalizada' or  x['estado'] == 'Pagada' or  x['estado'] == 'Entregada' or  x['estado'] == 'Iniciada':
+			rpta+=x['importe']
+	return rpta
+
+def CalcularDeuda(lst):
+	rpta=0
+	for x in lst:
+		if x['estado'] == 'Aprobada':
+			rpta+=x['importe']
+	return rpta
+
+def CalcularPorEstado(std,lst):
+	rpta=0
+	for x in lst:
+		if x['estado'] == std:
+			rpta+=1
+	return rpta
+
+def Tamano(lst):
+	rpta=0
+	for x in lst:
+		rpta+=1
+	return rpta
+
+def ReportexEstado(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_cantidad_xestado (%s,%s)",[desde,hasta])
+	#detalles = cursor.fetchall()
+	cursor.execute("CALL sp_cantidad_xestado (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result
+
+
+
+
+
+#=================================================== rep limpieza =====================
+
+class RepLimpieza(View):
+
+	def get(self,request,*arg,**kwargs):
+		return render(request,'limpia/c_rep_limpieza.html')
+
+	def post(self,request,*arg,**kwargs):
+		deque = self.request.POST.get('deque')
+		desde = self.request.POST.get('desde')
+		hasta = self.request.POST.get('hasta')
+		dicc={}
+
+		if deque == 'limpia':
+			dicc['msj']='Ok'
+			dicc['hoy']=datetime.datetime.now()
+			dicc['desde']=desde
+			dicc['hasta']=hasta
+			dicc['lst_rep_3']=SPreporte3(desde,hasta)
+			dicc['total']=Tamano(dicc['lst_rep_3'])
+			dicc['total_destajos']=SumaTotal(dicc['lst_rep_3'])
+		
+		else:
+			print("  >> ¿de qué? = "+str(deque))
+		#print("  >> desde "+ str(desde)+" hasta "+str(hasta))
+		return render(request,'limpia/c_rep_limpieza.html',dicc)
+
+
+
+
+def SPreporte3(desde, hasta):
+	from django.db import connection, transaction
+	result = []
+	cursor = connection.cursor()
+	cursor.execute("CALL sp_cant_std_x_limp (%s,%s)",[desde,hasta])
+	detalles = cursor.fetchall()
+	for row in detalles:
+		dic = dict(zip([col[0] for col in cursor.description], row))
+		result.append(dic)
+	cursor.close()
+	return result
+
+def SumaTotal(lst):
+	rpta=0
+	for x in lst:
+		if x['total'] != None:
+			rpta+=x['total']
+	return rpta

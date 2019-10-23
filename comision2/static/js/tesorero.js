@@ -215,7 +215,7 @@ function EdiMultaO(pka){
 		alert("TIENE QUE COLOCAR AMBOS DATOS.");
 	}
 }
-
+ 
 
 //*******************************************************************
 function EstMultaD(pka){
