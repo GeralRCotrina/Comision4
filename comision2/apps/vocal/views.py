@@ -128,7 +128,8 @@ class AsmbGrfRep(View):
 			'c':c,
 			'd':d,
 			'Asmb':Asmb,
-			'lstHAsis':lstHAsis
+			'lstHAsis':lstHAsis,
+			'hoy':datetime.datetime.now()
 		}
 		return render(request,'asamblea/graficos/v_asamb_g1.html',jsn)
 		

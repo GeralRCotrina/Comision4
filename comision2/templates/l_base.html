@@ -67,7 +67,7 @@
           <li data-target="demo" data-slide-to="3"></li>
         </ul>
   <!-- IMAGENES -->
-        <div class="carousel-inner w-100">
+        <div class="carousel-inner w-100 my-3">
           <div class="carousel-item active w-100">
             <img src="{% static 'img/5.jpg' %}" class="img-fluid w-100 img-thumbnail">
             <div class="carousel-caption">
@@ -127,6 +127,51 @@
 
 
 
+
+
+
+          <span class="float-left"> 
+            <a data-toggle="modal" data-target="#exampleModal" style="color: #44D859; font-size: 2.1em;" href="#">
+              <i class="fas fa-question-circle  animated infinite flip"></i>
+            </a>
+          </span>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><b>Instructivo</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div-->
+      <div class="modal-body">
+        <p style="background: #DCDCDC" class="pl-2 h4"><b>INSTRUCTIVO</b></p>
+        <table class="table table-sm">
+          <tr><td><b>Usuario:</b> </td><td>Es su <b>número de DNI</b>.</td></tr>
+          <tr><td><b>Contraseña:</b></td><td>Esta compuesto por la 1° letra de su <b>primer nombre</b> + 1° letra de su <b>segundo apellido</b> + el símbolo <b>@</b> + su <b>número de DNI</b>.</td></tr>
+        </table>
+       <hr>
+        <button type="button" class="btn btn-primary float-right" data-dismiss="modal">¡Entendido!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
             <form enctype = "multipart/form-data" method="POST"> 
               {% csrf_token %} 
   
@@ -175,22 +220,18 @@
                     </div>
                   </div>
 
-                  <button type="submit" id = "login" class = "btn btn-success btn-block">
+                  <button type="submit" id = "login" class = "btn btn-success btn-block my-2">
                     <i class="fas fa-sign-in-alt"></i>    Iniciar sesión
                   </button>                     
               </form>
 
-          <!--p class="alert alert-secondary border alert-dismissable my-1 mx-1" style="line-height:0.9em;">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>Usuario:</strong> su DNI <br>
-            <strong>Contraseña:</strong> 1° letra de su primer nombre + 1° letra de su segundo apellido + @ + su DNI.  <br>
-          </p-->
+     
 
 
-        </div>
+        <!--/div>
 
-        <div class="card-footer pb-1 mr-0" style="font-size: 0.8em;">
-          <p class="text-right font-italic" style="line-height: 1.0em;">de momento solo los directivos pueden registrar nuevos usuarios
+        <div class="card-footer pb-1 mr-0" style="font-size: 0.8em;"-->
+          <p class="text-right font-italic" style="line-height: 1.0em; font-size: 0.8em;">de momento solo los directivos pueden registrar nuevos usuarios
             <br>...proximamente se expandirá</p>
         </div>
 

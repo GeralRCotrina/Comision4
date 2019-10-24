@@ -67,6 +67,9 @@
                 <h6 class="h6 mt-0" >{{ request.user.first_name }}</h6>
 
                 <a href="{% url 'prf_edi' request.user.pk %}"><span class="badge font-italic text-light mt-0" style="background:#8BCD6B;">Editar perfil <i class="fas fa-cog"></i></span></a>
+
+                <a href="{% url 'index' %}"><span class="badge font-italic text-light mt-0" style="background:#6AB4E3;">inicio <i class="fas fa-home"></i></span></a>
+
                 <div class="btn-group btn-block mb-0">
                   <a href="{% url 'mylogin' %}" class="btn btn-outline-success form-control"  title="Ingresar con otro usuario.">
                     <i class="fas fa-lock-open"></i></a>

@@ -6,7 +6,7 @@ from django.urls import path, re_path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-
+ 
 urlpatterns = [	
     re_path(r'^', include('apps.inicio.urls')),
     re_path(r'^usuario/', include('apps.usuario.urls'),name='usuario'),

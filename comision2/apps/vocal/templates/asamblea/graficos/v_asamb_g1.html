@@ -55,7 +55,7 @@
 
 
 	<div class="col-12 w-100">
-		<div class="w-100" style="height: 300px; ">
+		<div class="w-100 border" style="height: 300px; ">
 			
 			<div id="container"  style="min-width: 100%; height: 100%; max-width: 100%;"></div>
 
@@ -80,8 +80,12 @@ Highcharts.chart('container', {
         plotBorderWidth: 0,
         plotShadow: false
     },
+
     title: {
-        text: 'Reunión<br>{{Asmb.tipo}}<br>{{Asmb.fecha_asamblea.day}}/{{Asmb.fecha_asamblea.month}}/{{Asmb.fecha_asamblea.year}}',
+        text: 'Reunión {{Asmb.tipo}}  [{{Asmb.fecha_asamblea.day}}/{{Asmb.fecha_asamblea.month}}/{{Asmb.fecha_asamblea.year}}]'+
+        '<br><b>{% if Asmb.estado == "2" %}INICIADA{% elif Asmb.estado == "3" %}FINALIZADA{% else %}{{Asmb.estado}}{%endif%}</b>'+
+        '<br>Asistió: {{a}} |  Llegó tarde: {{b}}  |  Aún no llega: {{d}}  |  Faltó: {{c}}'+
+        '<br>Hoy: {{hoy.day}}/{{hoy.month}}/{{hoy.year}} -  {{hoy.hour}}:{% if hoy.minute <= 9%}0{% endif %}{{hoy.minute}}',
         align: 'center',
         verticalAlign: 'middle',
         y: 40
