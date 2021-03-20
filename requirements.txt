@@ -1,7 +1,7 @@
 cymysql==0.9.14
 Django==2.2.3
 django-cymysql==2.2.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 pdfkit==0.6.1
 Pillow==6.1.0
